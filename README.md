@@ -1,5 +1,5 @@
 # WEB Project
-Training java web server for learning web technologies: Servlets, JSP
+Training java web server for learning web technologies: Servlets, JSP, Connection pool, design patterns etc.
 
 ===========
 **General requirement to the task**:  
