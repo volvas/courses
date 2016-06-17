@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/Courses">
+<Resource name="jdbc/dbcoursetest2" 
+          auth="Container" 
+          type="javax.sql.DataSource" 
+          maxActive="100" 
+          maxIdle="30" 
+          maxWait="10000" 
+          username="javauser" 
+          password="zSxcvb" 
+          driverClassName="com.mysql.jdbc.Driver" 
+          url="jdbc:mysql://127.0.0.1/dbcoursetest2"/>
+
+</Context>    
