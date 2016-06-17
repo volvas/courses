@@ -1,5 +1,5 @@
 /**
- * 
+ * Creating User object corresponding to the table in DB
  * 
  */
 package com.github.vovas11.courses.dao;
