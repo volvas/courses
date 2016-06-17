@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/Courses">
+<Context antiJARLocking="true" path="/courses">
 <Resource name="jdbc/dbcoursetest2" 
           auth="Container" 
           type="javax.sql.DataSource" 

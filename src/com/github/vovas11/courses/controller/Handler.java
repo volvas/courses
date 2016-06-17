@@ -1,3 +1,9 @@
+/**
+ * Main servlet handling the login and registration commands
+ * 
+ * 
+ */
+
 package com.github.vovas11.courses.controller;
 
 import java.io.IOException;
@@ -14,8 +20,12 @@ import com.github.vovas11.courses.command.*;
 public class Handler extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
+	
+	// gets the CommandFactory instance or create one if applies for the first time
 	CommandFactory commandFactory = CommandFactory.getInstance();
+	// gets the command from the CommandFactory corresponding to the button pressed by client
 	Command command = commandFactory.getCommand(request);
+	// runs the command, gets the page to display from the command and sends the page to the client
 	String page = command.execute(request);
 	RequestDispatcher reqDisp = request.getRequestDispatcher(page);
 	reqDisp.forward(request, response);

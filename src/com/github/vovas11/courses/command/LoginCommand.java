@@ -27,7 +27,7 @@ public class LoginCommand implements Command {
 	    request.setAttribute("courses", courseList);
 	    return "/courses.jsp";
 	} else {
-	    return "/login.html";
+	    return "/index.html";
 	}
     }
 }

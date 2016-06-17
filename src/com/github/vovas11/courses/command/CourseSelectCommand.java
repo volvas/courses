@@ -8,13 +8,14 @@ public class CourseSelectCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+	System.out.println("We are inside the JSP page Command Select!!!"); // TODO
 	String courseIdStr = request.getParameter("coursenumber");
 	int courseId = Integer.parseInt(courseIdStr);
 	// TODO checking the valid input
-	
-	DaoFactory daoFactory = DaoFactory.getInstance();
+	System.out.println(courseId); // TODO
+	//DaoFactory daoFactory = DaoFactory.getInstance();
 	// TODO
 	
-	return null;
+	return "/login.html";
     }
 }
