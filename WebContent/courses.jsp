@@ -35,7 +35,7 @@
 			<div class="row">
 				<div class="col-xs-6 col-md-4">
 					<h4>Select the course (type the course ID):</h4>
-					<form action="handler" method="post">
+					<form action="handler" method="get">
 						<div class="form-group">
 							<input type="text" class="form-control" name="coursenumber" placeholder="1...">
 						</div>
