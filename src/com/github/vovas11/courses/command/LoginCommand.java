@@ -1,3 +1,10 @@
+/**
+ * LoginCommand handles access for the existing user
+ * 
+ * 
+ * 
+ */
+
 package com.github.vovas11.courses.command;
 
 import java.util.List;
