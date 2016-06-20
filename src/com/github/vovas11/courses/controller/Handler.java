@@ -62,6 +62,8 @@ public class Handler extends HttpServlet {
 	    String pN = paramNames.nextElement();
 	    System.out.println("Name: " + pN + "\t" + "Value: " + request.getParameter(pN));
 	}
+	
+	System.out.println(); // testing code string
 
 
 
