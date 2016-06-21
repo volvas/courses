@@ -30,7 +30,13 @@ public class LoginCommand implements Command {
 	user.setPassword(password);
 
 	if (users.isExist(user)) {
-	    List<Course> courseList = courses.getAllCourses();
+	    // Getting subscribed courses
+	    List<Course> subscribedCourses = courses.getSubscribedCourses(user);
+	    request.setAttribute("subscrcourses", subscribedCourses);
+	    
+	    // Getting all courses from the DB
+	    // TODO to change to available courses for the concrete user
+	    List<Course> courseList = courses.getAllCourses(user);
 	    request.setAttribute("courses", courseList);
 	    return "/courses.jsp";
 	} else {
