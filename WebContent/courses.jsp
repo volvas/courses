@@ -26,11 +26,11 @@
 			                <th>Name</th>
 			                <th>Description</th>
 			            </tr>
-			            <c:forEach var="subscrcourses" items="${requestScope.subscrcourses}">
+			            <c:forEach var="subscrcourse" items="${requestScope.subscrcourses}">
 			                <tr>
-			                    <td>${course.id}</td>
-			                    <td>${course.name}</td>
-			                    <td>${course.description}</td>
+			                    <td>${subscrcourse.id}</td>
+			                    <td>${subscrcourse.name}</td>
+			                    <td>${subscrcourse.description}</td>
 			                </tr>
 			            </c:forEach>
 			        </table>

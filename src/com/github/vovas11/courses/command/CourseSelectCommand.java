@@ -13,7 +13,7 @@ public class CourseSelectCommand implements Command {
 	int courseId = Integer.parseInt(courseIdStr);
 	// TODO checking the valid input
 	
-	System.out.println(courseId); // TODO
+	
 	//DaoFactory daoFactory = DaoFactory.getInstance();
 	// TODO
 	

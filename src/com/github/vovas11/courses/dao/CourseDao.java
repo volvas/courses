@@ -16,7 +16,11 @@ public class CourseDao {
     						+ "FROM student_courses, students "
     						+ "WHERE student_courses.student_id = students.student_id "
     						+ "AND students.login = ?)";
-    final static String selectAll = "SELECT * FROM courses";
+    final static String selectAvailCourses = "SELECT * FROM courses WHERE courses.course_id IN ("
+                                		+ "SELECT student_courses.course_id "
+                                		+ "FROM student_courses, students "
+                                		+ "WHERE student_courses.student_id = students.student_id "
+                                		+ "AND students.login <> ?)";
     
     public CourseDao(DataSource datasrc) {
 	this.datasrc = datasrc;
@@ -25,24 +29,25 @@ public class CourseDao {
     /**
      * Method getAllCourses
      * 
-     * 
+     * @param   user   the current user
      * @return all courses in the database
      */
-    public List<Course> getAllCourses(User user) {
-	List<Course> allCourses = new ArrayList<Course>();
+    public List<Course> getAvailableCourses(User user) {
+	List<Course> availCourses = new ArrayList<Course>();
 	Connection conn = null;
 	try {
 	    // gets connection to database from Connection pool
 	    conn = datasrc.getConnection();
-	    PreparedStatement prepStmt = conn.prepareStatement(selectAll);
-	    
+	    PreparedStatement prepStmt = conn.prepareStatement(selectAvailCourses);
+	    prepStmt.setString(1, user.getLogin());
 	    ResultSet result = prepStmt.executeQuery();
+	    
 	    while (result.next()) {
 		Course course = new Course();
 		course.setId(result.getInt(1));
 		course.setName(result.getString(2));
 		course.setDescription(result.getString(3));
-		allCourses.add(course);
+		availCourses.add(course);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -53,7 +58,7 @@ public class CourseDao {
 		e.printStackTrace();
 	    }
 	}
-	return allCourses;
+	return availCourses;
     }
     
     public List<Course> getSubscribedCourses(User user) {
@@ -73,8 +78,6 @@ public class CourseDao {
 		course.setDescription(result.getString(3));
 		subscrCourses.add(course);
 	    }
-	    System.out.println(subscrCourses);
-	    
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {

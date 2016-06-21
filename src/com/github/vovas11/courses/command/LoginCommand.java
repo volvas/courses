@@ -1,11 +1,11 @@
+package com.github.vovas11.courses.command;
+
 /**
- * LoginCommand handles access for the existing user
+ * Handles access for the existing user
  * 
- * 
+ * @author vovas11
  * 
  */
-
-package com.github.vovas11.courses.command;
 
 import java.util.List;
 
@@ -15,6 +15,13 @@ import com.github.vovas11.courses.dao.*;
 
 public class LoginCommand implements Command {
     
+    /**
+     * Defines if the name and password of the user exists and if yes,
+     * returns the page for the user. If not, returns the home page
+     *
+     * @param   request   HTTP request
+     * @return the the name of the page the server returns to the client
+     */
     @Override
     public String execute(HttpServletRequest request) {
 	String login = request.getParameter("login");
@@ -35,8 +42,7 @@ public class LoginCommand implements Command {
 	    request.setAttribute("subscrcourses", subscribedCourses);
 	    
 	    // Getting all courses from the DB
-	    // TODO to change to available courses for the concrete user
-	    List<Course> courseList = courses.getAllCourses(user);
+	    List<Course> courseList = courses.getAvailableCourses(user);
 	    request.setAttribute("courses", courseList);
 	    return "/courses.jsp";
 	} else {

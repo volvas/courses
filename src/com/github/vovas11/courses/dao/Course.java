@@ -23,9 +23,4 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
-    // TODO remove
-    public String toString() {
-	return "id: " + id + " name: " + name + " description: " + description;
-    }
-    
 }
