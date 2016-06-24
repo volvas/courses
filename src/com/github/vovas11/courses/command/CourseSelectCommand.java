@@ -12,6 +12,7 @@ public class CourseSelectCommand implements Command {
 	String courseIdStr = request.getParameter("coursenumber");
 	int courseId = Integer.parseInt(courseIdStr);
 	// TODO checking the valid input
+	// TODO check the number of the course is not already subscribed
 	
 	
 	//DaoFactory daoFactory = DaoFactory.getInstance();

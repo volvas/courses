@@ -16,11 +16,11 @@ public class CourseDao {
     						+ "FROM student_courses, students "
     						+ "WHERE student_courses.student_id = students.student_id "
     						+ "AND students.login = ?)";
-    final static String selectAvailCourses = "SELECT * FROM courses WHERE courses.course_id IN ("
-                                		+ "SELECT student_courses.course_id "
-                                		+ "FROM student_courses, students "
-                                		+ "WHERE student_courses.student_id = students.student_id "
-                                		+ "AND students.login <> ?)";
+    final static String selectAvailCourses = "SELECT * FROM courses WHERE course_id NOT IN ("
+                                		+ "SELECT course_id FROM student_courses "
+                                		+ "WHERE student_id IN ("
+                                		+ "SELECT student_id FROM students "
+                                		+ "WHERE login = ?))";
     
     public CourseDao(DataSource datasrc) {
 	this.datasrc = datasrc;
