@@ -17,12 +17,12 @@ import javax.sql.DataSource;
 
 public class UserDao {
     DataSource datasrc;
-    final static String selectSql = "SELECT * FROM students WHERE login=? AND password=?";
-    final static String selectNameSql = "SELECT * FROM students WHERE login=?";
-    final static String insertSql = "INSERT INTO students"
-	    			    + "(firstname, lastname, login, password, department)"
-	    			    + " VALUES(?, ?, ?, ?, ?)";
-    final static String selectAll = "SELECT * FROM students";
+    final static String		      SELECT_SQL = "SELECT * FROM students WHERE login=? AND password=?";
+    final static String		 SELECT_NAME_SQL = "SELECT * FROM students WHERE login=?";
+    final static String		 INSERT_USER_SQL = "INSERT INTO students"
+						 + "(firstname, lastname, login, password, department)"
+						 + " VALUES(?, ?, ?, ?, ?)";
+    final static String	    SELECT_ALL_USERS_SQL = "SELECT * FROM students";
     
     public UserDao(DataSource datasrc) {
 	this.datasrc = datasrc;
@@ -33,7 +33,7 @@ public class UserDao {
 	// TODO check for null
 	try {
 	    conn = datasrc.getConnection();
-	    PreparedStatement prepStmt = conn.prepareStatement(selectSql);
+	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_SQL);
 	    prepStmt.setString(1, user.getLogin());
 	    prepStmt.setString(2, user.getPassword());
 	    ResultSet result = prepStmt.executeQuery();
@@ -54,7 +54,7 @@ public class UserDao {
 	// FIXME check for null
 	try {
 	    conn = datasrc.getConnection();
-	    PreparedStatement prepStmt = conn.prepareStatement(selectNameSql);
+	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_NAME_SQL);
 	    prepStmt.setString(1, user.getLogin());
 	    ResultSet result = prepStmt.executeQuery();
 	    return result.next();
@@ -73,7 +73,7 @@ public class UserDao {
 	Connection conn = null;
 	try {
 	    conn = datasrc.getConnection();
-	    PreparedStatement prepStmt = conn.prepareStatement(insertSql);
+	    PreparedStatement prepStmt = conn.prepareStatement(INSERT_USER_SQL);
 	    prepStmt.setString(1, user.getFirstName());
 	    prepStmt.setString(2, user.getLastName());
 	    prepStmt.setString(3, user.getLogin());
@@ -96,7 +96,7 @@ public class UserDao {
 	try {
 	    conn = datasrc.getConnection();
 	    Statement stmt = conn.createStatement();
-	    ResultSet result = stmt.executeQuery(selectAll);
+	    ResultSet result = stmt.executeQuery(SELECT_ALL_USERS_SQL);
 	    while (result.next()) {
 		User user = new User();
 		user.setId(result.getInt(1));
