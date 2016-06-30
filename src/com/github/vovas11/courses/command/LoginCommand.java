@@ -4,12 +4,14 @@ package com.github.vovas11.courses.command;
  * Handles access for the existing user
  * 
  * @author vovas11
+ * @see    com.github.vovas11.courses.command
  * 
  */
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.github.vovas11.courses.dao.*;
 
@@ -32,9 +34,14 @@ public class LoginCommand implements Command {
 	UserDao users = daoFactory.getUserDao();
 	CourseDao courses = daoFactory.getCourseDao();
 
-	User user = new User();
-	user.setLogin(login);
-	user.setPassword(password);
+	HttpSession session = request.getSession();
+	User user = (User) session.getAttribute(session.getId());
+	if (user == null) {
+	    user = new User();
+	    user.setLogin(login);
+	    user.setPassword(password);
+	    session.setAttribute(session.getId(), user);
+	}
 
 	if (users.isExist(user)) {
 	    // Getting subscribed courses

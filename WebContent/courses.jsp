@@ -69,6 +69,17 @@
 					</form>
 				</div>
 			</div>
-		</div>
+		    <div class="row">
+			    <div class="col-xs-3 col-md-2">
+			    
+			    
+			    
+			        <p class="lead"> </p>
+			        <form action="handler" method="post">
+				        <input type="button" class="btn btn-primary col-xs-4 col-md-3" name="logout">
+				    </form>
+			    </div>
+		    </div>
+	    </div>
     </body>
 </html>

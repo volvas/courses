@@ -17,16 +17,17 @@ public class CourseSelectCommand implements Command {
 	// TODO checking the valid input
 	// TODO check the number of the course is not already subscribed
 	
-	HttpSession session = request.getSession(); // TODO
-	
-	
+	HttpSession session = request.getSession();
+	User user = (User) session.getAttribute(session.getId());
+	if (user == null) {
+	    System.out.println("User is null");
+	    // TODO check probability of user == null and create proper proceeding
+	}
 	
 	DaoFactory daoFactory = DaoFactory.getInstance();
 	CourseDao courses = daoFactory.getCourseDao();
-	UserDao users = daoFactory.getUserDao();
 	
-	User user = new User(); // FIXME
-	Course course = new Course(); // FIXME
+	Course course = new Course();
 	course.setId(courseId);
 	
 	courses.insertUserCourse(user, course);

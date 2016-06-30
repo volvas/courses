@@ -25,8 +25,9 @@ public class CourseDao {
                                 		   + "WHERE login = ?))";
     
     final static String    INSERT_USER_COURSES_SQL = "INSERT INTO student_courses "
-						   + "(course_id, student_id, state)"
-						   + " VALUES(?, ?, 'STARTED')";
+						   + "(course_id, student_id, state) "
+						   + "VALUES(?, (SELECT students.student_id "
+						   + "FROM students WHERE login = ?), 'STARTED')";
     
     public CourseDao(DataSource datasrc) {
 	this.datasrc = datasrc;
@@ -118,8 +119,8 @@ public class CourseDao {
 	try {
 	    conn = datasrc.getConnection();
 	    PreparedStatement prepStmt = conn.prepareStatement(INSERT_USER_COURSES_SQL);
-	    prepStmt.setInt(1, user.getId());
-	    prepStmt.setInt(2, course.getId());
+	    prepStmt.setInt(1, course.getId());
+	    prepStmt.setString(2, user.getLogin());
 	    prepStmt.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
