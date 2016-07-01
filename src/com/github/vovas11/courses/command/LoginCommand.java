@@ -1,13 +1,5 @@
 package com.github.vovas11.courses.command;
 
-/**
- * Handles access for the existing user
- * 
- * @author vovas11
- * @see    com.github.vovas11.courses.command
- * 
- */
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +7,16 @@ import javax.servlet.http.HttpSession;
 
 import com.github.vovas11.courses.dao.*;
 
+/**
+ * {@code LoginCommand} handles access for the existing user
+ * 
+ * @author vovas11
+ * @see DaoFactory
+ * @see com.github.vovas11.courses.dao.UserDao
+ * @see com.github.vovas11.courses.dao.CourseDao
+ * 
+ */
 public class LoginCommand implements Command {
-    
     /**
      * Defines if the name and password of the user exists and if yes,
      * returns the page for the user. If not, returns the home page
@@ -26,16 +26,19 @@ public class LoginCommand implements Command {
      */
     @Override
     public String execute(HttpServletRequest request) {
+	// gets parameters form the HTTP request
 	String login = request.getParameter("login");
 	String password = request.getParameter("password");
 	
-	DaoFactory daoFactory = DaoFactory.getInstance();
-	
+	// gets the link to the DaoFactory and UserDao and CourseDao
+	DaoFactory daoFactory = DaoFactory.getInstance();	
 	UserDao users = daoFactory.getUserDao();
 	CourseDao courses = daoFactory.getCourseDao();
-
+	
+	// gets the link to the current session or creates new one
 	HttpSession session = request.getSession();
 	User user = (User) session.getAttribute(session.getId());
+	
 	if (user == null) {
 	    user = new User();
 	    user.setLogin(login);
