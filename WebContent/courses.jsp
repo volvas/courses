@@ -11,9 +11,19 @@
 </head>
 <body>
 	<div class="container">
-		<div class="jumbotron">
-			<h1>Your courses</h1>
-		</div>
+	   <nav class="navbar navbar-default">
+	       <div class="container-fluid">
+	           <div class="navbar-header navbar-brand">
+	               Your courses
+	           </div>
+	           <div class="navbar-text">
+	               Signed in as <b>${user.login}</b>, ${user.firstName} ${user.lastName}, ${user.department}.
+	           </div>
+	           <form class="navbar-form navbar-right" action="handler" method="post">
+	               <button type="submit" class="btn btn-default col-xs-6 col-md-12" name="ok" value="logout">Logout</button>
+	           </form>
+	       </div>
+	   </nav>
 
 		<div class="row">
 			<div class="col-xs-6 col-md-8">
@@ -71,16 +81,6 @@
 						<button type="submit" class="btn btn-primary col-xs-4 col-md-7"
 							name="ok" value="courseselect">Submit</button>
 					</div>
-				</form>
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-xs-6 col-md-6">
-				<p class="lead"></p>
-				<form action="handler" method="post">
-					<button type="submit" class="btn btn-warning col-xs-4 col-md-2"
-						name="ok" value="logout">Logout</button>
 				</form>
 			</div>
 		</div>

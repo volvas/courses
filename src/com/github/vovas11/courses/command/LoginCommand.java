@@ -26,7 +26,7 @@ public class LoginCommand implements Command {
      */
     @Override
     public String execute(HttpServletRequest request) {
-	// gets parameters form the HTTP request
+	// gets parameters from the HTTP request
 	String login = request.getParameter("login");
 	String password = request.getParameter("password");
 	
@@ -43,10 +43,14 @@ public class LoginCommand implements Command {
 	    user = new User();
 	    user.setLogin(login);
 	    user.setPassword(password);
+	    //getting all fields for the object from DB
+	    users.getFieldsForUser(user);
 	    session.setAttribute(session.getId(), user);
 	}
 
 	if (users.isExist(user)) {
+	    // Information about the logged user
+	    request.setAttribute("user", user);
 	    // Getting subscribed courses
 	    List<Course> subscribedCourses = courses.getSubscribedCourses(user);
 	    request.setAttribute("subscrcourses", subscribedCourses);

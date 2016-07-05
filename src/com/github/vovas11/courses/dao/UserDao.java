@@ -23,6 +23,8 @@ public class UserDao {
 						 + "(firstname, lastname, login, password, department)"
 						 + " VALUES(?, ?, ?, ?, ?)";
     final static String	    SELECT_ALL_USERS_SQL = "SELECT * FROM students";
+    final static String      GET_USER_FIELDS_SQL = "SELECT student_id, firstname, lastname, department"
+						 + " FROM students WHERE login = ?";
     
     public UserDao(DataSource datasrc) {
 	this.datasrc = datasrc;
@@ -117,5 +119,34 @@ public class UserDao {
 	    }
 	}
 	return allUsers;
+    }
+    
+    /**
+     * Adds rest of the fields into the object.
+     * @param   user   the current user
+     */
+    public void getFieldsForUser(User user) {
+	Connection connection = null;
+	try {
+	    connection = datasrc.getConnection();
+	    
+	    PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FIELDS_SQL);
+	    prepStmt.setString(1, user.getLogin());
+	    ResultSet result = prepStmt.executeQuery();
+	    while (result.next()) {
+		user.setId(result.getInt(1));
+		user.setFirstName(result.getString(2));
+		user.setLastName(result.getString(3));
+		user.setDepartment(result.getString(4));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	}
     }
 }
