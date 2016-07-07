@@ -31,7 +31,8 @@ public class CourseSelectCommand implements Command {
 	course.setId(courseId);
 	
 	courses.insertUserCourse(user, course);
-	
+	// Information about the logged user
+	request.setAttribute("user", user);
 	// Getting subscribed courses
 	List<Course> subscribedCourses = courses.getSubscribedCourses(user);
 	request.setAttribute("subscrcourses", subscribedCourses);
