@@ -1,8 +1,3 @@
-/**
- * 
- * 
- * 
- */
 package com.github.vovas11.courses.dao;
 
 import java.sql.Connection;
@@ -15,10 +10,16 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+/**
+ * Handles all requests manipulating with users and their data
+ * 
+ * @author vovas11
+ * 
+ */
 public class UserDao {
     DataSource datasrc;
-    final static String		      SELECT_SQL = "SELECT * FROM students WHERE login=? AND password=?";
-    final static String		 SELECT_NAME_SQL = "SELECT * FROM students WHERE login=?";
+    final static String		 SELECT_USER_SQL = "SELECT * FROM students WHERE login=? AND password=?";
+    final static String		SELECT_LOGIN_SQL = "SELECT * FROM students WHERE login=?";
     final static String		 INSERT_USER_SQL = "INSERT INTO students"
 						 + "(firstname, lastname, login, password, department)"
 						 + " VALUES(?, ?, ?, ?, ?)";
@@ -35,7 +36,7 @@ public class UserDao {
 	// TODO check for null
 	try {
 	    conn = datasrc.getConnection();
-	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_SQL);
+	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_USER_SQL);
 	    prepStmt.setString(1, user.getLogin());
 	    prepStmt.setString(2, user.getPassword());
 	    ResultSet result = prepStmt.executeQuery();
@@ -56,7 +57,7 @@ public class UserDao {
 	// FIXME check for null
 	try {
 	    conn = datasrc.getConnection();
-	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_NAME_SQL);
+	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_LOGIN_SQL);
 	    prepStmt.setString(1, user.getLogin());
 	    ResultSet result = prepStmt.executeQuery();
 	    return result.next();

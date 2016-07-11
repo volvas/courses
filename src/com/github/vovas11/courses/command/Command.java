@@ -3,16 +3,16 @@ package com.github.vovas11.courses.command;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * Defines the single interface for all commands coming from the user forms via HTTP request.
  * Interface {@code Command} is part of Design pattern "Command".
- * Encapsulates the request from the main servlet using the command objects.
  * 
  * @author vovas11
- * @see    CommandFactory
+ * @see CommandFactory
  */
 public interface Command {
     /**
-     * Method {@code execute} defines the single interface between initiator (servlet)
-     * and executor (different commands). Should be overridden in inheriting classes.
+     * Takes a command from user form (sent in HTTP request) and defines the page which
+     * is returned as response by the servlet.
      * 
      * @param   request   HTTP request from the servlet
      * @return the name of the page that should be returned by the servlet

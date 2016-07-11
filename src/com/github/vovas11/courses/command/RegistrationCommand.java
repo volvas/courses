@@ -6,7 +6,7 @@ import com.github.vovas11.courses.dao.*;
 /**
  * {@code RegistrationCommand} gets data about the new user from the HTTP request,
  * creates an instance of the {@code User}, writes the fields of the object and
- * sends it to the DB via {@code UserDao}
+ * sends it to the database via {@code UserDao}
  * 
  * @author vovas11
  * @see com.github.vovas11.courses.dao.DaoFactory

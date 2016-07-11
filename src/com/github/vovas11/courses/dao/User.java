@@ -1,10 +1,12 @@
+package com.github.vovas11.courses.dao;
+
 /**
  * Creating User object corresponding to the table in DB
  * 
  */
-package com.github.vovas11.courses.dao;
-
 public class User {
+    
+    /*     */
     private int id;
     private String login;
     private String password;
