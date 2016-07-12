@@ -19,7 +19,7 @@ import com.github.vovas11.courses.dao.*;
 public class LoginCommand implements Command {
     /**
      * Defines if the name and password of the user exists in the database and if yes,
-     * returns the page for the user. If not, returns the home page
+     * returns the page for the user. If not, returns the starting page
      *
      * @param   request   HTTP request
      * @return the the name of the page the server returns to the client
@@ -36,38 +36,34 @@ public class LoginCommand implements Command {
 	UserDao users = daoFactory.getUserDao();
 	CourseDao courses = daoFactory.getCourseDao();
 	
-	/* gets the link to the current session or creates new one */
-	HttpSession session = request.getSession();
+	/* creates new user and sets the fields received from the user form via HTTP request */
+	User user = new User();
+	user.setLogin(login);
+	user.setPassword(password);
 	
-	/* gets the link to the current user and if one does not exists yet
-	 * creates new user instance and updates all fields */
-	User user = (User) session.getAttribute(session.getId());
-	
-	// FIXME check the user credential after checking existence of the login
-	
-	if (user == null) {
-	    user = new User();
-	    user.setLogin(login);
-	    user.setPassword(password);
+	/* checks if the user with entered credentials exists in the database:
+	 * yes - proceed, no - forwards to the starting page */
+	if (users.isExist(user)) {
+	    /* gets the link to the current session or creates new one */
+	    HttpSession session = request.getSession();
 	    
-	    // gets all fields for the object from the database
+	    /* gets all fields for the user from the database and set the link to the session */
 	    users.getFieldsForUser(user);
 	    session.setAttribute(session.getId(), user);
-	}
-	
-	/* Checks if the user already Prepares the data for the JSP page:
-	 * current user, subscribed courses and available courses */
-	if (users.isExist(user)) {
-	    // Information about the logged user
+	    
+	    /* prepares the data for the JSP page:
+	     * current user, subscribed courses and available courses */
 	    request.setAttribute("user", user);
-	    // Getting subscribed courses
+	    
+	    /* gets subscribed courses from the database and set the link to the HTTP request */
 	    List<Course> subscribedCourses = courses.getSubscribedCourses(user);
 	    request.setAttribute("subscrcourses", subscribedCourses);
 	    
-	    // Getting all courses from the DB
+	    /* gets available courses from the database and set the link to the HTTP request */
 	    List<Course> courseList = courses.getAvailableCourses(user);
 	    request.setAttribute("courses", courseList);
 	    return "/courses.jsp";
+	    
 	} else {
 	    return "/index.html";
 	}
