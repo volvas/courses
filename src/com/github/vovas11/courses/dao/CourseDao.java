@@ -9,9 +9,20 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+/**
+ * Provides methods for communication between application and the database and manipulates
+ * with table 'courses'. Part of DAO design pattern.
+ * 
+ * @author vovas11
+ * @see Course
+ * @see DaoFactory
+ */
 public class CourseDao {
+    
+    /* link to the connection (interface) to the database */
     DataSource datasrc;
-    // TODO pull out all constants into separate class(?)
+    
+    /* Predefined SQL statements that are used for execution requests in the database, table 'courses' */
     final static String  SELECT_SUBSCR_COURSES_SQL = "SELECT * FROM courses WHERE courses.course_id IN ("
     						   + "SELECT student_courses.course_id "
     						   + "FROM student_courses, students "
@@ -34,21 +45,33 @@ public class CourseDao {
     }
     
     /**
-     * Method getAllCourses
+     * Executes request into the database and returns list of courses that are available
+     * for the current student to subscribe.
      * 
      * @param   user   the current user
-     * @return all courses in the database
+     * @return list of available courses from the database
      */
     public List<Course> getAvailableCourses(User user) {
+	
+	/* list of the available courses to be returned */
 	List<Course> availCourses = new ArrayList<Course>();
+	
+	/* link to the current database */
 	Connection conn = null;
+	
 	try {
-	    // gets connection to database from Connection pool
+	    /* gets connection to the database from Connection pool */
 	    conn = datasrc.getConnection();
+	    
+	    /* prepares SQL statement with parameter */
 	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_AVAIL_COURSES_SQL);
 	    prepStmt.setString(1, user.getLogin());
+	    
+	    /* executes the query and receives the result table wrapped by ResultSet */
 	    ResultSet result = prepStmt.executeQuery();
 	    
+	    /* runs through all rows of the result table, creates an instance of the Course,
+	     * fills in the instance's fields, and put it into result list */
 	    while (result.next()) {
 		Course course = new Course();
 		course.setId(result.getInt(1));
@@ -69,22 +92,33 @@ public class CourseDao {
     }
     
     /**
-     * getSubscribedCourses uses query into database for getting the courses
+     * Executes request into the database for getting the courses
      * that a student has been subscribed to
      * 
      * @param   user   the current user
-     * @return subscribed courses for the user
+     * @return list of subscribed courses for the user
      */
     public List<Course> getSubscribedCourses(User user) {
+	
+	/* list of the subscribed courses to be returned */
 	List<Course> subscrCourses = new ArrayList<Course>();
+	
+	/* link to the current database */
 	Connection conn = null;
+	
 	try {
-	    // gets connection to database from Connection pool
+	    /* gets connection to the database from Connection pool */
 	    conn = datasrc.getConnection();
+	    
+	    /* prepares SQL statement with parameter */
 	    PreparedStatement prepStmt = conn.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
 	    prepStmt.setString(1, user.getLogin());
+	    
+	    /* executes the query and receives the result table */
 	    ResultSet result = prepStmt.executeQuery();
 	    
+	    /* runs through all rows of the result table, creates an instance of the Course,
+	     * fills in the instance's fields, and put it into result list */
 	    while (result.next()) {
 		Course course = new Course();
 		course.setId(result.getInt(1));
@@ -105,19 +139,22 @@ public class CourseDao {
     }
     
     /**
-     * insertUserCourse uses query into database for insert the user and course
-     * in other words, the current user subscribes to the current course
+     * Executes request into the database (table 'student_courses') to insert the current user
+     * and course. In other words, the current user subscribes to the current course
      * 
      * @param   user   the current user
      * @param   course   the current course
-     * @return nothing TODO to return false/true if the table in DB didn't changed/changed
      */
     public void insertUserCourse(User user, Course course) {
 	
+	/* link to the current database */
 	Connection conn = null;
 	
 	try {
+	    /* gets connection to the database from Connection pool */
 	    conn = datasrc.getConnection();
+	    
+	    /* prepares SQL statement with parameters ans execute the query*/
 	    PreparedStatement prepStmt = conn.prepareStatement(INSERT_USER_COURSES_SQL);
 	    prepStmt.setInt(1, course.getId());
 	    prepStmt.setString(2, user.getLogin());
@@ -131,6 +168,5 @@ public class CourseDao {
 		e.printStackTrace();
 	    }
 	}
-	
     }
 }

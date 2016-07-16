@@ -1,5 +1,12 @@
 package com.github.vovas11.courses.dao;
 
+/**
+ * Represents the entity of the Course. Maps the table 'courses' in the database. 
+ * Part of DAO design pattern.
+ * 
+ * @author vovas11
+ * @see CourseDao
+ */
 public class Course {
     private int id;
     private String name;
