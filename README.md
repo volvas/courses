@@ -3,10 +3,12 @@ Courses for students
   
 WEB Project for training purpose using web server with Servlets, JSP, Connection pool, Java code, design patterns etc.
   
-**Description**  
+Description
+-----------
 System of optional **courses**. There is a list of courses, each **course** is assigned to a **lecturer**. **Student** subscribes to one or more courses. Registration data is stored. After course completion lecturer evaluates it with a mark and data stores in the **archive**.  
   
-**General requirements to the project**  
+General requirements to the project
+-----------------------------------
 Build WEB system having the following functions:  
 1. Build classes describing entities of the data domain  
 2. Names of classes and methods should reflect their functionality and classes should have correct hierarhy  
@@ -21,12 +23,15 @@ Build WEB system having the following functions:
 11. Implement event logging i.e. information about arising exceptions and events in the system is to be handled with Log4j  
 12. The application should contain comments.  
   
-**Installation**
-Web-Server: Apache Tomcat/8.0.30
-Database: MySQL Community Server 5.7.12
+Installation
+------------
+Web-Server: Apache Tomcat/8.0.30  
+Database: MySQL Community Server 5.7.12  
   
-**Restrictions**  
+Restrictions
+------------
   
 
-**Documentation**
-./doc/index.html
+Documentation
+-------------
+[./doc/index.html](./doc/index.html)
