@@ -8,10 +8,13 @@ package com.github.vovas11.courses.dao;
  * @see CourseDao
  */
 public class Course {
+    
+    /* fields representing columns in the table 'courses' */
     private int id;
     private String name;
     private String description;
     
+    /* getters and setters for the private fields */
     public int getId() {
         return id;
     }

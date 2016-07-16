@@ -1,12 +1,14 @@
 package com.github.vovas11.courses.dao;
 
 /**
- * Creating User object corresponding to the table in DB
+ * Represents the entity of the User. Maps the table 'students' in the database.
  * 
+ * @author vovas11
+ * @see UserDao
  */
 public class User {
     
-    /*     */
+    /* fields representing columns in the table 'students' */
     private int id;
     private String login;
     private String password;
@@ -14,6 +16,7 @@ public class User {
     private String lastName;
     private String department;
     
+    /* getters and setters for the private fields */
     public int getId() {
         return id;
     }
