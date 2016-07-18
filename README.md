@@ -1,7 +1,7 @@
 Courses for students
 ====================
   
-Project represents the system of managing optional courses for students in a high scool. On the web page a student selects one or more course and registers himself to the course. After attendance the lecturer who holds the course sets a mark to the student.  
+Project represents the system of managing optional courses for students in a high school. On the web page a student selects one or more course and registers himself to the course. After attendance the lecturer who holds the course sets a mark to the student.  
 The project has been created for training purpose and is not to be used in real life.  
   
 Description
@@ -13,7 +13,7 @@ _System of optional **courses**. There is a list of courses, each **course** is 
 
 #### General requirements to the project
 1. Build classes describing entities of the data domain  
-2. Names of classes and methods should reflect their functionality and classes should have correct hierarhy  
+2. Names of classes and methods should reflect their functionality and classes should have correct hierarchy  
 3. Code should satisfy Java Code Convention  
 4. Information about data domain should be kept in a database. API JDBC with connection pool (standard or custom) should be used for access into the database. MySQL or Derby are recommended as a database  
 5. The application should support cyrillic (be multilingual), including information in DB  
