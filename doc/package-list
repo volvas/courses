@@ -1,2 +1,3 @@
-com.github.vovas11.courses.command
-com.github.vovas11.courses.dao
+com.devproserv.courses.command
+com.devproserv.courses.controller
+com.devproserv.courses.dao
