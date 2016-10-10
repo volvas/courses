@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
   <servlet>
     <servlet-name>Handler</servlet-name>
-    <servlet-class>main.java.com.devproserv.courses.controller.Handler</servlet-class>
+    <servlet-class>com.devproserv.courses.controller.Handler</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Handler</servlet-name>
