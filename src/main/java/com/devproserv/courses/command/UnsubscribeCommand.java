@@ -28,11 +28,9 @@ public class UnsubscribeCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         
-        return "404.html";
-        
         /* gets parameters from the request */
-//        String courseIdStr = request.getParameter("courseunsubscrid");
-//        int courseId = Integer.parseInt(courseIdStr);
+        String courseIdStr = request.getParameter("courseunsubscrid");
+        int courseId = Integer.parseInt(courseIdStr);
         
         /* checks the selection for the valid input */
         // TODO checking the valid input
@@ -40,37 +38,37 @@ public class UnsubscribeCommand implements Command {
         
         /* gets the link to the current session or returns the login page
          * if the session does not exist (e.g. timeout) */
-//        HttpSession session = request.getSession(false);
-//        if (session == null)
-//            return "/login.html";
+        HttpSession session = request.getSession(false);
+        if (session == null)
+            return "/login.html";
         
         /* gets the link to the current user and returns the login page
          * if the user does not exist (e.g. timeout) */
-//        User user = (User) session.getAttribute(session.getId());
-//        if (user == null) 
-//            return "/login.html";
+        User user = (User) session.getAttribute(session.getId());
+        if (user == null) 
+            return "/login.html";
         
         /* get links to the factories to handle request in the database*/
-//        DaoFactory daoFactory = DaoFactory.getInstance();
-//        CourseDao courses = daoFactory.getCourseDao();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        CourseDao courses = daoFactory.getCourseDao();
         
         /* creates new instance of the course (the field 'id' is enough) */
-//        Course course = new Course();
-//        course.setId(courseId);
+        Course course = new Course();
+        course.setId(courseId);
         
         /* performs the request in the database with current user and course */
-//        courses.insertUserCourse(user, course);
+        courses.deleteUserCourse(user, course);
         
         /* Prepares the data for the JSP page:
          * current user, subscribed courses and available courses */
-//        request.setAttribute("user", user);
+        request.setAttribute("user", user);
         
-//        List<Course> subscribedCourses = courses.getSubscribedCourses(user);
-//        request.setAttribute("subscrcourses", subscribedCourses);
+        List<Course> subscribedCourses = courses.getSubscribedCourses(user);
+        request.setAttribute("subscrcourses", subscribedCourses);
         
-//        List<Course> courseList = courses.getAvailableCourses(user);
-//        request.setAttribute("courses", courseList);
+        List<Course> courseList = courses.getAvailableCourses(user);
+        request.setAttribute("courses", courseList);
         
-//        return "/courses.jsp";
+        return "/courses.jsp";
     }
 }
