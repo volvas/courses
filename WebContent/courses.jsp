@@ -75,15 +75,15 @@
               <div class="col-xs-6 col-md-12">
                 <table class="table table-hover">
                   <tr>
-                    <th>Course ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <th class="text-center">Course ID</th>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Description</th>
                   </tr>
                   <c:forEach var="subscrcourse" items="${requestScope.subscrcourses}">
                     <tr>
-                      <td>${subscrcourse.id}</td>
-                      <td>${subscrcourse.name}</td>
-                      <td>${subscrcourse.description}</td>
+                      <td class="text-center">${subscrcourse.id}</td>
+                      <td class="text-left">${subscrcourse.name}</td>
+                      <td class="text-left">${subscrcourse.description}</td>
                     </tr>
                   </c:forEach>
                 </table>
@@ -95,7 +95,7 @@
             <form class="form" action="handler" method="post">
               <div class="row">
                 <div class="form-group col-lg-3 col-lg-offset-3">
-                  <input type="text" class="form-control"
+                  <input type="text" class="form-control" name="courseunsubscrid"
                     placeholder="Type course ID to unsubscribe">
                 </div>
                 
@@ -115,15 +115,15 @@
               <div class="col-xs-6 col-md-12">
                 <table class="table table-hover">
                   <tr>
-                    <th>Course ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <th class="text-center">Course ID</th>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Description</th>
                   </tr>
                   <c:forEach var="course" items="${requestScope.courses}">
                     <tr>
-                      <td>${course.id}</td>
-                      <td>${course.name}</td>
-                      <td>${course.description}</td>
+                      <td class="text-center">${course.id}</td>
+                      <td class="text-left">${course.name}</td>
+                      <td class="text-left">${course.description}</td>
                     </tr>
                   </c:forEach>
                 </table>
@@ -133,7 +133,7 @@
             <form class="form" action="handler" method="post">
               <div class="row">
                 <div class="form-group col-lg-3 col-lg-offset-3">
-                  <input type="text" class="form-control"
+                  <input type="text" class="form-control" name="coursesubscrid"
                     placeholder="Type course ID to subscribe">
                 </div>
                 

@@ -21,9 +21,10 @@ public class CommandFactory {
     private Map<String, Command> commandMap = new HashMap<>();
 
     private CommandFactory() {
-        commandMap.put("registration", new RegistrationCommand());
+        commandMap.put("signup", new SignUpCommand());
         commandMap.put("login", new LoginCommand());
-        commandMap.put("courseselect", new CourseSelectCommand());
+        commandMap.put("subscribe", new SubscribeCommand());
+        commandMap.put("unsubscribe", new UnsubscribeCommand());
         commandMap.put("logout", new LogoutCommand());
     }
 
@@ -42,7 +43,7 @@ public class CommandFactory {
      * @return the single instance of the {@code Command}
      */
     public Command getCommand(HttpServletRequest request) {
-        String value = request.getParameter("ok");
+        String value = request.getParameter("command");
         return commandMap.get(value);
     }
 }
