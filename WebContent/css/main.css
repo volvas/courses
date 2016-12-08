@@ -170,15 +170,15 @@ h3 {
   }
 }
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .masthead,
   .mastfoot,
   .cover-container {
     width: 700px;
   }
-}
+} */
 
-@media (min-width: 1216px) {
+@media (min-width: 1200px) {
   .masthead,
   .mastfoot,
   .cover-container {
