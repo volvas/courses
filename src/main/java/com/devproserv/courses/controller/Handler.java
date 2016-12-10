@@ -31,39 +31,36 @@ public class Handler extends HttpServlet {
      * @throws IOException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
+            throws ServletException, IOException {
 
-	/* gets link to the CommandFactory instance or creates one if applies for the first time */
-	CommandFactory commandFactory = CommandFactory.getInstance();
-	
-	/* gets link to the command from the CommandFactory */
-	Command command = commandFactory.getCommand(request);
-	
-	/* runs the command, gets the page to display from the command and sends the page to the client */
-	String page = command.execute(request);
-	RequestDispatcher reqDisp = request.getRequestDispatcher(page);
-	reqDisp.forward(request, response);
+        // creates command by name, runs it and returns page to be returned to client
+        CommandFactory commandFactory = CommandFactory.getInstance();
+        Command command = commandFactory.getCommand(request);
+
+        String page = command.execute(request);
+        RequestDispatcher reqDisp = request.getRequestDispatcher(page);
+        reqDisp.forward(request, response);
     }
-    
+
     /**
      * Standard servlet method, 'overridden' by {@code processRequest} method
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
+            throws ServletException, IOException {
 
-	/* call common method for POST and GET methods */
-	processRequest(request, response);
+        /* call common method for POST and GET methods */
+        processRequest(request, response);
     }
-    
+
     /**
      * Standard servlet method, 'overridden' by {@code processRequest} method
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-	    throws ServletException, IOException {
-	
-	/* call common method for POST and GET methods */
-	processRequest(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        /* call common method for POST and GET methods */
+        processRequest(request, response);
     }
 }

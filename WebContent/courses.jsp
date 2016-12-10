@@ -52,7 +52,7 @@
                   <ul class="nav">
                     <div class="row">
                       <li>
-                        <p class="navbar-text navbar-left"">
+                        <p class="navbar-text navbar-left">
                           Signed in as <b>${user.login}</b>, ${user.firstName} ${user.lastName}, ${user.department}.
                         </p>
                         <form class="navbar-form navbar-right" action="handler" method="post">
