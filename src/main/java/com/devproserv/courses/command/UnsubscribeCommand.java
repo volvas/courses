@@ -26,7 +26,7 @@ public class UnsubscribeCommand implements Command {
      * case the same page)
      */
     @Override
-    public String execute(HttpServletRequest request) {
+    public String executeCommand(HttpServletRequest request) {
         
         /* gets parameters from the request */
         String courseIdStr = request.getParameter("courseunsubscrid");

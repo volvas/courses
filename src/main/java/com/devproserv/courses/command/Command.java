@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Defines the single interface for all commands coming from the user forms via HTTP request.
- * Interface {@code Command} is part of Design pattern "Command".
  * 
  * @author vovas11
  * @see CommandFactory
@@ -17,5 +16,5 @@ public interface Command {
      * @param   request   HTTP request from the servlet
      * @return the name of the page that should be returned by the servlet
      */
-    public String execute(HttpServletRequest request);
+    public String executeCommand(HttpServletRequest request);
 }

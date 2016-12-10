@@ -18,7 +18,7 @@ public class LogoutCommand implements Command {
      * case the starting page)
      */
     @Override
-    public String execute(HttpServletRequest request) {
+    public String executeCommand(HttpServletRequest request) {
 	HttpSession session = request.getSession();
 	session.invalidate();
 	return "/index.html";

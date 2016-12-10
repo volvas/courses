@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Courses for students">
-    <meta name="author" content="Volodymyr Vasylentsev">
+    <meta name="author" content="vovas11">
     <link rel="icon" href="favicon.ico">
     
     <title>Personal Account</title>
@@ -55,7 +55,7 @@
                         <p class="navbar-text navbar-left">
                           Signed in as <b>${user.login}</b>, ${user.firstName} ${user.lastName}, ${user.department}.
                         </p>
-                        <form class="navbar-form navbar-right" action="handler" method="post">
+                        <form class="navbar-form navbar-right" action="login" method="post">
                           <button type="submit" class="btn btn-default col-xs-6 col-md-12" name="command" value="logout">Log out</button>
                         </form>
                       </li>
@@ -92,7 +92,7 @@
             
 
 
-            <form class="form" action="handler" method="post">
+            <form class="form" action="courses" method="post">
               <div class="row">
                 <div class="form-group col-lg-3 col-lg-offset-3">
                   <input type="text" class="form-control" name="courseunsubscrid"
@@ -130,7 +130,7 @@
               </div>
             </div>
             
-            <form class="form" action="handler" method="post">
+            <form class="form" action="courses" method="post">
               <div class="row">
                 <div class="form-group col-lg-3 col-lg-offset-3">
                   <input type="text" class="form-control" name="coursesubscrid"

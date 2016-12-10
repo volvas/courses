@@ -26,7 +26,7 @@ public class LoginCommand implements Command {
      * @return the the name of the page the server returns to the client
      */
     @Override
-    public String execute(HttpServletRequest request) {
+    public String executeCommand(HttpServletRequest request) {
 
         /* gets parameters from the HTTP request */
         String login = request.getParameter("login");
