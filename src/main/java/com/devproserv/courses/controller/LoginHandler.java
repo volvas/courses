@@ -3,6 +3,7 @@ package com.devproserv.courses.controller;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,20 @@ import com.devproserv.courses.command.CommandFactory;
  */
 @SuppressWarnings("serial")
 public class LoginHandler extends HttpServlet {
+    
+    // fields
+    private CommandFactory commandFactory;
+    
+    /**
+     * Initializes the CommandFactory instance
+     * 
+     * @param  config  link to ServletConfig instance
+     * @throws ServletException
+     */
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        commandFactory = CommandFactory.getInstance();
+    }
 
     /**
      * Selects a command corresponding to the parameter sent from the user form.
@@ -35,7 +50,6 @@ public class LoginHandler extends HttpServlet {
         // creates command by name, runs it and returns page to be returned to client
         String page = "/index.html";
         
-        CommandFactory commandFactory = CommandFactory.getInstance();
         if (commandFactory == null) {
             page = "/404.html";
             forwardToDispatcher(page, request, response);
