@@ -30,17 +30,17 @@ _System of optional **courses**. There is a list of courses, each **course** is 
 
 Software
 ------------
-Web-Server: Apache Tomcat/8.0.30  
-Database: MySQL Community Server 5.7.12  
-IDE: Eclipse Java EE Mars.2
+Web-Server: Apache Tomcat 8  
+Database: MySQL Community Server 5.7  
+IDE: Eclipse
   
-**Used libraries:** jsp-api.jar; servlet-api.jar; jstl-1.2.jar; mysql-connector-java-5.1.36-bin.jar
+**Used libraries:** jsp-api, servlet-api, jstl, mysql-connector-java, junit 4
   
 Disclaimer
 ----------
 The project is used exclusively for training purpose and does not take into account many important factors! For example, passwords in the database are stored in text fields instead of hashes that is completely unacceptable in real systems!  
   
-For the moment (July 2016) the project is not 100% ready and does not  meet yet all requirements. 
+For the moment (January 2017) the project is not 100% ready and does not  meet yet all requirements. 
 
 Documentation
 -------------

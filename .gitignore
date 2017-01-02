@@ -13,4 +13,4 @@ hs_err_pid*
 /bin/
 /.classpath
 /courses.iml
-/pom.xml
+/target/

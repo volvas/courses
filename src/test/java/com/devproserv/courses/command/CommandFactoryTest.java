@@ -16,17 +16,17 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * 
  * @author vovas11
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(CommandFactory.class)
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest(CommandFactory.class)
 public class CommandFactoryTest {
     
     @Test
     public void testFirst() throws Exception {
         
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getParameter("command")).thenReturn("login");
+        //HttpServletRequest request = mock(HttpServletRequest.class);
+        //when(request.getParameter("command")).thenReturn("login");
         
-        CommandFactory commandFactoryMock = mock(CommandFactory.class);
+        //CommandFactory commandFactoryMock = mock(CommandFactory.class);
         
     }
 }
