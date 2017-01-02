@@ -20,6 +20,7 @@
         <version>3.0.0</version>
         <configuration>
           <warSourceDirectory>WebContent</warSourceDirectory>
+          <warName>courses</warName>
         </configuration>
       </plugin>
     </plugins>
