@@ -84,7 +84,7 @@
 
           <div class="mastfoot">
             <div class="inner">
-              <p>Source code on <a href="http://github.com/vovas11">GitHub</a></p>
+              <p>Source code on <a href="https://github.com/vovas11/courses">GitHub</a></p>
             </div>
           </div>
 
