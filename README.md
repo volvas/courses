@@ -2,11 +2,12 @@ Courses for students
 ====================
   
 Project represents the system of managing optional courses for students in a high school. On the web page a student selects one or more course and registers himself to the course. After attendance the lecturer who holds the course sets a mark to the student.  
+Link to the project that has been rolled out on server: [http://devproserv.com/courses](http://devproserv.com/courses)  
 The project has been created for training purpose and is not to be used in real life.  
   
 Description
 -----------
-The system runs on web server TomCat with web container handling requests to servlets, JSP etc. Data about entities in the project is stored in the database MySQL.  
+The system runs on web server Tomcat with web container handling requests to servlets, JSP etc. Data about entities in the project is stored in the database MySQL.  
 The project is developed using the following problem specification:  
   
 _System of optional **courses**. There is a list of courses, each **course** is assigned to a **lecturer**. **Student** subscribes to one or more courses. Registration data is stored. After course completion lecturer evaluates it with a mark and data stores in the **archive**._
@@ -32,15 +33,19 @@ Software
 ------------
 Web-Server: Apache Tomcat 8  
 Database: MySQL Community Server 5.7  
-IDE: Eclipse
+Build tool: Maven 4  
+CI tool: Jenkins  
+IDE: Eclipse  
   
-**Used libraries:** jsp-api, servlet-api, jstl, mysql-connector-java, junit 4
+**Used libraries:** jsp-api, servlet-api, jstl, mysql-connector-java, junit 4  
+  
+The project is developed in Eclipse, is hosted on Github. Job created in Jenkins detects changes in the project on Github and builds a new version of web package and deploys on the server
   
 Disclaimer
 ----------
 The project is used exclusively for training purpose and does not take into account many important factors! For example, passwords in the database are stored in text fields instead of hashes that is completely unacceptable in real systems!  
   
-For the moment (January 2017) the project is not 100% ready and does not  meet yet all requirements. 
+For the moment (January 2017) the project is not 100% ready and does not meet yet all requirements. 
 
 Documentation
 -------------
