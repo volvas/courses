@@ -46,7 +46,7 @@ public class LoginCommand implements Command {
         CourseDao courses = daoFactory.getCourseDao();
 
         /* creates new user and sets the fields received from the user form via HTTP request */
-        User user = new User();
+        Student user = new Student(); // TODO User replaced with Student
         user.setLogin(login);
         user.setPassword(password);
 
@@ -57,6 +57,7 @@ public class LoginCommand implements Command {
             return "/login.jsp";
         }
         
+        // TODO to check field 'role' and define how to proceed: Student, Lecturer, Admin
         /* gets the link to the current session or creates new one */
         HttpSession session = request.getSession();
 
