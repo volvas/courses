@@ -2,7 +2,7 @@ Courses for students
 ====================
   
 Project represents the system of managing optional courses for students in a high school. On the web page a student selects one or more course and registers himself to the course. After attendance the lecturer who holds the course sets a mark to the student.  
-Link to the project that has been rolled out on server: [http://devproserv.com/courses](http://devproserv.com/courses)  
+The project has been rolled out on server: [http://devproserv.com/courses](http://devproserv.com/courses)  
 The project has been created for training purpose and is not to be used in real life.  
   
 Description
@@ -39,7 +39,7 @@ IDE: Eclipse
   
 **Used libraries:** jsp-api, servlet-api, jstl, mysql-connector-java, junit 4  
   
-The project is developed in Eclipse, is hosted on Github. Job created in Jenkins detects changes in the project on Github and builds a new version of web package and deploys on the server
+The project is developed in Eclipse and hosted on Github. A job in Jenkins detects changes in the code on Github and builds a new version of web package and deploys it on the server.
   
 Disclaimer
 ----------
