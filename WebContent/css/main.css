@@ -74,6 +74,10 @@ h3 {
 /*
  * Header
  */
+.masthead {
+    z-index: 1;
+}
+
 .masthead-brand {
   margin-top: 10px;
   margin-bottom: 10px;
