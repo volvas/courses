@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.devproserv.courses.dao.DaoFactory;
 import com.devproserv.courses.dao.Student;
-import com.devproserv.courses.dao.User;
+/* import com.devproserv.courses.dao.User;*/
 import com.devproserv.courses.dao.UserDao;
 
 /**
@@ -51,11 +51,11 @@ public class SignUpCommand implements Command {
         /* checks if the user (field 'login') exists and if yes returns back to the registration
          * page, if no inserts new user into database and proceeds to the login page*/
         if (users.isLoginExist(user)) {
-            return "/signup.html";
+            return "/signup.jsp";
 
         } else {
             users.insert(user);
-            return "/login.html";
+            return "/login.jsp";
         }
     }
 }
