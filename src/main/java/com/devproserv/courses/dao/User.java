@@ -7,6 +7,10 @@ package com.devproserv.courses.dao;
  * @see UserDao
  */
 public class User {
+    
+    enum Role {
+        STUD, LECT, ADMIN
+    }
 
     // fields representing columns in the table 'users'
     private int id;
@@ -14,6 +18,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private Role role;
 
     // getters and setters
     public int getId() {
@@ -49,5 +54,13 @@ public class User {
     }
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    
+    public Role getRole() {
+        return role;
+    }
+    
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
