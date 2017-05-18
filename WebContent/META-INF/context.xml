@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/courses">
-<Resource name="jdbc/dbcoursetest2" 
+<Resource name="jdbc/coursedb" 
           auth="Container" 
           type="javax.sql.DataSource" 
           maxActive="100" 
@@ -9,6 +9,6 @@
           username="javauser" 
           password="zSxcvb" 
           driverClassName="com.mysql.jdbc.Driver" 
-          url="jdbc:mysql://devproserv.com/dbcoursetest2"/>
+          url="jdbc:mysql://devproserv.com/coursedb"/>
 
 </Context>    

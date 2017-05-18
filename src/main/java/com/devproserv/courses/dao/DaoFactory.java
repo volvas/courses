@@ -25,7 +25,7 @@ public class DaoFactory {
     private DaoFactory() {
 	try {
 	    InitialContext initContext = new InitialContext();
-	    datasrc = (DataSource) initContext.lookup("java:comp/env/jdbc/dbcoursetest2");
+	    datasrc = (DataSource) initContext.lookup("java:comp/env/jdbc/coursedb");
 	} catch (NamingException e) {
 	    e.printStackTrace();
 	}
