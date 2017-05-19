@@ -28,22 +28,22 @@ public class LoginHandlerTest {
         
         // mocks for classes
         CommandFactory commandFactoryMock = mock(CommandFactory.class);
-        //Command loginCommandMock = mock(LoginCommand.class);
-        //HttpServletRequest requestMock = mock(HttpServletRequest.class);
-        //HttpServletResponse responseMock = mock(HttpServletResponse.class);
-        //RequestDispatcher reqDispMock = mock(RequestDispatcher.class);
+        Command loginCommandMock = mock(LoginCommand.class);
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpServletResponse responseMock = mock(HttpServletResponse.class);
+        RequestDispatcher reqDispMock = mock(RequestDispatcher.class);
         
         // methods for mocked classes
-        //when(commandFactoryMock.getCommand(requestMock)).thenReturn(loginCommandMock);
-        //when(loginCommandMock.executeCommand(requestMock)).thenReturn("/login.jsp");
-        //when(requestMock.getParameter("command")).thenReturn("login");
-        //when(requestMock.getRequestDispatcher("/login.jsp")).thenReturn(reqDispMock);
+        when(commandFactoryMock.getCommand(requestMock)).thenReturn(loginCommandMock);
+        when(loginCommandMock.executeCommand(requestMock)).thenReturn("/login.jsp");
+        when(requestMock.getParameter("command")).thenReturn("login");
+        when(requestMock.getRequestDispatcher("/login.jsp")).thenReturn(reqDispMock);
         
         
-        //doNothing().when(reqDispMock).forward(requestMock, responseMock);
+        doNothing().when(reqDispMock).forward(requestMock, responseMock);
         
-        //LoginHandler loginHandler = new LoginHandler();
+        LoginHandler loginHandler = spy(new LoginHandler());
         
-        //verify(loginHandler, atLeastOnce()).doPost(requestMock, responseMock);
+        verify(loginHandler, atLeastOnce()).doPost(requestMock, responseMock);
     }
 }

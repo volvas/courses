@@ -53,7 +53,7 @@
                     <div class="row">
                       <li>
                         <p class="navbar-text navbar-left">
-                          Signed in as <b>${user.login}</b>, ${user.firstName} ${user.lastName}, ${user.department}.
+                          Signed in as <b>${student.login}</b>, ${student.firstName} ${student.lastName}, ${student.faculty}.
                         </p>
                         <form class="navbar-form navbar-right" action="login" method="post">
                           <button type="submit" class="btn btn-default col-xs-6 col-md-12" name="command" value="logout">Log out</button>

@@ -40,41 +40,61 @@ public class LoginCommand implements Command {
             return "/login.jsp";
         }
 
-        /* gets the link to the DaoFactory and UserDao and CourseDao */
+        /* gets the link to the DaoFactory and UserDao */
         DaoFactory daoFactory = DaoFactory.getInstance();
         UserDao users = daoFactory.getUserDao();
-        CourseDao courses = daoFactory.getCourseDao();
-
-        /* creates new user and sets the fields received from the user form via HTTP request */
-        Student user = new Student(); // TODO User replaced with Student
+        
+        /* creates a new user instance and sets the fields received from the user form via HTTP request */
+        User user = new User();
         user.setLogin(login);
         user.setPassword(password);
-
+        
         /* checks if the user with entered credentials exists in the database */
-        if (!users.isExist(user)) {
+        if (!users.userExists(user)) {
             validResponse = "Wrong username or password! Try again!";
             request.setAttribute("message", validResponse);
             return "/login.jsp";
         }
         
-        // TODO to check field 'role' and define how to proceed: Student, Lecturer, Admin
-        /* gets the link to the current session or creates new one */
-        HttpSession session = request.getSession();
-
-        /* gets all data for the user and assigns to the session */
-        users.getFieldsForUser(user);
-        session.setAttribute(session.getId(), user);
-
-        /* prepares the data for the JSP page */
-        request.setAttribute("user", user);
-
-        /* gets subscribed courses and available courses */
-        List<Course> subscribedCourses = courses.getSubscribedCourses(user);
-        request.setAttribute("subscrcourses", subscribedCourses);
-
-        List<Course> courseList = courses.getAvailableCourses(user);
-        request.setAttribute("courses", courseList);
+        users.getUserRole(user);
         
-        return "/courses.jsp";
+        if (user.isRoleStudent()) {
+            /* gets the link to the CourseDao */
+            CourseDao courses = daoFactory.getCourseDao();
+            
+            /* gets the link to the current session or creates new one */
+            HttpSession session = request.getSession();
+            
+            
+            /* creates new student instance and copies fields from the user */
+            Student student = new Student();
+            student.setLogin(user.getLogin());
+            student.setPassword(user.getPassword());
+            student.setRole(user.getRole());
+            
+            
+            /* gets all data for the user and assigns to the session */
+            users.appendRestUserFields(student);
+            session.setAttribute(session.getId(), user);
+            
+            /* prepares the data for the JSP page */
+            request.setAttribute("student", student);
+            
+            /* gets subscribed courses and available courses */
+            List<Course> subscribedCourses = courses.getSubscribedCourses(user);
+            request.setAttribute("subscrcourses", subscribedCourses);
+
+            List<Course> courseList = courses.getAvailableCourses(user);
+            request.setAttribute("courses", courseList);
+            
+            return "/courses.jsp";
+            
+        } else if (user.isRoleLecturer()) {
+            // TODO
+        } else {
+            
+        }
+        
+        return "/login.jsp";
     }
 }

@@ -45,7 +45,7 @@ Disclaimer
 ----------
 The project is used exclusively for training purpose and does not take into account many important factors! For example, passwords in the database are stored in text fields instead of hashes that is completely unacceptable in real systems!  
   
-For the moment (January 2017) the project is not 100% ready and does not meet yet all requirements. 
+For the moment (May 2017) the project is not 100% ready and does not meet yet all requirements. 
 
 Documentation
 -------------
