@@ -13,24 +13,26 @@ import javax.sql.DataSource;
 import com.devproserv.courses.dao.User.Role;
 
 /**
- * Provides methods for communication between application and the database and manipulates
- * with table 'students'. Part of DAO design pattern.
+ * Provides CRUD methods for communication between application and database.
+ * Implements operations with user tables (users and students).
  * 
  * @author vovas11
  * @see User
  * @see DaoFactory
  */
 public class UserDao {
-    
     /* link to the connection (interface) to the database */
     DataSource datasrc;
     
-    /* Predefined SQL statements that are used for execution requests in the database, table 'students' */
+    /* Predefined SQL statements that are used for execution requests in the database */
     final static String      SELECT_USER_SQL = "SELECT * FROM users WHERE login=? AND password=?;";
-    final static String     SELECT_LOGIN_SQL = "SELECT * FROM students WHERE login=?;"; // TODO
-    final static String      INSERT_USER_SQL = "INSERT INTO students"  // TODO
-                        + "(firstname, lastname, login, password, department)"
-                        + " VALUES(?, ?, ?, ?, ?);";
+    final static String     SELECT_LOGIN_SQL = "SELECT * FROM users WHERE login=?;";
+    final static String      INSERT_USER_SQL = "INSERT INTO users "
+                        + "(firstname, lastname, login, password, role) "
+                        + "VALUES(?, ?, ?, ?, ?);";
+    final static String   INSERT_STUDENT_SQL = "INSERT INTO students "
+                        + "(stud_id, faculty) "
+                        + "VALUES(?, ?);";
     final static String SELECT_ALL_USERS_SQL = "SELECT * FROM students";  // TODO
     final static String  GET_USER_FIELDS_SQL = "SELECT user_id, firstname, lastname, faculty FROM users "
                         + "JOIN students ON users.user_id = students.stud_id WHERE login = ?;";
@@ -46,37 +48,32 @@ public class UserDao {
      * @return {@code true} if the user exists
      */
     public boolean userExists(User user) {
-        /* gets connection to the database from Connection pool */
-        /* prepares SQL statement with parameters */
+        /* gets connection from Connection pool and prepares SQL statement */
         try (
             Connection con = datasrc.getConnection();
             PreparedStatement prepStmt = con.prepareStatement(SELECT_USER_SQL)
         ) {
             prepStmt.setString(1, user.getLogin());
             prepStmt.setString(2, user.getPassword());
-
             /* executes the query and receives the result table */
             ResultSet result = prepStmt.executeQuery();
-
             /* returns true if the result query contains at least one row */
             return result.next();
             
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
         return false;
     }
     
     /**
      * Executes query to database to define user role in the system.
      * 
-     * @param   user   the current user
+     * @param   user the current user
      * @return {@code true} if the user exists
      */
     public void getUserRole(User user) {
-        /* gets connection to the database from Connection pool */
-        /* prepares SQL statement with parameters */
+        /* gets connection from Connection pool and prepares SQL statement */
         try (
             Connection con = datasrc.getConnection();
             PreparedStatement prepStmt = con.prepareStatement(SELECT_USER_SQL)
@@ -90,7 +87,6 @@ public class UserDao {
             if (result.next()) {
                 user.setRole(Role.valueOf(result.getString(6)));
             }
-            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,17 +98,12 @@ public class UserDao {
      * @param   user   the current user
      * @return {@code true} if the user exists and {@code false} if does not
      */
-    public boolean isLoginExist(User user) {
-
-        /* link to the current database */
-        Connection conn = null;
-
-        try {
-            /* gets connection to the database from Connection pool */
-            conn = datasrc.getConnection();
-
-            /* prepares SQL statement with parameters */
-            PreparedStatement prepStmt = conn.prepareStatement(SELECT_LOGIN_SQL);
+    public boolean loginExists(User user) {
+        /* gets connection from Connection pool and prepares SQL statement */
+        try (
+            Connection con = datasrc.getConnection();
+            PreparedStatement prepStmt = con.prepareStatement(SELECT_LOGIN_SQL)
+        ) {
             prepStmt.setString(1, user.getLogin());
 
             /* executes the query and receives the result table */
@@ -122,12 +113,6 @@ public class UserDao {
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return true; // less changes in the database if something is wrong
     }
@@ -137,33 +122,41 @@ public class UserDao {
      * 
      * @param   user   the current user
      */
-    public void insert(Student user) { // TODO User replaced with Student
-
-        /* link to the current database */
-        Connection conn = null;
-
-        try {
-            /* gets connection to the database from Connection pool */
-            conn = datasrc.getConnection();
-
-            /* prepares SQL statement with parameters */
-            PreparedStatement prepStmt = conn.prepareStatement(INSERT_USER_SQL);
+    public void insertStudent(Student user) {
+        /* gets connection from Connection pool and prepares SQL statement */
+        try (
+            Connection con = datasrc.getConnection();
+            PreparedStatement prepStmt = con.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement prepStmtTwo = con.prepareStatement(INSERT_STUDENT_SQL)
+        ) {
             prepStmt.setString(1, user.getFirstName());
             prepStmt.setString(2, user.getLastName());
             prepStmt.setString(3, user.getLogin());
             prepStmt.setString(4, user.getPassword());
-            prepStmt.setString(5, user.getFaculty());
-
+            prepStmt.setString(5, user.getRole().toString());
             /* executes the query without returning anything */
-            prepStmt.execute();
+            int affectedRows = prepStmt.executeUpdate();
+            
+            if (affectedRows == 0) {
+                // TODO make a logic how to proceed in this case
+            }
+            
+            ResultSet generatedKey = prepStmt.getGeneratedKeys();
+            
+            if (generatedKey.next()) {
+                user.setId(generatedKey.getInt(1));
+            }
+            
+            
+            prepStmtTwo.setInt(1, user.getId());
+            prepStmtTwo.setString(2, user.getFaculty());
+            
+            prepStmtTwo.execute();
+            
+            // TODO improve 
+            
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
     
@@ -173,7 +166,7 @@ public class UserDao {
      * @return list of all users from the database
      */
     public List<User> getAllUsers() {
-
+        /* gets connection from Connection pool and prepares SQL statement */
         /* list of users to be returned */
         List<User> allUsers = new ArrayList<User>();
 
@@ -218,8 +211,7 @@ public class UserDao {
      * @param   student   the current user
      */
     public void appendRestUserFields(Student student) {
-        /* gets connection to the database from Connection pool */
-        /* prepares SQL statement with parameters */
+        /* gets connection from Connection pool and prepares SQL statement */
         try (
             Connection con = datasrc.getConnection();
             PreparedStatement prepStmt = con.prepareStatement(GET_USER_FIELDS_SQL)
