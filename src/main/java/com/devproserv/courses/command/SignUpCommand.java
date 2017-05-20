@@ -56,8 +56,11 @@ public class SignUpCommand implements Command {
             user.setStudentRole();
             user.setFaculty(faculty);
             
-            users.insertStudent(user);
-            return "/login.jsp";
+            if (users.insertStudent(user)) {
+                return "/login.jsp";
+            } else {
+                return "/signup.jsp";
+            }
         }
     }
 }
