@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,16 +13,21 @@ import javax.servlet.http.HttpServletResponse;
 import com.devproserv.courses.command.Command;
 import com.devproserv.courses.command.CommandFactory;
 
+import static com.devproserv.courses.config.MainConfig.HOME_PAGE;
+import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
+
 /**
- * Servlet handles user login and sign up functions.
+ * Servlet realizes main logic of handling user requests.
  * 
  * @author vovas11
  * @see CommandFactory
  */
-@SuppressWarnings("serial")
-public class LoginHandler extends HttpServlet {
+@WebServlet(urlPatterns={"/login", "/courses"} )
+public class MainHandler extends HttpServlet {
     
-    // fields
+    private static final long serialVersionUID = -1967971687994990895L;
+    
+    
     private CommandFactory commandFactory;
     
     /**
@@ -32,6 +38,8 @@ public class LoginHandler extends HttpServlet {
      */
     @Override
     public void init(ServletConfig config) throws ServletException {
+        AppInitializer appInit = new AppInitializer();
+        appInit.initBeans();
         commandFactory = CommandFactory.getInstance();
     }
 
@@ -48,17 +56,11 @@ public class LoginHandler extends HttpServlet {
             throws ServletException, IOException {
         
         // creates command by name, runs it and returns page to be returned to client
-        String page = "/index.html";
-        
-        if (commandFactory == null) {
-            page = "/404.html";
-            forwardToDispatcher(page, request, response);
-        }
+        String page = HOME_PAGE;
         
         Command command = commandFactory.getCommand(request);
         if (command == null) {
-            page = "/404.html";
-            forwardToDispatcher(page, request, response);
+            forwardToDispatcher(NOT_FOUND_PAGE, request, response);
         }
         
         page = command.executeCommand(request);
@@ -72,7 +74,7 @@ public class LoginHandler extends HttpServlet {
         RequestDispatcher reqDisp = request.getRequestDispatcher(page);
         
         if (reqDisp == null) {
-            reqDisp = request.getRequestDispatcher("/404.html");
+            reqDisp = request.getRequestDispatcher(NOT_FOUND_PAGE);
         }
         
         reqDisp.forward(request, response);
