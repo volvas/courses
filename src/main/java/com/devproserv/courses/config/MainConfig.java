@@ -11,11 +11,14 @@ public class MainConfig {
     /** Web page names */
     public static final String HOME_PAGE = "/index.html";
     public static final String NOT_FOUND_PAGE = "/404.html";
+    public static final String GENERIC_ERR_PAGE = "/errorgen.html";
+    public static final String EXCEPTION_ERR_PAGE = "/errorexcep.html";
+    
+    /** JSP names */
     public static final String SIGNUP_PAGE = "/signup.jsp";
     public static final String LOGIN_PAGE = "/login.jsp";
     public static final String STUDENT_PAGE = "/courses.jsp";
     public static final String LECTURER_PAGE = "/students.jsp";
-    
     
     /** SQL statements that are used for CRUD operations */
     // users

@@ -22,11 +22,10 @@ import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
  * @author vovas11
  * @see CommandFactory
  */
-@WebServlet(urlPatterns={"/login", "/courses"} )
+@WebServlet(urlPatterns={"/login", "/courses"}, name = "mainHandler")
 public class MainHandler extends HttpServlet {
     
-    private static final long serialVersionUID = -1967971687994990895L;
-    
+    private static final long serialVersionUID = 8086733602135351694L;
     
     private CommandFactory commandFactory;
     
@@ -72,11 +71,6 @@ public class MainHandler extends HttpServlet {
             throws ServletException, IOException {
         
         RequestDispatcher reqDisp = request.getRequestDispatcher(page);
-        
-        if (reqDisp == null) {
-            reqDisp = request.getRequestDispatcher(NOT_FOUND_PAGE);
-        }
-        
         reqDisp.forward(request, response);
     }
 }
