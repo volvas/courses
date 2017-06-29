@@ -1,4 +1,4 @@
-package com.devproserv.courses.controller;
+package com.devproserv.courses.util;
 
 /**
  * {@code Validation} class checks if data user inputs are valid

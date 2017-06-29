@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.devproserv.courses.controller.Validation;
+import com.devproserv.courses.util.Validation;
 import com.devproserv.courses.dao.*;
 
 /**

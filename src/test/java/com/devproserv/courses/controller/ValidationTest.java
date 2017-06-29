@@ -1,10 +1,10 @@
 package com.devproserv.courses.controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.devproserv.courses.controller.Validation;
+import com.devproserv.courses.util.Validation;
 
 /**
  * Test suite for Validation class
