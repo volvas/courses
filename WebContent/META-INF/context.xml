@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/courses">
-<Resource name="jdbc/coursedb" 
-          auth="Container" 
-          type="javax.sql.DataSource" 
-          maxActive="100" 
-          maxIdle="30" 
-          maxWait="10000" 
-          username="javauser" 
-          password="zSxcvb" 
-          driverClassName="com.mysql.jdbc.Driver" 
-          url="jdbc:mysql://devproserv.com/coursedb"/>
+<Context path="/courses">
 
-</Context>    
+  <Resource
+    name="jdbc/coursedb"
+    auth="Container"
+    
+    type="javax.sql.DataSource"
+    driverClassName="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://devproserv.com/coursedb"
+
+    username="javauser"
+    password="zSxcvb"
+
+    maxTotal="8"
+    maxIdle="4" />
+
+</Context>
