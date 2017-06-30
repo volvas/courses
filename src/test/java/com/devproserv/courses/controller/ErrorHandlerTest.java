@@ -18,25 +18,28 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 /**
- * Test suite for ErrorHandler class
+ * Contains unit-tests to check functionality of {@link ErrorHandler} class
  * 
  * @author vovas11
  *
  */
 public class ErrorHandlerTest {
     
+    private ErrorHandler errorHanlder;
+    
     // dependencies to be mocked
     @Mock
-    HttpServletRequest request;
+    private HttpServletRequest request;
     @Mock
-    HttpServletResponse response;
+    private HttpServletResponse response;
     @Mock
-    RequestDispatcher reqDisp;
+    private RequestDispatcher reqDisp;
     
     // prepare dependencies
     @Before
-    public void setup() throws Exception {
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        errorHanlder = new ErrorHandler();
     }
     
     
@@ -50,8 +53,7 @@ public class ErrorHandlerTest {
         when(request.getAttribute("javax.servlet.error.exception")).thenReturn(exception);
         when(request.getRequestDispatcher(EXCEPTION_ERR_PAGE)).thenReturn(reqDisp);
         
-        // create instance to test the method
-        ErrorHandler errorHanlder = new ErrorHandler();
+        
         errorHanlder.doGet(request, response);
         
         verify(reqDisp, atLeastOnce()).forward(request, response);
@@ -64,8 +66,6 @@ public class ErrorHandlerTest {
         when(request.getAttribute("javax.servlet.error.status_code")).thenReturn(Integer.valueOf(404));
         when(request.getRequestDispatcher(NOT_FOUND_PAGE)).thenReturn(reqDisp);
         
-        // create instance to test the method
-        ErrorHandler errorHanlder = new ErrorHandler();
         errorHanlder.doGet(request, response);
         
         verify(reqDisp, atLeastOnce()).forward(request, response);
@@ -78,8 +78,6 @@ public class ErrorHandlerTest {
         when(request.getAttribute("javax.servlet.error.status_code")).thenReturn(Integer.valueOf(405));
         when(request.getRequestDispatcher(GENERIC_ERR_PAGE)).thenReturn(reqDisp);
         
-        // create instance to test the method
-        ErrorHandler errorHanlder = new ErrorHandler();
         errorHanlder.doGet(request, response);
         
         verify(reqDisp, atLeastOnce()).forward(request, response);

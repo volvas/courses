@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 /**
- * Test suite for JspFilter class.
+ * Contains unit-tests to check functionality of {@link JspFilter} class.
  * Due to the tested method is void, only call of other methods
  * inside this method is checked
  * 
@@ -30,13 +30,13 @@ public class JspFilterTest {
     
     // dependencies to be mocked
     @Mock
-    HttpServletRequest request;
+    private HttpServletRequest request;
     
     @Mock
-    HttpServletResponse response;
+    private HttpServletResponse response;
     
     @Mock
-    FilterChain chain;
+    private FilterChain chain;
     
     
     // prepare dependencies
