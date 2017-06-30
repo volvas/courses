@@ -1,4 +1,4 @@
-package com.devproserv.courses.controller;
+package com.devproserv.courses.util;
 
 import static org.junit.Assert.assertEquals;
 
