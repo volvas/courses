@@ -20,6 +20,14 @@ public class MainConfig {
     public static final String STUDENT_PAGE = "/courses.jsp";
     public static final String LECTURER_PAGE = "/students.jsp";
     
+    /** Command names */
+    public static final String COMMAND_SIGNUP = "signup";
+    public static final String COMMAND_LOGIN = "login";
+    public static final String COMMAND_LOGOUT = "logout";
+    public static final String COMMAND_SUBSCRIBE = "subscribe";
+    public static final String COMMAND_UNSUBSCRIBE = "unsubscribe";
+    
+    
     /** SQL statements that are used for CRUD operations */
     // users
     public final static String SELECT_USER_SQL = "SELECT * FROM users WHERE login=? AND password=?;";
