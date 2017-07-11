@@ -7,7 +7,6 @@ package com.devproserv.courses.util;
  */
 public class Validation {
     
-    
     /**
      * Checks if login and password correspond to valid values (not null, not empty,
      * name should contain only letters and digits and do not start with a digit
@@ -24,7 +23,7 @@ public class Validation {
             return "Username and password should not be empty!";
         }
         
-        if (login.equals("") || password.equals("")) {
+        if (login.isEmpty() || password.isEmpty()) {
             return "Username and password should not be empty!";
         }
         
@@ -36,8 +35,39 @@ public class Validation {
             return "Username should contain only letters and digits!";
         }
         
-        
         return result;
     }
 
+    /**
+     * Overloaded method that checks fields during signing up.
+     * Login and and password are validated as above.
+     * Another fields should be not empty
+     * 
+     * @param login
+     * @param password
+     * @return string containing "ok" if credentials are valid or fault type
+     */
+    public static String checkCredentials(String login, String password,
+            String firstName, String lastName, String faculty) {
+        
+        String result = "ok";
+        
+        // checks field of login and password
+        result = checkCredentials(login, password);
+        
+        // checks remaining fields
+        if (firstName == null || firstName.isEmpty()) {
+            return "First name should not be empty!";
+        }
+        
+        if (lastName == null || lastName.isEmpty()) {
+            return "Last name should not be empty!";
+        }
+        
+        if (faculty == null || faculty.isEmpty()) {
+            return "Faculty should not be empty!";
+        }
+
+        return result;
+    }
 }

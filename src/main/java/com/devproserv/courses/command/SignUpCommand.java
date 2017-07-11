@@ -5,6 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import com.devproserv.courses.dao.DaoFactory;
 import com.devproserv.courses.dao.Student;
 import com.devproserv.courses.dao.UserDao;
+import com.devproserv.courses.util.Validation;
+
+import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
+import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
 
 /**
  * {@code SignUpCommand} gets data about the new user from the HTTP request,
@@ -35,7 +39,14 @@ public class SignUpCommand implements Command {
         String lastName = request.getParameter("lastname");
         String faculty = request.getParameter("faculty");
         
-        // TODO check valid values
+        /* checks if input fields are valid */
+        String validResponse = Validation.checkCredentials(login, password, firstName, lastName, faculty);
+
+        if (!validResponse.equals("ok")) {
+            request.setAttribute("message", validResponse);
+            return SIGNUP_PAGE;
+        }
+        
 
         /* gets the link to the DaoFactory and UserDao */
         DaoFactory daoFactory = DaoFactory.getInstance();
@@ -48,7 +59,7 @@ public class SignUpCommand implements Command {
         /* checks if the user (field 'login') exists and if yes returns back to the registration
          * page, if no inserts new user into database and proceeds to the login page*/
         if (users.loginExists(user)) {
-            return "/signup.jsp";
+            return SIGNUP_PAGE;
         } else {
             user.setPassword(password);
             user.setFirstName(firstName);
@@ -57,9 +68,9 @@ public class SignUpCommand implements Command {
             user.setFaculty(faculty);
             
             if (users.insertStudent(user)) {
-                return "/login.jsp";
+                return LOGIN_PAGE;
             } else {
-                return "/signup.jsp";
+                return SIGNUP_PAGE;
             }
         }
     }
