@@ -6,7 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.devproserv.courses.util.Validation;
-import com.devproserv.courses.dao.*;
+import com.devproserv.courses.controller.AppContext;
+import com.devproserv.courses.dao.Course;
+import com.devproserv.courses.dao.CourseDao;
+import com.devproserv.courses.dao.Student;
+import com.devproserv.courses.dao.User;
+import com.devproserv.courses.dao.UserDao;
 
 /**
  * {@code LoginCommand} handles access for the existing user. After user input valid
@@ -19,6 +24,15 @@ import com.devproserv.courses.dao.*;
  * 
  */
 public class LoginCommand implements Command {
+    
+    /** Injection of the main app manager */
+    private AppContext appContext;
+
+
+    public LoginCommand(AppContext appContext) {
+        this.appContext = appContext;
+    }
+    
     /**
      * Validates user name and password, checks if credentials exist in database
      *
@@ -40,9 +54,8 @@ public class LoginCommand implements Command {
             return "/login.jsp";
         }
 
-        /* gets the link to the DaoFactory and UserDao */
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        UserDao users = daoFactory.getUserDao();
+        /* gets the link to the and UserDao */
+        UserDao users = appContext.getUserDao();
         
         /* creates a new user instance and sets the fields received from the user form via HTTP request */
         User user = new User();
@@ -60,7 +73,7 @@ public class LoginCommand implements Command {
         
         if (user.isRoleStudent()) {
             /* gets the link to the CourseDao */
-            CourseDao courses = daoFactory.getCourseDao();
+            CourseDao courses = appContext.getCourseDao();
             
             /* gets the link to the current session or creates new one */
             HttpSession session = request.getSession();

@@ -2,7 +2,7 @@ package com.devproserv.courses.command;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.devproserv.courses.dao.DaoFactory;
+import com.devproserv.courses.controller.AppContext;
 import com.devproserv.courses.dao.Student;
 import com.devproserv.courses.dao.UserDao;
 import com.devproserv.courses.util.Validation;
@@ -20,6 +20,15 @@ import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
  * @see UserDao
  */
 public class SignUpCommand implements Command {
+
+    /** Injection of the main app manager */
+    private AppContext appContext;
+
+
+    public SignUpCommand(AppContext appContext) {
+        this.appContext = appContext;
+    }
+
     /**
      * Gets data about the new user (student) from the HTTP request,
      * creates an instance of the {@code Student}, writes the fields of the object and
@@ -47,10 +56,8 @@ public class SignUpCommand implements Command {
             return SIGNUP_PAGE;
         }
         
-
-        /* gets the link to the DaoFactory and UserDao */
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        UserDao users = daoFactory.getUserDao();
+        /* gets the link to UserDao */
+        UserDao users = appContext.getUserDao();
 
         /* creates the new instance of the User and fills in fields */
         Student user = new Student();
@@ -59,6 +66,7 @@ public class SignUpCommand implements Command {
         /* checks if the user (field 'login') exists and if yes returns back to the registration
          * page, if no inserts new user into database and proceeds to the login page*/
         if (users.loginExists(user)) {
+            request.setAttribute("message", "User allready exists!");
             return SIGNUP_PAGE;
         } else {
             user.setPassword(password);

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.devproserv.courses.command.Command;
-import com.devproserv.courses.command.CommandFactory;
 
 import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
 

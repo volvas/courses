@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.devproserv.courses.controller.AppContext;
 import com.devproserv.courses.dao.*;
 
 /**
@@ -17,6 +18,15 @@ import com.devproserv.courses.dao.*;
  * @see CourseDao
  */
 public class SubscribeCommand implements Command {
+    
+    /** Injection of the main app manager */
+    private AppContext appContext;
+
+
+    public SubscribeCommand(AppContext appContext) {
+        this.appContext = appContext;
+    }
+    
     /**
      * Retrieves the number of the selected course, checks if the choice is valid,
      * makes changes in the database and returns the same page but with changed tables
@@ -48,9 +58,8 @@ public class SubscribeCommand implements Command {
 	if (user == null) 
 	    return "/login.html";
 	
-	/* get links to the factories to handle request in the database*/
-	DaoFactory daoFactory = DaoFactory.getInstance();
-	CourseDao courses = daoFactory.getCourseDao();
+	/* get links to CourseDao to handle request in the database*/
+	CourseDao courses = appContext.getCourseDao();
 	
 	/* creates new instance of the course (the field 'id' is enough) */
 	Course course = new Course();
