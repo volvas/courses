@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.Course;
 
 import javax.sql.DataSource;
 

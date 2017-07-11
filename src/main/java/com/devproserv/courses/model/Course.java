@@ -1,4 +1,4 @@
-package com.devproserv.courses.dao;
+package com.devproserv.courses.model;
 
 /**
  * Represents the entity of the Course. Maps the table 'courses' in the database. 

@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.sql.DataSource;
 
-import com.devproserv.courses.dao.User.Role;
+import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.User.Role;
 
 /**
  * Provides CRUD methods for communication between application and database.

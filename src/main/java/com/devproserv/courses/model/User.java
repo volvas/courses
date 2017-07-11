@@ -1,4 +1,4 @@
-package com.devproserv.courses.dao;
+package com.devproserv.courses.model;
 
 /**
  * Represents a common entity of user. Maps the table 'users' in the database.
@@ -8,7 +8,7 @@ package com.devproserv.courses.dao;
  */
 public class User {
     
-    enum Role {
+    public enum Role {
         STUD, LECT, ADMIN
     }
 

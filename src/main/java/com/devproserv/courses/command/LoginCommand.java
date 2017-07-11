@@ -7,11 +7,11 @@ import javax.servlet.http.HttpSession;
 
 import com.devproserv.courses.util.Validation;
 import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.dao.Course;
-import com.devproserv.courses.dao.CourseDao;
-import com.devproserv.courses.dao.Student;
-import com.devproserv.courses.dao.User;
+import com.devproserv.courses.model.Course;
+import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
 import com.devproserv.courses.dao.UserDao;
+import com.devproserv.courses.dao.CourseDao;
 
 /**
  * {@code LoginCommand} handles access for the existing user. After user input valid

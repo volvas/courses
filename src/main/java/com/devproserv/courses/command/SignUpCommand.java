@@ -3,7 +3,7 @@ package com.devproserv.courses.command;
 import javax.servlet.http.HttpServletRequest;
 
 import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.dao.Student;
+import com.devproserv.courses.model.Student;
 import com.devproserv.courses.dao.UserDao;
 import com.devproserv.courses.util.Validation;
 
