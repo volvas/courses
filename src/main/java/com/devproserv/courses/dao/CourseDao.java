@@ -9,7 +9,10 @@ import java.util.List;
 import com.devproserv.courses.model.User;
 import com.devproserv.courses.model.Course;
 
-import javax.sql.DataSource;
+import static com.devproserv.courses.config.MainConfig.SELECT_SUBSCR_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.SELECT_AVAIL_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_USER_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.DELETE_USER_COURSES_SQL;
 
 /**
  * Provides methods for communication between application and the database and manipulates
@@ -21,26 +24,11 @@ import javax.sql.DataSource;
  */
 public class CourseDao {
     
-    /* link to the connection (interface) to the database */
-    DataSource datasrc;
+    /** link to the connection to the database */
+    Connection connection;
     
-    /* Predefined SQL statements that are used for execution requests in the database, table 'courses' */
-    final static String SELECT_SUBSCR_COURSES_SQL = "SELECT * FROM courses WHERE courses.course_id IN ("
-            + "SELECT student_courses.course_id FROM student_courses, users "
-            + "WHERE student_courses.stud_id = users.user_id AND users.login = ?);";
-    
-    final static String SELECT_AVAIL_COURSES_SQL = "SELECT * FROM courses WHERE course_id NOT IN ("
-            + "SELECT course_id FROM student_courses WHERE stud_id IN ("
-            + "SELECT user_id FROM users WHERE login = ?));";
-    
-    final static String INSERT_USER_COURSES_SQL = "INSERT INTO student_courses "
-            + "(course_id, student_id, state) VALUES(?, (SELECT students.student_id "
-            + "FROM students WHERE login = ?), 'STARTED');";
-    
-    final static String DELETE_USER_COURSES_SQL = "DELETE FROM student_courses WHERE course_id = ? AND student_id = ?;";
-    
-    public CourseDao(DataSource datasrc) {
-        this.datasrc = datasrc;
+    public CourseDao(Connection connection) {
+        this.connection = connection;
     }
 
     /**
@@ -55,10 +43,8 @@ public class CourseDao {
         List<Course> availCourses = new ArrayList<Course>();
 
         try (
-            /* gets connection to the database from Connection pool */
             /* prepares SQL statement with parameter */
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(SELECT_AVAIL_COURSES_SQL);
+            PreparedStatement prepStmt = connection.prepareStatement(SELECT_AVAIL_COURSES_SQL);
         ) {
             prepStmt.setString(1, user.getLogin());
             
@@ -93,10 +79,8 @@ public class CourseDao {
         List<Course> subscrCourses = new ArrayList<Course>();
 
         try (
-            /* gets connection to the database from Connection pool */
             /* prepares SQL statement with parameter */
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
+            PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
         ) {
             prepStmt.setString(1, user.getLogin());
 
@@ -129,10 +113,8 @@ public class CourseDao {
      */
     public void insertUserCourse(User user, Course course) {
         try (
-            /* gets connection to the database from Connection pool */
             /* prepares SQL statement with parameter */
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
+            PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
         ) {
             prepStmt.setInt(1, course.getId());
             prepStmt.setString(2, user.getLogin());
@@ -152,10 +134,8 @@ public class CourseDao {
      */
     public void deleteUserCourse(User user, Course course) {
         try (
-            /* gets connection to the database from Connection pool */
             /* prepares SQL statement with parameter */
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
+            PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
         ) {;
             prepStmt.setInt(1, course.getId());
             prepStmt.setInt(2, user.getId());

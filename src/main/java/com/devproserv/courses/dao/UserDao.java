@@ -5,11 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.sql.DataSource;
 
 import com.devproserv.courses.model.Student;
 import com.devproserv.courses.model.User;
 import com.devproserv.courses.model.User.Role;
+
+import static com.devproserv.courses.config.MainConfig.SELECT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
+import static com.devproserv.courses.config.MainConfig.GET_USER_FIELDS_SQL;
 
 /**
  * Provides CRUD methods for communication between application and database.
@@ -20,23 +25,11 @@ import com.devproserv.courses.model.User.Role;
  * @see DaoFactory
  */
 public class UserDao {
-    /* link to the connection (interface) to the database */
-    DataSource datasrc;
+    /** link to the connection to the database */
+    Connection connection;
     
-    /* Predefined SQL statements that are used for execution requests in the database */
-    final static String      SELECT_USER_SQL = "SELECT * FROM users WHERE login=? AND password=?;";
-    final static String     SELECT_LOGIN_SQL = "SELECT * FROM users WHERE login=?;";
-    final static String      INSERT_USER_SQL = "INSERT INTO users "
-                        + "(firstname, lastname, login, password, role) "
-                        + "VALUES(?, ?, ?, ?, ?);";
-    final static String   INSERT_STUDENT_SQL = "INSERT INTO students "
-                        + "(stud_id, faculty) "
-                        + "VALUES(?, ?);";
-    final static String  GET_USER_FIELDS_SQL = "SELECT user_id, firstname, lastname, faculty FROM users "
-                        + "JOIN students ON users.user_id = students.stud_id WHERE login = ?;";
-    
-    public UserDao(DataSource datasrc) {
-        this.datasrc = datasrc;
+    public UserDao(Connection connection) {
+        this.connection = connection;
     }
     
     /**
@@ -48,8 +41,7 @@ public class UserDao {
     public boolean userExists(User user) {
         /* gets connection from Connection pool and prepares SQL statement */
         try (
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(SELECT_USER_SQL)
+            PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
             prepStmt.setString(1, user.getLogin());
             prepStmt.setString(2, user.getPassword());
@@ -73,8 +65,7 @@ public class UserDao {
     public void getUserRole(User user) {
         /* gets connection from Connection pool and prepares SQL statement */
         try (
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(SELECT_USER_SQL)
+            PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
             prepStmt.setString(1, user.getLogin());
             prepStmt.setString(2, user.getPassword());
@@ -99,8 +90,7 @@ public class UserDao {
     public boolean loginExists(User user) {
         /* gets connection from Connection pool and prepares SQL statement */
         try (
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(SELECT_LOGIN_SQL)
+            PreparedStatement prepStmt = connection.prepareStatement(SELECT_LOGIN_SQL)
         ) {
             prepStmt.setString(1, user.getLogin());
 
@@ -123,9 +113,8 @@ public class UserDao {
     public boolean insertStudent(Student user) {
         /* gets connection from Connection pool and prepares SQL statement */
         try (
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmtOne = con.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement prepStmtTwo = con.prepareStatement(INSERT_STUDENT_SQL)
+            PreparedStatement prepStmtOne = connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement prepStmtTwo = connection.prepareStatement(INSERT_STUDENT_SQL)
         ) {
             /* inserts data into the table 'users' */
             prepStmtOne.setString(1, user.getFirstName());
@@ -158,8 +147,7 @@ public class UserDao {
     public void appendRestUserFields(Student student) {
         /* gets connection from Connection pool and prepares SQL statement */
         try (
-            Connection con = datasrc.getConnection();
-            PreparedStatement prepStmt = con.prepareStatement(GET_USER_FIELDS_SQL)
+            PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FIELDS_SQL)
         ) {
             prepStmt.setString(1, student.getLogin());
 

@@ -6,6 +6,8 @@ import static com.devproserv.courses.config.MainConfig.COMMAND_LOGOUT;
 import static com.devproserv.courses.config.MainConfig.COMMAND_SUBSCRIBE;
 import static com.devproserv.courses.config.MainConfig.COMMAND_UNSUBSCRIBE;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +34,8 @@ public class AppContext {
     /** represents one instance of the Application Context (Singleton) */
     private static AppContext appContext = new AppContext();
 
-    /** stores the link to the common data source */
-    DataSource datasrc;
+    /** stores the link to the connection pool */
+    Connection connection;
     /** stores all commands */
     private Map<String, Command> commandMap = new HashMap<>();
 
@@ -59,8 +61,11 @@ public class AppContext {
         // gets link to database from servlet context
         try {
             InitialContext initContext = new InitialContext();
-            datasrc = (DataSource) initContext.lookup("java:comp/env/jdbc/coursedb");
+            DataSource datasrc = (DataSource) initContext.lookup("java:comp/env/jdbc/coursedb");
+            connection = datasrc.getConnection();
         } catch (NamingException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -82,7 +87,7 @@ public class AppContext {
      * @return link to the instance of UserDao
      */
     public UserDao getUserDao() {
-        return new UserDao(datasrc);
+        return new UserDao(connection);
     }
 
     /**
@@ -91,6 +96,6 @@ public class AppContext {
      * @return link to the instance of CourseDao
      */
     public CourseDao getCourseDao() {
-        return new CourseDao(datasrc);
+        return new CourseDao(connection);
     }
 }
