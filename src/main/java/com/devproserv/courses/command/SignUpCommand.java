@@ -3,7 +3,7 @@ package com.devproserv.courses.command;
 import javax.servlet.http.HttpServletRequest;
 
 import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
 import com.devproserv.courses.dao.UserDao;
 import com.devproserv.courses.util.Validation;
 
@@ -11,12 +11,10 @@ import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
 import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
 
 /**
- * {@code SignUpCommand} gets data about the new user from the HTTP request,
- * creates an instance of the {@code User}, writes the fields of the object and
- * sends it to the database via {@code UserDao}
+ * {@code SignUpCommand} creates a new user using data from the HTTP request,
+ * and stores the data in the database
  * 
  * @author vovas11
- * @see DaoFactory
  * @see UserDao
  */
 public class SignUpCommand implements Command {
@@ -31,12 +29,11 @@ public class SignUpCommand implements Command {
 
     /**
      * Gets data about the new user (student) from the HTTP request,
-     * creates an instance of the {@code Student}, writes the fields of the object and
-     * sends it to the DB via {@code UserDao}. Returns the name of the registration page
-     * if the user exists or the name of the login page if the user have been successfully registered.
+     * checks if data are valid, and send the instance to store in the database.
      * 
      * @param request HTTP request
-     * @return the the name of the page the server returns to the client
+     * @return login page name if the user has been created successfully
+     * or the same sign up page name in case of wrong data
      */
     @Override
     public String executeCommand(HttpServletRequest request) {
@@ -56,30 +53,20 @@ public class SignUpCommand implements Command {
             return SIGNUP_PAGE;
         }
         
-        /* gets the link to UserDao */
+        /* creates a new instance with {@code UserDao} */
         UserDao users = appContext.getUserDao();
+        User user = users.getUser(login, password, firstName, lastName, faculty);
 
-        /* creates the new instance of the User and fills in fields */
-        Student user = new Student();
-        user.setLogin(login);
-        
-        /* checks if the user (field 'login') exists and if yes returns back to the registration
+        /* checks if the user (field 'login') exists and if yes returns back to the sign up
          * page, if no inserts new user into database and proceeds to the login page*/
         if (users.loginExists(user)) {
             request.setAttribute("message", "User allready exists!");
             return SIGNUP_PAGE;
+        } else if (users.insertUser(user)) {
+            return LOGIN_PAGE;
         } else {
-            user.setPassword(password);
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setStudentRole();
-            user.setFaculty(faculty);
-            
-            if (users.insertStudent(user)) {
-                return LOGIN_PAGE;
-            } else {
-                return SIGNUP_PAGE;
-            }
+            request.setAttribute("message", "User has not been created. Try again.");
+            return SIGNUP_PAGE;
         }
     }
 }
