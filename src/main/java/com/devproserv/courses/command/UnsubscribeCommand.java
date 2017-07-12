@@ -6,14 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.dao.*;
+import com.devproserv.courses.dao.CourseDao;
+import com.devproserv.courses.model.Course;
+import com.devproserv.courses.model.User;
 
 /**
  * {@code CourseSelectCommand} handles the choice of the user that is subscribed to 
  * desired courses.
  * 
  * @author vovas11
- * @see DaoFactory
  * @see UserDao
  * @see CourseDao
  */
