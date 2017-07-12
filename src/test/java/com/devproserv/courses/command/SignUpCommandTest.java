@@ -9,7 +9,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.devproserv.courses.controller.AppContext;
 import com.devproserv.courses.dao.UserDao;
-import com.devproserv.courses.model.User;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,9 +35,6 @@ public class SignUpCommandTest {
     private HttpServletRequest request;
     @Mock
     private UserDao userDao;
-    @Mock
-    private User user;
-    
     
     private SignUpCommand signupCommand;
     
@@ -47,23 +43,26 @@ public class SignUpCommandTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         signupCommand = new SignUpCommand(appContext);
-        
+        // mocks methods of HttpServletRequest
         when(request.getParameter("login")).thenReturn("Login");
         when(request.getParameter("password")).thenReturn("Password");
         when(request.getParameter("firstname")).thenReturn("FirstName");
         when(request.getParameter("lastname")).thenReturn("LastName");
         when(request.getParameter("faculty")).thenReturn("Faculty");
         doNothing().when(request).setAttribute(eq("message"), anyString());
-        
+        // mocks methods of AppContext
         when(appContext.getUserDao()).thenReturn(userDao);
-        
-        when(userDao.getUser("Login", "Password", "FirstName", "LastName", "Faculty")).thenReturn(user);
+        // mocks methods of UserDao
+        when(userDao.loginExists("Login")).thenReturn(Boolean.valueOf(false));
+        when(userDao.createUser("Login", "Password", "FirstName", "LastName", "Faculty"))
+                .thenReturn(Boolean.valueOf(true));
     }
     
     @Test
     public void testExecuteCommandOk() {
-        when(userDao.loginExists(user)).thenReturn(Boolean.valueOf(false));
-        when(userDao.insertUser(user)).thenReturn(Boolean.valueOf(true));
+        when(userDao.loginExists("Login")).thenReturn(Boolean.valueOf(false));
+        when(userDao.createUser("Login", "Password", "FirstName", "LastName", "Faculty"))
+                .thenReturn(Boolean.valueOf(true));
         
         String page = signupCommand.executeCommand(request);
         assertEquals("Should be equal to " + LOGIN_PAGE, LOGIN_PAGE, page);
@@ -71,8 +70,9 @@ public class SignUpCommandTest {
     
     @Test
     public void testExecuteCommandUserExists() {
-        when(userDao.loginExists(user)).thenReturn(Boolean.valueOf(true));
-        when(userDao.insertUser(user)).thenReturn(Boolean.valueOf(true));
+        when(userDao.loginExists("Login")).thenReturn(Boolean.valueOf(true));
+        when(userDao.createUser("Login", "Password", "FirstName", "LastName", "Faculty"))
+                .thenReturn(Boolean.valueOf(true));
         
         String page = signupCommand.executeCommand(request);
         assertEquals("Should be equal to " + SIGNUP_PAGE, SIGNUP_PAGE, page);
@@ -80,8 +80,9 @@ public class SignUpCommandTest {
     
     @Test
     public void testExecuteCommandDBTroubles() {
-        when(userDao.loginExists(user)).thenReturn(Boolean.valueOf(false));
-        when(userDao.insertUser(user)).thenReturn(Boolean.valueOf(false));
+        when(userDao.loginExists("Login")).thenReturn(Boolean.valueOf(false));
+        when(userDao.createUser("Login", "Password", "FirstName", "LastName", "Faculty"))
+                .thenReturn(Boolean.valueOf(false));
         
         String page = signupCommand.executeCommand(request);
         assertEquals("Should be equal to " + SIGNUP_PAGE, SIGNUP_PAGE, page);
@@ -90,10 +91,9 @@ public class SignUpCommandTest {
     @Test
     public void testExecuteCommandWrongParameters() {
         when(request.getParameter("login")).thenReturn("");
-        when(userDao.getUser("", "Password", "FirstName", "LastName", "Faculty")).thenReturn(user);
-        
-        when(userDao.loginExists(user)).thenReturn(Boolean.valueOf(false));
-        when(userDao.insertUser(user)).thenReturn(Boolean.valueOf(true));
+        when(userDao.loginExists("Login")).thenReturn(Boolean.valueOf(false));
+        when(userDao.createUser("", "Password", "FirstName", "LastName", "Faculty"))
+                .thenReturn(Boolean.valueOf(true));
         
         String page = signupCommand.executeCommand(request);
         assertEquals("Should be equal to " + SIGNUP_PAGE, SIGNUP_PAGE, page);

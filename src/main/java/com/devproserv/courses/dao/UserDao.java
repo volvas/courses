@@ -32,7 +32,42 @@ public class UserDao {
     }
     
     /**
-     * Creates new instance of {@link Student} with given parameters
+     * Creates new instance of {@link Student} with given parameters.
+     * Is used during login procedure (stage 1)
+     * 
+     * @param login argument representing login
+     * @param password argument representing password
+     * 
+     * @return new instance of {@link Student}
+     */
+    public User getUser(String login, String password) {
+        User user = new User();
+        user.setLogin(login);
+        user.setPassword(password);
+        return user;
+    }
+    
+    /**
+     * Creates new instance of {@link Student} with given parameters.
+     * Is used during login procedure (stage 2)
+     * 
+     * @param login argument representing login
+     * @param password argument representing password
+     * 
+     * @return new instance of {@link Student}
+     */
+    public User getUser(String login, String password, Role role) {
+        Student student = new Student();
+        student.setLogin(login);
+        student.setPassword(password);
+        student.setRole(role);
+        return student;
+    }
+    
+    /**
+     * Creates new instance of {@link Student} with given parameters,
+     * checks if the user with specified login exists in the database, and if no
+     * inserts the user into the database (tables 'users' and 'students')
      * 
      * @param login argument representing login
      * @param password argument representing password
@@ -40,9 +75,9 @@ public class UserDao {
      * @param lastName argument representing last name
      * @param faculty argument representing faculty
      * 
-     * @return new instance of {@link Student}
+     * @return {@code true} if the user has been created successfully and {@code false} if is not
      */
-    public User getUser(String login, String password, String firstName, String lastName, String faculty) {
+    public boolean createUser(String login, String password, String firstName, String lastName, String faculty) {
         Student student = new Student();
         student.setLogin(login);
         student.setPassword(password);
@@ -50,23 +85,22 @@ public class UserDao {
         student.setLastName(lastName);
         student.setStudentRole();
         student.setFaculty(faculty);
-        return student;
+        
+        return insertUser(student) ? true : false;
     }
 
     /**
-     * Checks if the user with specified login exists in the database.
+     * Checks if the specified login exists in the database.
      * 
-     * @param   user   the current user
+     * @param   String   login (user name)
      * @return {@code true} if the user exists and {@code false} if does not
      */
-    public boolean loginExists(User user) {
+    public boolean loginExists(String login) {
         /* prepares SQL statement */
         try (PreparedStatement prepStmt = connection.prepareStatement(SELECT_LOGIN_SQL)) {
-            prepStmt.setString(1, user.getLogin());
-
+            prepStmt.setString(1, login);
             /* executes the query and receives the result table */
             ResultSet result = prepStmt.executeQuery();
-
             /* returns true if result is not empty */
             return result.next();
         } catch (SQLException e) {
@@ -79,12 +113,13 @@ public class UserDao {
      * Executes request into the database (tables 'users' and 'students') to insert the current user.
      * 
      * @param   user   the current user
+     * @return {@code true} if the user has been created successfully and {@code false} if is not
      */
-    public boolean insertUser(User user) {
+    private boolean insertUser(User user) {
         Student student;
         if (user instanceof Student) {
             student = (Student) user;
-            /* gets connection from Connection pool and prepares SQL statement */
+            /* prepares SQL statement */
             try (
                 PreparedStatement prepStmtOne = connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
                 PreparedStatement prepStmtTwo = connection.prepareStatement(INSERT_STUDENT_SQL)
@@ -111,7 +146,6 @@ public class UserDao {
                 e.printStackTrace();
             }
         }
-        
         return false;
     }
     
@@ -122,7 +156,7 @@ public class UserDao {
      * @return {@code true} if the user exists
      */
     public boolean userExists(User user) {
-        /* gets connection from Connection pool and prepares SQL statement */
+        /* prepares SQL statement */
         try (
             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
@@ -146,16 +180,14 @@ public class UserDao {
      * @return {@code true} if the user exists
      */
     public void getUserRole(User user) {
-        /* gets connection from Connection pool and prepares SQL statement */
+        /* prepares SQL statement */
         try (
             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
             prepStmt.setString(1, user.getLogin());
             prepStmt.setString(2, user.getPassword());
-
             /* executes the query and receives the result table */
             ResultSet result = prepStmt.executeQuery();
-
             if (result.next()) {
                 user.setRole(Role.valueOf(result.getString(6)));
             }
@@ -169,7 +201,7 @@ public class UserDao {
      * @param   student   the current user
      */
     public void appendRestUserFields(Student student) {
-        /* gets connection from Connection pool and prepares SQL statement */
+        /* prepares SQL statement */
         try (
             PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FIELDS_SQL)
         ) {

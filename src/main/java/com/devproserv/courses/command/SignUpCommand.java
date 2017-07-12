@@ -3,7 +3,6 @@ package com.devproserv.courses.command;
 import javax.servlet.http.HttpServletRequest;
 
 import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.model.User;
 import com.devproserv.courses.dao.UserDao;
 import com.devproserv.courses.util.Validation;
 
@@ -53,16 +52,13 @@ public class SignUpCommand implements Command {
             return SIGNUP_PAGE;
         }
         
-        /* creates a new instance with {@code UserDao} */
-        UserDao users = appContext.getUserDao();
-        User user = users.getUser(login, password, firstName, lastName, faculty);
-
-        /* checks if the user (field 'login') exists and if yes returns back to the sign up
+        UserDao userDao = appContext.getUserDao();
+        /* checks if login exists and if yes returns back to the sign up
          * page, if no inserts new user into database and proceeds to the login page*/
-        if (users.loginExists(user)) {
+        if (userDao.loginExists(login)) {
             request.setAttribute("message", "User allready exists!");
             return SIGNUP_PAGE;
-        } else if (users.insertUser(user)) {
+        } else if (userDao.createUser(login, password, firstName, lastName, faculty)) {
             return LOGIN_PAGE;
         } else {
             request.setAttribute("message", "User has not been created. Try again.");
