@@ -56,7 +56,7 @@ public class SignUpCommand implements Command {
         /* checks if login exists and if yes returns back to the sign up
          * page, if no inserts new user into database and proceeds to the login page*/
         if (userDao.loginExists(login)) {
-            request.setAttribute("message", "User allready exists!");
+            request.setAttribute("message", "User already exists!");
             return SIGNUP_PAGE;
         } else if (userDao.createUser(login, password, firstName, lastName, faculty)) {
             return LOGIN_PAGE;
