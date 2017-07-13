@@ -59,20 +59,7 @@ public class User {
     public Role getRole() {
         return role;
     }
-    
-    public boolean isRoleStudent() {
-        return this.role.equals(Role.STUD);
-    }
-    
-    public boolean isRoleLecturer() {
-        return this.role.equals(Role.STUD);
-    }
-    
     public void setRole(Role role) {
         this.role = role;
-    }
-    
-    public void setStudentRole() {
-        this.role = Role.STUD;
     }
 }

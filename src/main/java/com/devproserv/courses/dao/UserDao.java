@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.devproserv.courses.model.Administrator;
+import com.devproserv.courses.model.Lecturer;
 import com.devproserv.courses.model.Student;
 import com.devproserv.courses.model.User;
 import com.devproserv.courses.model.User.Role;
@@ -26,68 +28,12 @@ import static com.devproserv.courses.config.MainConfig.GET_USER_FIELDS_SQL;
 public class UserDao {
     /** link to the connection to the database */
     Connection connection;
-    
+
     public UserDao(Connection connection) {
         this.connection = connection;
     }
-    
-    /**
-     * Creates new instance of {@link Student} with given parameters.
-     * Is used during login procedure (stage 1)
-     * 
-     * @param login argument representing login
-     * @param password argument representing password
-     * 
-     * @return new instance of {@link Student}
-     */
-    public User getUser(String login, String password) {
-        User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
-        return user;
-    }
-    
-    /**
-     * Creates new instance of {@link Student} with given parameters.
-     * Is used during login procedure (stage 2)
-     * 
-     * @param login argument representing login
-     * @param password argument representing password
-     * 
-     * @return new instance of {@link Student}
-     */
-    public User getUser(String login, String password, Role role) {
-        Student student = new Student();
-        student.setLogin(login);
-        student.setPassword(password);
-        student.setRole(role);
-        return student;
-    }
-    
-    /**
-     * Creates new instance of {@link Student} with given parameters,
-     * checks if the user with specified login exists in the database, and if no
-     * inserts the user into the database (tables 'users' and 'students')
-     * 
-     * @param login argument representing login
-     * @param password argument representing password
-     * @param firstName argument representing first name
-     * @param lastName argument representing last name
-     * @param faculty argument representing faculty
-     * 
-     * @return {@code true} if the user has been created successfully and {@code false} if is not
-     */
-    public boolean createUser(String login, String password, String firstName, String lastName, String faculty) {
-        Student student = new Student();
-        student.setLogin(login);
-        student.setPassword(password);
-        student.setFirstName(firstName);
-        student.setLastName(lastName);
-        student.setStudentRole();
-        student.setFaculty(faculty);
-        
-        return insertUser(student) ? true : false;
-    }
+
+    // Signing up methods
 
     /**
      * Checks if the specified login exists in the database.
@@ -107,6 +53,31 @@ public class UserDao {
             e.printStackTrace();
         }
         return true; // less changes in the database if something is wrong
+    }
+
+    /**
+     * Creates new instance of {@link Student} with given parameters,
+     * checks if the user with specified login exists in the database, and if no
+     * inserts the user into the database (tables 'users' and 'students')
+     * 
+     * @param login argument representing login
+     * @param password argument representing password
+     * @param firstName argument representing first name
+     * @param lastName argument representing last name
+     * @param faculty argument representing faculty
+     * 
+     * @return {@code true} if the user has been created successfully and {@code false} if is not
+     */
+    public boolean createUser(String login, String password, String firstName, String lastName, String faculty) {
+        Student student = new Student();
+        student.setLogin(login);
+        student.setPassword(password);
+        student.setFirstName(firstName);
+        student.setLastName(lastName);
+        student.setRole(Role.STUD);
+        student.setFaculty(faculty);
+        
+        return insertUser(student) ? true : false;
     }
 
     /**
@@ -148,20 +119,22 @@ public class UserDao {
         }
         return false;
     }
-    
+
+    // Login methods
+
     /**
      * Checks if the user with specified login and password exists in the database.
      * 
      * @param   user   the current user
      * @return {@code true} if the user exists
      */
-    public boolean userExists(User user) {
+    public boolean userExists(String login, String password) {
         /* prepares SQL statement */
         try (
             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
-            prepStmt.setString(1, user.getLogin());
-            prepStmt.setString(2, user.getPassword());
+            prepStmt.setString(1, login);
+            prepStmt.setString(2, password);
             /* executes the query and receives the result table */
             ResultSet result = prepStmt.executeQuery();
             /* returns true if the result query contains at least one row */
@@ -174,42 +147,81 @@ public class UserDao {
     }
 
     /**
+     * Creates new instance of {@link User} with given login and password.
+     * Login and password should match to ones in the database
+     * (the method should be called after {@code userExists} method.
+     * 
+     * @param login argument representing login.
+     * @param password argument representing password
+     * 
+     * @return new instance of Student, Lecturer or Administrator
+     */
+    public User getUser(String login, String password) {
+        User user = null;
+        switch (getUserRole(login, password)) {
+        case STUD:
+            Student student = new Student();
+            student.setLogin(login);
+            student.setPassword(password);
+            student.setRole(Role.STUD);
+            getStudentFields(student);
+            user = student;
+            break;
+        case LECT:
+            Lecturer lecturer = new Lecturer();
+            lecturer.setLogin(login);
+            lecturer.setPassword(password);
+            lecturer.setRole(Role.LECT);
+            user = lecturer;
+            break;
+        case ADMIN:
+            Administrator admin = new Administrator();
+            admin.setLogin(login);
+            admin.setPassword(password);
+            admin.setRole(Role.ADMIN);
+            user = admin;
+            break;
+        }
+        return user;
+    }
+
+    /**
      * Executes query to database to define user role in the system.
      * 
      * @param   user the current user
      * @return {@code true} if the user exists
      */
-    public void getUserRole(User user) {
+    private Role getUserRole(String login, String password) {
+        Role role = Role.STUD;
         /* prepares SQL statement */
         try (
             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
-            prepStmt.setString(1, user.getLogin());
-            prepStmt.setString(2, user.getPassword());
+            prepStmt.setString(1, login);
+            prepStmt.setString(2, password);
             /* executes the query and receives the result table */
             ResultSet result = prepStmt.executeQuery();
             if (result.next()) {
-                user.setRole(Role.valueOf(result.getString(6)));
+                role = Role.valueOf(result.getString(6));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return role;
     }
 
     /**
      * Adds rest of the fields into the object.
      * @param   student   the current user
      */
-    public void appendRestUserFields(Student student) {
+    private void getStudentFields(Student student) {
         /* prepares SQL statement */
         try (
             PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FIELDS_SQL)
         ) {
             prepStmt.setString(1, student.getLogin());
-
             /* executes the query and receives the result table */
             ResultSet result = prepStmt.executeQuery();
-
             /* fills in the instance's fields */
             while (result.next()) {
                 student.setId(result.getInt(1));

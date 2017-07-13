@@ -6,7 +6,7 @@ package com.devproserv.courses.model;
  * @author vovas11
  * @see UserDao
  */
-public class Lecturer {
+public class Lecturer extends User {
 
     // additional fields representing columns in the table 'lecturers'
     private String degree;
