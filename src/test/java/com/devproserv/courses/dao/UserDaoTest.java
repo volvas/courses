@@ -4,13 +4,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +41,13 @@ public class UserDaoTest {
     @Mock
     private PreparedStatement prepStmt;
     @Mock
+    private PreparedStatement prepStmt1;
+    @Mock
+    private PreparedStatement prepStmt2;
+    @Mock
     private ResultSet resultSet;
+    @Mock
+    private ResultSet resultSet1;
     @Mock
     private User user;
     @Mock
@@ -51,9 +62,15 @@ public class UserDaoTest {
         userDao = new UserDao(connection);
         // mocks methods of Connection
         when(connection.prepareStatement(SELECT_LOGIN_SQL)).thenReturn(prepStmt);
+        when(connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS)).thenReturn(prepStmt1);
+        when(connection.prepareStatement(INSERT_STUDENT_SQL)).thenReturn(prepStmt2);
         // mocks methods of PreparedStatement
-        doNothing().when(prepStmt).setString(1, "Login");
+        doNothing().when(prepStmt).setString(anyInt(), anyString());
+        doNothing().when(prepStmt1).setString(anyInt(), anyString());
+        doNothing().when(prepStmt2).setString(anyInt(), anyString());
         when(prepStmt.executeQuery()).thenReturn(resultSet);
+        when(prepStmt1.executeUpdate()).thenReturn(Integer.valueOf(1));
+        when(prepStmt1.getGeneratedKeys()).thenReturn(resultSet1);
     }
     
     @Test
@@ -72,5 +89,15 @@ public class UserDaoTest {
         
         Boolean loginExists = userDao.loginExists("Login");
         assertTrue("Should be false",loginExists);
+    }
+    
+    @Test
+    public void testCreateUserOk() throws SQLException {
+        // mocks methods of ResultSet
+        when(resultSet1.next()).thenReturn(Boolean.valueOf(false));
+        
+        // TODO continue with student.setId(generatedKey.getInt(1));
+        Boolean loginExists = userDao.loginExists("Login");
+        assertFalse("Should be false",loginExists);
     }
 }
