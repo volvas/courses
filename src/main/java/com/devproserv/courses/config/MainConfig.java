@@ -4,7 +4,6 @@ package com.devproserv.courses.config;
 * Service class stores configuration of the application
 * 
 * @author vovas11
-* @see CommandFactory
 */
 public class MainConfig {
     
@@ -55,11 +54,11 @@ public class MainConfig {
     
     public final static String INSERT_USER_COURSES_SQL = 
               "INSERT INTO student_courses "
-            + "(course_id, student_id, state) VALUES(?, (SELECT students.student_id "
-            + "FROM students WHERE login = ?), 'STARTED');";
+            + "(course_id, stud_id, status) VALUES(?, (SELECT users.user_id "
+            + "FROM users WHERE login = ?), 'STARTED');";
     
     public final static String DELETE_USER_COURSES_SQL = 
-            "DELETE FROM student_courses WHERE course_id = ? AND student_id = ?;";
+            "DELETE FROM student_courses WHERE course_id = ? AND stud_id = ?;";
     
     
     // instance is not needed

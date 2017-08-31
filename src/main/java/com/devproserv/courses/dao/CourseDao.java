@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.devproserv.courses.model.User;
 import com.devproserv.courses.model.Course;
 
@@ -23,10 +26,10 @@ import static com.devproserv.courses.config.MainConfig.DELETE_USER_COURSES_SQL;
  * @see DaoFactory
  */
 public class CourseDao {
-    
-    /** link to the connection to the database */
+
     Connection connection;
-    
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     public CourseDao(Connection connection) {
         this.connection = connection;
     }
@@ -62,7 +65,7 @@ public class CourseDao {
                 availCourses.add(course);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Request to database failed", e);
         }
         return availCourses;
     }
@@ -98,7 +101,7 @@ public class CourseDao {
                 subscrCourses.add(course);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Request to database failed", e);
         }
         return subscrCourses;
     }
@@ -113,17 +116,16 @@ public class CourseDao {
      */
     public void insertUserCourse(User user, Course course) {
         try (
-            /* prepares SQL statement with parameter */
-            PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
+            PreparedStatement prepStmt = connection.prepareStatement(INSERT_USER_COURSES_SQL);
         ) {
             prepStmt.setInt(1, course.getId());
             prepStmt.setString(2, user.getLogin());
             prepStmt.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Request to database failed", e);
         }
     }
-    
+
     /**
      * Executes request into the database (table 'student_courses') to insert
      * the current user and course. In other words, the current user subscribes
@@ -135,13 +137,13 @@ public class CourseDao {
     public void deleteUserCourse(User user, Course course) {
         try (
             /* prepares SQL statement with parameter */
-            PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
+            PreparedStatement prepStmt = connection.prepareStatement(DELETE_USER_COURSES_SQL);
         ) {;
             prepStmt.setInt(1, course.getId());
             prepStmt.setInt(2, user.getId());
             prepStmt.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Request to database failed", e);
         }
     }
 }

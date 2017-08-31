@@ -101,4 +101,22 @@ public class ValidationTest {
         String result = Validation.checkCredentials("user", "password", "firstName", "lastName", "");
         assertEquals("Faculty should not be empty!", result);
     }
+
+    @Test
+    public void testCheckIntegerOk() {
+        String result = Validation.checkInteger("32");
+        assertEquals("ok", result);
+    }
+
+    @Test
+    public void testCheckIntegerNotNumber() {
+        String result = Validation.checkInteger("3dh2");
+        assertEquals("Invalid course ID!", result);
+    }
+
+    @Test
+    public void testCheckIntegerEmpty() {
+        String result = Validation.checkInteger("");
+        assertEquals("Invalid course ID!", result);
+    }
 }

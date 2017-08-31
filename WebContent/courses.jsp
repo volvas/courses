@@ -44,25 +44,22 @@
           
           <div class="masthead clearfix">
             <div class="inner">
-              <div class="masthead-brand"></div>
-                <div>
-                           
-                </div>
-                <nav class="navbar">
-                  <ul class="nav">
-                    <div class="row">
-                      <li>
-                        <p class="navbar-text navbar-left">
-                          Signed in as <b>${student.login}</b>, ${student.firstName} ${student.lastName}, ${student.faculty}.
-                        </p>
-                        <form class="navbar-form navbar-right" action="login" method="post">
-                          <button type="submit" class="btn btn-default col-xs-6 col-md-12" name="command" value="logout">Log out</button>
-                        </form>
-                      </li>
-                    </div>
-                  </ul>
-                </nav>
-             
+              <div class="masthead-brand">
+              </div>
+              <div>
+              </div>
+              <nav class="navbar">
+                <ul class="nav row">
+                  <li>
+                    <p class="navbar-text navbar-left">
+                      Signed in as <b>${student.login}</b>, ${student.firstName} ${student.lastName}, ${student.faculty}.
+                    </p>
+                    <form class="navbar-form navbar-right" action="login" method="post">
+                      <button type="submit" class="btn btn-default col-xs-6 col-md-12" name="command" value="logout">Log out</button>
+                    </form>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
           
@@ -93,6 +90,9 @@
 
 
             <form class="form" action="courses" method="post">
+              <div class="row">
+                <p class="wrnmessage">${messageuns}</p>
+              </div>
               <div class="row">
                 <div class="form-group col-xs-4 col-md-3 col-md-offset-3">
                   <input type="text" class="form-control" name="courseunsubscrid"
@@ -131,6 +131,9 @@
             </div>
             
             <form class="form" action="courses" method="post">
+              <div class="row">
+                <p class="wrnmessage">${messagesub}</p>
+              </div>
               <div class="row">
                 <div class="form-group col-xs-4 col-md-3 col-md-offset-3">
                   <input type="text" class="form-control" name="coursesubscrid"
