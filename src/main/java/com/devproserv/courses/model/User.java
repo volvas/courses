@@ -1,56 +1,65 @@
-package com.devproserv.courses.dao;
+package com.devproserv.courses.model;
 
 /**
- * Represents the entity of the User. Maps the table 'students' in the database.
+ * Represents a common entity of user. Maps the table 'users' in the database.
  * 
  * @author vovas11
  * @see UserDao
  */
 public class User {
     
-    /* fields representing columns in the table 'students' */
+    public enum Role {
+        STUD, LECT, ADMIN
+    }
+
+    // fields representing columns in the table 'users'
     private int id;
     private String login;
     private String password;
     private String firstName;
     private String lastName;
-    private String department;
-    
-    /* getters and setters for the private fields */
+    private Role role;
+
+    // getters and setters
     public int getId() {
         return id;
     }
     public void setId(int id) {
         this.id = id;
     }
+    
     public String getLogin() {
         return login;
     }
     public void setLogin(String login) {
         this.login = login;
     }
+    
     public String getPassword() {
         return password;
     }
     public void setPassword(String password) {
         this.password = password;
     }
+    
     public String getFirstName() {
-	return firstName;
+        return firstName;
     }
     public void setFirstName(String firstName) {
-	this.firstName = firstName;
+        this.firstName = firstName;
     }
+    
     public String getLastName() {
-	return lastName;
+        return lastName;
     }
     public void setLastName(String lastName) {
-	this.lastName = lastName;
+        this.lastName = lastName;
     }
-    public String getDepartment() {
-	return department;
+    
+    public Role getRole() {
+        return role;
     }
-    public void setDepartment(String department) {
-	this.department = department;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

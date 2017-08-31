@@ -36,8 +36,7 @@ Database: MySQL Community Server 5.7
 Build tool: Maven 4  
 CI tool: Jenkins  
 IDE: Eclipse  
-  
-**Used libraries:** jsp-api, servlet-api, jstl, mysql-connector-java, junit 4  
+Test tool: JUnit  
   
 The project is developed in Eclipse and hosted on Github. A job in Jenkins detects changes in the code on Github and builds a new version of web package and deploys it on the server.
   
@@ -45,8 +44,6 @@ Disclaimer
 ----------
 The project is used exclusively for training purpose and does not take into account many important factors! For example, passwords in the database are stored in text fields instead of hashes that is completely unacceptable in real systems!  
   
-For the moment (January 2017) the project is not 100% ready and does not meet yet all requirements. 
-
 Documentation
 -------------
 Generated using javadoc tool: [./doc](./doc)

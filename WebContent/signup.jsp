@@ -67,7 +67,7 @@
                       <input type="text" class="form-control" name="lastname" placeholder="Last Name">
                     </div>
                     <div class="form-group col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
-                      <input type="text" class="form-control" name="department" placeholder="Name of Department">
+                      <input type="text" class="form-control" name="faculty" placeholder="Name of Faculty">
                     </div>
                     <div class="form-group col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
                       <input type="text" class="form-control" name="login" placeholder="Username">
