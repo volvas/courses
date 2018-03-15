@@ -2,7 +2,7 @@ Courses for students
 ====================
   
 Project represents the system of managing optional courses for students in a high school. On the web page a student selects one or more course and registers himself to the course. After attendance the lecturer who holds the course sets a mark to the student.  
-The project has been rolled out on server: [http://devproserv.com/courses](http://devproserv.com/courses)  
+The project has been rolled out on server: [https://devproserv.com/courses](https://devproserv.com/courses)
 The project has been created for training purpose and is not to be used in real life.  
   
 Description
