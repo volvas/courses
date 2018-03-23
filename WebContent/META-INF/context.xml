@@ -6,6 +6,7 @@
     auth="Container"
     
     type="javax.sql.DataSource"
+    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
     driverClassName="com.mysql.jdbc.Driver"
     url="jdbc:mysql://devproserv.com/coursedb"
 
@@ -14,7 +15,7 @@
 
     maxActive="20"
     maxIdle="5"
-    maxWait="15"
+    maxWait="10000"
 
     testOnBorrow="true"
     testOnConnect="true"
@@ -22,11 +23,13 @@
     testWhileIdle="true"
 
     validationQuery="SELECT 1"
-    timeBetweenEvictionRunsMillis="21600000"
-    validationInterval="21600000"
+    minEvictableIdleTimeMillis="90000"
+    timeBetweenEvictionRunsMillis="600000"
+    validationInterval="3600000"
 
     removeAbandoned="true"
     removeAbandonedTimeout="3600"
+    logAbandoned="true"
   />
 
 </Context>
