@@ -13,8 +13,9 @@
     username="javauser"
     password="zSxcvb"
 
-    maxActive="20"
-    maxIdle="5"
+    maxActive="30"
+    maxIdle="10"
+    minIdle="5"
     maxWait="10000"
 
     testOnBorrow="true"
@@ -23,11 +24,11 @@
     testWhileIdle="true"
 
     validationQuery="SELECT 1"
-    minEvictableIdleTimeMillis="90000"
-    timeBetweenEvictionRunsMillis="600000"
-    validationInterval="3600000"
+    minEvictableIdleTimeMillis="60000"
+    timeBetweenEvictionRunsMillis="60000"
+    validationInterval="60000"
 
-    removeAbandoned="true"
+    removeAbandoned="false"
     removeAbandonedTimeout="3600"
     logAbandoned="true"
   />
