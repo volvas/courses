@@ -1,30 +1,29 @@
 package com.devproserv.courses.dao;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import com.devproserv.courses.controller.AppContext;
+import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
-
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.model.Student;
-import com.devproserv.courses.model.User;
+import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 /**
  * Contains unit-tests to check functionality of {@link UserDao} class
@@ -36,6 +35,8 @@ public class UserDaoTest {
     // dependencies to be mocked
     @Mock
     private AppContext appContext;
+    @Mock
+    private DataSource dataSource;
     @Mock
     private Connection connection;
     @Mock
@@ -59,7 +60,8 @@ public class UserDaoTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        userDao = new UserDao(connection);
+        userDao = new UserDao(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
         // mocks methods of Connection
         when(connection.prepareStatement(SELECT_LOGIN_SQL)).thenReturn(prepStmt);
         when(connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS)).thenReturn(prepStmt1);
