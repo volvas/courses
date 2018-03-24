@@ -1,5 +1,9 @@
 package com.devproserv.courses.dao;
 
+import com.devproserv.courses.model.Course;
+import com.devproserv.courses.model.User;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,13 +13,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.devproserv.courses.model.User;
-import com.devproserv.courses.model.Course;
-
-import static com.devproserv.courses.config.MainConfig.SELECT_SUBSCR_COURSES_SQL;
-import static com.devproserv.courses.config.MainConfig.SELECT_AVAIL_COURSES_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_USER_COURSES_SQL;
 import static com.devproserv.courses.config.MainConfig.DELETE_USER_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_USER_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.SELECT_AVAIL_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.SELECT_SUBSCR_COURSES_SQL;
 
 /**
  * Provides methods for communication between application and the database and manipulates
@@ -23,15 +24,16 @@ import static com.devproserv.courses.config.MainConfig.DELETE_USER_COURSES_SQL;
  * 
  * @author vovas11
  * @see Course
- * @see DaoFactory
  */
 public class CourseDao {
 
-    Connection connection;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private static final Logger logger = Logger.getLogger(CourseDao.class.getName());
 
-    public CourseDao(Connection connection) {
-        this.connection = connection;
+    private DataSource dataSource;
+
+
+    public CourseDao(DataSource connection) {
+        this.dataSource = connection;
     }
 
     /**
@@ -43,11 +45,10 @@ public class CourseDao {
      */
     public List<Course> getAvailableCourses(User user) {
         /* list of the available courses to be returned */
-        List<Course> availCourses = new ArrayList<Course>();
+        List<Course> availCourses = new ArrayList<>();
 
-        try (
-            /* prepares SQL statement with parameter */
-            PreparedStatement prepStmt = connection.prepareStatement(SELECT_AVAIL_COURSES_SQL);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement prepStmt = connection.prepareStatement(SELECT_AVAIL_COURSES_SQL)
         ) {
             prepStmt.setString(1, user.getLogin());
             
@@ -79,11 +80,10 @@ public class CourseDao {
      */
     public List<Course> getSubscribedCourses(User user) {
         /* list of the subscribed courses to be returned */
-        List<Course> subscrCourses = new ArrayList<Course>();
+        List<Course> subscrCourses = new ArrayList<>();
 
-        try (
-            /* prepares SQL statement with parameter */
-            PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL)
         ) {
             prepStmt.setString(1, user.getLogin());
 
@@ -115,8 +115,8 @@ public class CourseDao {
      * @param course the current course
      */
     public void insertUserCourse(User user, Course course) {
-        try (
-            PreparedStatement prepStmt = connection.prepareStatement(INSERT_USER_COURSES_SQL);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement prepStmt = connection.prepareStatement(INSERT_USER_COURSES_SQL)
         ) {
             prepStmt.setInt(1, course.getId());
             prepStmt.setString(2, user.getLogin());
@@ -135,10 +135,9 @@ public class CourseDao {
      * @param course the current course
      */
     public void deleteUserCourse(User user, Course course) {
-        try (
-            /* prepares SQL statement with parameter */
-            PreparedStatement prepStmt = connection.prepareStatement(DELETE_USER_COURSES_SQL);
-        ) {;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement prepStmt = connection.prepareStatement(DELETE_USER_COURSES_SQL)
+        ) {
             prepStmt.setInt(1, course.getId());
             prepStmt.setInt(2, user.getId());
             prepStmt.execute();

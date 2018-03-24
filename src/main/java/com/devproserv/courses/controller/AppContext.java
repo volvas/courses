@@ -34,9 +34,7 @@ public class AppContext {
     /** represents one instance of the Application Context (Singleton) */
     private static AppContext appContext = new AppContext();
 
-    /** stores the link to the connection pool */
-    Connection connection;
-    /** stores all commands */
+    private DataSource dataSource;
     private Map<String, Command> commandMap = new HashMap<>();
 
     /** constructor forbids the class instantiation from outside */
@@ -61,11 +59,8 @@ public class AppContext {
         // gets link to database from servlet context
         try {
             InitialContext initContext = new InitialContext();
-            DataSource datasrc = (DataSource) initContext.lookup("java:comp/env/jdbc/coursedb");
-            connection = datasrc.getConnection();
+            dataSource = (DataSource) initContext.lookup("java:comp/env/jdbc/coursedb");
         } catch (NamingException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -87,7 +82,7 @@ public class AppContext {
      * @return link to the instance of UserDao
      */
     public UserDao getUserDao() {
-        return new UserDao(connection);
+        return new UserDao(dataSource);
     }
 
     /**
@@ -96,6 +91,6 @@ public class AppContext {
      * @return link to the instance of CourseDao
      */
     public CourseDao getCourseDao() {
-        return new CourseDao(connection);
+        return new CourseDao(dataSource);
     }
 }

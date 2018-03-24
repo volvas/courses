@@ -1,5 +1,12 @@
 package com.devproserv.courses.dao;
 
+import com.devproserv.courses.model.Administrator;
+import com.devproserv.courses.model.Lecturer;
+import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.User.Role;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,17 +15,11 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.devproserv.courses.model.Administrator;
-import com.devproserv.courses.model.Lecturer;
-import com.devproserv.courses.model.Student;
-import com.devproserv.courses.model.User;
-import com.devproserv.courses.model.User.Role;
-
-import static com.devproserv.courses.config.MainConfig.SELECT_USER_SQL;
-import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
 import static com.devproserv.courses.config.MainConfig.GET_USER_FIELDS_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
+import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
+import static com.devproserv.courses.config.MainConfig.SELECT_USER_SQL;
 
 /**
  * Provides CRUD methods for communication between application and database.
@@ -28,11 +29,13 @@ import static com.devproserv.courses.config.MainConfig.GET_USER_FIELDS_SQL;
  */
 public class UserDao {
 
-    private Connection connection;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private static final Logger logger = Logger.getLogger(UserDao.class.getName());
 
-    public UserDao(Connection connection) {
-        this.connection = connection;
+    private DataSource dataSource;
+
+
+    public UserDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     // Signing up methods
@@ -44,7 +47,9 @@ public class UserDao {
      * @return {@code true} if the user exists and {@code false} if does not
      */
     public boolean loginExists(String login) {
-        try (PreparedStatement prepStmt = connection.prepareStatement(SELECT_LOGIN_SQL)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement prepStmt = connection.prepareStatement(SELECT_LOGIN_SQL)
+        ) {
             prepStmt.setString(1, login);
             ResultSet result = prepStmt.executeQuery();
             /* returns true if result is not empty */
@@ -90,9 +95,9 @@ public class UserDao {
         Student student;
         if (user instanceof Student) {
             student = (Student) user;
-            try (
-                PreparedStatement prepStmtOne = connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement prepStmtTwo = connection.prepareStatement(INSERT_STUDENT_SQL)
+            try (Connection connection = dataSource.getConnection();
+                 PreparedStatement prepStmtOne = connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
+                 PreparedStatement prepStmtTwo = connection.prepareStatement(INSERT_STUDENT_SQL)
             ) {
                 /* inserts data into the table 'users' */
                 prepStmtOne.setString(1, student.getFirstName());
@@ -130,8 +135,8 @@ public class UserDao {
      * @return {@code true} if the user exists
      */
     public boolean userExists(String login, String password) {
-        try (
-            PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
             prepStmt.setString(1, login);
             prepStmt.setString(2, password);
@@ -192,8 +197,8 @@ public class UserDao {
      */
     private Role getUserRole(String login, String password) {
         Role role = Role.STUD;
-        try (
-            PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
         ) {
             prepStmt.setString(1, login);
             prepStmt.setString(2, password);
@@ -213,7 +218,7 @@ public class UserDao {
      * @param student the current user
      */
     private void getStudentFields(Student student) {
-        try (
+        try (Connection connection = dataSource.getConnection();
             PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FIELDS_SQL)
         ) {
             prepStmt.setString(1, student.getLogin());
