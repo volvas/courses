@@ -1,20 +1,5 @@
 package com.devproserv.courses.controller;
 
-import static com.devproserv.courses.config.MainConfig.COMMAND_SIGNUP;
-import static com.devproserv.courses.config.MainConfig.COMMAND_LOGIN;
-import static com.devproserv.courses.config.MainConfig.COMMAND_LOGOUT;
-import static com.devproserv.courses.config.MainConfig.COMMAND_SUBSCRIBE;
-import static com.devproserv.courses.config.MainConfig.COMMAND_UNSUBSCRIBE;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import com.devproserv.courses.command.Command;
 import com.devproserv.courses.command.LoginCommand;
 import com.devproserv.courses.command.LogoutCommand;
@@ -23,6 +8,22 @@ import com.devproserv.courses.command.SubscribeCommand;
 import com.devproserv.courses.command.UnsubscribeCommand;
 import com.devproserv.courses.dao.CourseDao;
 import com.devproserv.courses.dao.UserDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.devproserv.courses.config.MainConfig.COMMAND_LOGIN;
+import static com.devproserv.courses.config.MainConfig.COMMAND_LOGOUT;
+import static com.devproserv.courses.config.MainConfig.COMMAND_SIGNUP;
+import static com.devproserv.courses.config.MainConfig.COMMAND_SUBSCRIBE;
+import static com.devproserv.courses.config.MainConfig.COMMAND_UNSUBSCRIBE;
+import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
 
 /**
  * {@code AppContext} is a main container controls application lifecycle
@@ -31,49 +32,46 @@ import com.devproserv.courses.dao.UserDao;
  */
 public class AppContext {
 
-    /** represents one instance of the Application Context (Singleton) */
-    private static AppContext appContext = new AppContext();
+    private static final Logger logger = LogManager.getLogger(AppContext.class.getName());
 
     private DataSource dataSource;
-    private Map<String, Command> commandMap = new HashMap<>();
+    private final Map<String, Command> commandMap = new HashMap<>();
 
-    /** constructor forbids the class instantiation from outside */
-    private AppContext() {}
 
-    /**
-     * Provides the access to the single instance of the class
-     * 
-     * @return the link to the {@code AppContext} instance
-     */
-    public static AppContext getAppContext() {
-        return appContext;
+    AppContext() {
+        initBeans();
+        logger.info("Beans initialized.");
     }
 
-    public void initBeans() {
-        // fills the map with command instances
-        commandMap.put(COMMAND_SIGNUP, new SignUpCommand(appContext));
-        commandMap.put(COMMAND_LOGIN, new LoginCommand(appContext));
+
+    private void initBeans() {
+        // fill the map with command instances
+        commandMap.put(COMMAND_SIGNUP, new SignUpCommand(this));
+        commandMap.put(COMMAND_LOGIN, new LoginCommand(this));
         commandMap.put(COMMAND_LOGOUT, new LogoutCommand());
-        commandMap.put(COMMAND_SUBSCRIBE, new SubscribeCommand(appContext));
-        commandMap.put(COMMAND_UNSUBSCRIBE, new UnsubscribeCommand(appContext));
-        // gets link to database from servlet context
+        commandMap.put(COMMAND_SUBSCRIBE, new SubscribeCommand(this));
+        commandMap.put(COMMAND_UNSUBSCRIBE, new UnsubscribeCommand(this));
+        // get link to database from servlet context
         try {
             InitialContext initContext = new InitialContext();
             dataSource = (DataSource) initContext.lookup("java:comp/env/jdbc/coursedb");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error("Database not found!", e);
         }
-        
     }
 
     /**
-     * Delivers an instance of the command by its name
+     * Delivers a path of a page defined by given request
      *
-     * @param key name of the command
-     * @return the instance of the {@code Command} corresponding to name
+     * @param request HTTP request
+     * @return a string with a path defined by parameter "command" in request
      */
-    public Command getCommand(String key) {
-        return commandMap.get(key);
+    String getPath(HttpServletRequest request) {
+        final String commandRequest = request.getParameter("command");
+        final Command command = commandMap.get(commandRequest);
+
+        return (command == null) ? NOT_FOUND_PAGE
+                                 : command.executeCommand(request);
     }
 
     /**
