@@ -8,7 +8,7 @@
     type="javax.sql.DataSource"
     factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
     driverClassName="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://devproserv.com/coursedb"
+    url="jdbc:mysql://devproserv.com:54406/coursedb"
 
     username="javauser"
     password="zSxcvb"
