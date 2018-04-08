@@ -64,7 +64,7 @@ public class SignUpCommandTest {
         when(userDao.createUser("Login", "Password", "FirstName", "LastName", "Faculty"))
                 .thenReturn(Boolean.valueOf(true));
         
-        String page = signupCommand.executeCommand(request);
+        String page = signupCommand.path(request);
         assertEquals("Should be equal to " + LOGIN_PAGE, LOGIN_PAGE, page);
     }
     
@@ -74,7 +74,7 @@ public class SignUpCommandTest {
         when(userDao.createUser("Login", "Password", "FirstName", "LastName", "Faculty"))
                 .thenReturn(Boolean.valueOf(true));
         
-        String page = signupCommand.executeCommand(request);
+        String page = signupCommand.path(request);
         assertEquals("Should be equal to " + SIGNUP_PAGE, SIGNUP_PAGE, page);
     }
     
@@ -84,7 +84,7 @@ public class SignUpCommandTest {
         when(userDao.createUser("Login", "Password", "FirstName", "LastName", "Faculty"))
                 .thenReturn(Boolean.valueOf(false));
         
-        String page = signupCommand.executeCommand(request);
+        String page = signupCommand.path(request);
         assertEquals("Should be equal to " + SIGNUP_PAGE, SIGNUP_PAGE, page);
     }
     
@@ -95,7 +95,7 @@ public class SignUpCommandTest {
         when(userDao.createUser("", "Password", "FirstName", "LastName", "Faculty"))
                 .thenReturn(Boolean.valueOf(true));
         
-        String page = signupCommand.executeCommand(request);
+        String page = signupCommand.path(request);
         assertEquals("Should be equal to " + SIGNUP_PAGE, SIGNUP_PAGE, page);
     }
 

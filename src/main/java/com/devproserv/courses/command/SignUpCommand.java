@@ -35,7 +35,7 @@ public class SignUpCommand implements Command {
      * or the same sign up page name in case of wrong data
      */
     @Override
-    public String executeCommand(HttpServletRequest request) {
+    public String path(HttpServletRequest request) {
 
         /* gets parameters from the HTTP request */
         String login = request.getParameter("login");

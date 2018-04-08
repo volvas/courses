@@ -46,7 +46,7 @@ public class LogoutCommandTest {
     
     @Test
     public void testExecuteCommandOk() {
-        String page = logoutCommand.executeCommand(request);
+        String page = logoutCommand.path(request);
         assertEquals("Should be equal to " + HOME_PAGE, HOME_PAGE, page);
     }
     

@@ -19,7 +19,7 @@ public class LogoutCommand implements Command {
      * @return the the name home page
      */
     @Override
-    public String executeCommand(HttpServletRequest request) {
+    public String path(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
         return HOME_PAGE;
