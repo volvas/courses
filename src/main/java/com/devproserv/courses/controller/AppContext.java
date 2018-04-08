@@ -1,8 +1,9 @@
 package com.devproserv.courses.controller;
 
 import com.devproserv.courses.command.Command;
-import com.devproserv.courses.command.LoginCommand;
+import com.devproserv.courses.command.Login;
 import com.devproserv.courses.command.LogoutCommand;
+import com.devproserv.courses.command.NotFound;
 import com.devproserv.courses.command.SignUpCommand;
 import com.devproserv.courses.command.SubscribeCommand;
 import com.devproserv.courses.command.UnsubscribeCommand;
@@ -47,7 +48,7 @@ public class AppContext {
     private void initBeans() {
         // fill the map with command instances
         commandMap.put(COMMAND_SIGNUP, new SignUpCommand(this));
-        commandMap.put(COMMAND_LOGIN, new LoginCommand(this));
+        commandMap.put(COMMAND_LOGIN, new Login(this));
         commandMap.put(COMMAND_LOGOUT, new LogoutCommand());
         commandMap.put(COMMAND_SUBSCRIBE, new SubscribeCommand(this));
         commandMap.put(COMMAND_UNSUBSCRIBE, new UnsubscribeCommand(this));
@@ -68,10 +69,11 @@ public class AppContext {
      */
     String getPath(HttpServletRequest request) {
         final String commandRequest = request.getParameter("command");
-        final Command command = commandMap.get(commandRequest);
-
-        return (command == null) ? NOT_FOUND_PAGE
-                                 : command.executeCommand(request);
+        Command command = commandMap.get(commandRequest);
+        if (command == null) {
+            command = new NotFound();
+        }
+        return command.path(request);
     }
 
     /**
