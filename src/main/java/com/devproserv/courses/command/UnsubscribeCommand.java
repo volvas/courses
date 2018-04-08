@@ -40,7 +40,7 @@ public class UnsubscribeCommand implements Command {
      * case the same page)
      */
     @Override
-    public String executeCommand(HttpServletRequest request) {
+    public String path(HttpServletRequest request) {
         
         /* gets the link to the current session or returns the login page
          * if the session does not exist (e.g. timeout) */
