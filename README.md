@@ -42,8 +42,4 @@ The project is developed in Eclipse and hosted on Github. A job in Jenkins detec
   
 Disclaimer
 ----------
-The project is used exclusively for training purpose and does not take into account many important factors! For example, passwords in the database are stored in text fields instead of hashes that is completely unacceptable in real systems!  
-  
-Documentation
--------------
-Generated using javadoc tool: [./doc](./doc)
+The project is used exclusively for training purpose and does not take into account many important factors! For example, passwords in the database are stored in text fields instead of hashes that is completely unacceptable in real systems!
