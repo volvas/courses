@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
 
 /**
- * {@code NotFound} represents
+ * {@code NotFound} represents a non-existing command
+ *
  */
 public class NotFound implements Command {
 
