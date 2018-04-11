@@ -8,7 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.devproserv.courses.controller.AppContext;
+import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.dao.CourseDao;
 import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.User;
@@ -21,13 +21,13 @@ import com.devproserv.courses.util.Validation;
  * @author vovas11
  * @see CourseDao
  */
-public class SubscribeCommand implements Command {
+public class Unsubscribe implements Command {
 
     /** Injection of the main app manager */
     private AppContext appContext;
 
 
-    public SubscribeCommand(AppContext appContext) {
+    public Unsubscribe(AppContext appContext) {
         this.appContext = appContext;
     }
 
@@ -35,53 +35,53 @@ public class SubscribeCommand implements Command {
      * Retrieves the number of the selected course, checks if the choice is valid,
      * makes changes in the database and returns the same page but with changed tables
      * 
-     * @param   request   HTTP request
+     * @param request HTTP request
      * @return the the name of the page the server returns to the client (in this
      * case the same page)
      */
     @Override
     public String path(HttpServletRequest request) {
-
+        
         /* gets the link to the current session or returns the login page
          * if the session does not exist (e.g. timeout) */
         HttpSession session = request.getSession(false);
-        if (session == null) {
+        if (session == null)
             return LOGIN_PAGE;
-        }
+        
         /* gets the link to the current user and returns the login page
          * if the user does not exist (e.g. timeout) */
         User user = (User) session.getAttribute(session.getId());
-        if (user == null) {
+        if (user == null) 
             return LOGIN_PAGE;
-        }
+        
         /* get links to CourseDao to handle request in the database*/
         CourseDao courses = appContext.getCourseDao();
-        
+
         /* gets parameters from the request */
-        String courseIdStr = request.getParameter("coursesubscrid");
+        String courseIdStr = request.getParameter("courseunsubscrid");
         /* checks the selection for the valid input */
         String validResponse = Validation.checkInteger(courseIdStr);
         if (!validResponse.equals("ok")) {
-            request.setAttribute("messagesub", validResponse);
+            request.setAttribute("messageuns", validResponse);
             prepareJsp(request, user, courses);
             return STUDENT_PAGE;
         }
         int courseId = Integer.parseInt(courseIdStr);
-
+        
         // TODO check the number of the course is not already subscribed
-
+        
         /* creates new instance of the course (the field 'id' is enough) */
         Course course = new Course();
         course.setId(courseId);
-
+        
         /* performs the request in the database with current user and course */
-        courses.insertUserCourse(user, course);
-
+        courses.deleteUserCourse(user, course);
+        
         prepareJsp(request, user, courses);
-
+        
         return STUDENT_PAGE;
     }
-
+    
     /**
      * Prepares the data for the JSP page: current user, subscribed courses and available courses 
      * 
