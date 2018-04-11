@@ -1,6 +1,6 @@
 package com.devproserv.courses.dao;
 
-import com.devproserv.courses.controller.AppContext;
+import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.model.Student;
 import com.devproserv.courses.model.User;
 import org.junit.Before;

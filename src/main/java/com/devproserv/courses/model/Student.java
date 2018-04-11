@@ -4,7 +4,6 @@ package com.devproserv.courses.model;
  * Represents the entity of the Student. Maps the table 'students' in the database.
  * 
  * @author vovas11
- * @see UserDao
  */
 public class Student extends User {
     
