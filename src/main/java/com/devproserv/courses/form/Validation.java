@@ -1,11 +1,15 @@
-package com.devproserv.courses.util;
+package com.devproserv.courses.form;
 
 /**
  * {@code Validation} class checks if data user inputs are valid
  * 
  * @author vovas11
  */
-public class Validation {
+public interface Validation {
+
+    boolean validated();
+
+    String errorMessage();
 
     /**
      * Checks if login and password correspond to valid values (not null, not empty,
@@ -78,4 +82,6 @@ public class Validation {
         }
         return result;
     }
+
+
 }

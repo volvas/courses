@@ -1,10 +1,10 @@
-package com.devproserv.courses.util;
+package com.devproserv.courses.form;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.devproserv.courses.util.Validation;
+import com.devproserv.courses.form.Validation;
 
 /**
  * Test suite for Validation class

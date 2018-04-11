@@ -1,7 +1,7 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.servlet.AppContext;
-import com.devproserv.courses.temp.LoginForm;
+import com.devproserv.courses.form.LoginForm;
 
 import javax.servlet.http.HttpServletRequest;
 
