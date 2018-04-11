@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.devproserv.courses.form.NumberValidation;
 import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.dao.CourseDao;
 import com.devproserv.courses.model.Course;
@@ -60,9 +61,9 @@ public class Subscribe implements Command {
         /* gets parameters from the request */
         String courseIdStr = request.getParameter("coursesubscrid");
         /* checks the selection for the valid input */
-        String validResponse = Validation.checkInteger(courseIdStr);
-        if (!validResponse.equals("ok")) {
-            request.setAttribute("messagesub", validResponse);
+        Validation validation = new NumberValidation(courseIdStr);
+        if (!validation.validated()) {
+            request.setAttribute("messagesub", validation.errorMessage());
             prepareJsp(request, user, courses);
             return STUDENT_PAGE;
         }
