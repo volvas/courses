@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.dao.UserDao;
-import com.devproserv.courses.util.Validation;
+import com.devproserv.courses.form.Validation;
 
 import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
 import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;

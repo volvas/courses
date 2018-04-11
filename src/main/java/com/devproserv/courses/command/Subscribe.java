@@ -12,7 +12,7 @@ import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.dao.CourseDao;
 import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.User;
-import com.devproserv.courses.util.Validation;
+import com.devproserv.courses.form.Validation;
 
 /**
  * {@code CourseSelectCommand} handles the choice of the user that is subscribed to 
