@@ -77,7 +77,7 @@ public class PrelUser extends User {
         User user = new EmptyUser();
         switch (role) {
             case STUD:
-                user = new StudentUser(appContext);
+                user = new Student(appContext);
                 break;
             case LECT:
                 user = new Lecturer(appContext);

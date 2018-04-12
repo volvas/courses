@@ -21,16 +21,16 @@ import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
 import static com.devproserv.courses.config.MainConfig.SELECT_SUBSCR_COURSES_SQL;
 import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
 
-public class StudentUser extends User {
+public class Student extends User {
 
-    private static final Logger logger = LogManager.getLogger(StudentUser.class.getName());
+    private static final Logger logger = LogManager.getLogger(Student.class.getName());
 
     private final AppContext appContext;
 
     private String faculty;
 
 
-    public StudentUser(AppContext appContext) {
+    public Student(AppContext appContext) {
         this.appContext = appContext;
     }
 
@@ -172,7 +172,7 @@ public class StudentUser extends User {
     }
 
     /**
-     * Creates new instance of {@link StudentUser} with given parameters,
+     * Creates new instance of {@link Student} with given parameters,
      * checks if the user with specified login exists in the database, and if no
      * inserts the user into the database (tables 'users' and 'students')
      *
