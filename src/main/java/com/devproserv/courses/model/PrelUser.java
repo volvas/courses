@@ -5,11 +5,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
 import static com.devproserv.courses.config.MainConfig.SELECT_USER_SQL;
 
 public class PrelUser extends User {
@@ -61,6 +63,29 @@ public class PrelUser extends User {
     public void prepareJspData(HttpServletRequest request) {
         // TODO
     }
+
+    public String path(HttpServletRequest request) {
+        /* checks if the user with entered credentials exists in the database */
+        if (!exists()) {
+            logger.info("Login " + login + " does not exist.");
+
+            String validResponse = "Wrong username or password! Try again!";
+            request.setAttribute("message", validResponse);
+            return LOGIN_PAGE;
+        }
+
+        User trueUser = convertToTrue();
+        trueUser.loadFields();
+
+        /* gets the link to the current session or creates new one and attaches the user to the session */
+        HttpSession session = request.getSession(); // TODO add login.jsp filter to check validated session
+        session.setAttribute(session.getId(), trueUser);
+
+        trueUser.prepareJspData(request);
+
+        return trueUser.getPath();
+    }
+
 
     /**
      * TODO

@@ -1,13 +1,11 @@
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.model.PrelUser;
-import com.devproserv.courses.model.User;
+import com.devproserv.courses.servlet.AppContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
 
@@ -42,27 +40,6 @@ public class LoginForm implements Form {
     }
 
     private String validPath() {
-
-        User user =  new PrelUser(appContext, login, password);
-
-        /* checks if the user with entered credentials exists in the database */
-        if (!user.exists()) {
-            logger.info("Login " + login + " does not exist.");
-
-            String validResponse = "Wrong username or password! Try again!";
-            request.setAttribute("message", validResponse);
-            return LOGIN_PAGE;
-        }
-
-        User trueUser = user.convertToTrue();
-        trueUser.loadFields();
-
-        /* gets the link to the current session or creates new one and attaches the user to the session */
-        HttpSession session = request.getSession(); // TODO add login.jsp filter to check validated session
-        session.setAttribute(session.getId(), trueUser);
-
-        trueUser.prepareJspData(request);
-
-        return trueUser.getPath();
+        return new PrelUser(appContext, login, password).path(request);
     }
 }

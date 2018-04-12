@@ -1,14 +1,12 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Student;
-import com.devproserv.courses.model.User;
 import com.devproserv.courses.servlet.AppContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
 import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
 
 public class SignUpForm implements Form {

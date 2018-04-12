@@ -10,7 +10,7 @@ public class SignUpValidation implements Validation {
     private String message;
 
 
-    public SignUpValidation(String login, String password, String firstName, String lastName, String faculty) { // TODO make default access after refactoring sign up
+    SignUpValidation(String login, String password, String firstName, String lastName, String faculty) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
