@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 import static com.devproserv.courses.config.MainConfig.SELECT_USER_SQL;
 
-public class PrelUser extends TrueUser {
+public class PrelUser extends User {
 
     public enum Role {
         STUD, LECT, ADMIN
@@ -72,9 +72,9 @@ public class PrelUser extends TrueUser {
      * @return new instance of Student, Lecturer or Administrator
      */
     @Override
-    public TrueUser convertToTrue() {
+    public User convertToTrue() {
         Role role = getUserRole(login, password);
-        TrueUser user = new EmptyUser();
+        User user = new EmptyUser();
         switch (role) {
             case STUD:
                 user = new StudentUser(appContext);

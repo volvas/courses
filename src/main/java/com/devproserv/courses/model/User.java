@@ -2,7 +2,7 @@ package com.devproserv.courses.model;
 
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class TrueUser {
+public abstract class User {
 
     // fields representing columns in the table 'users'
     private int id;
@@ -19,7 +19,7 @@ public abstract class TrueUser {
 
     public abstract void prepareJspData(HttpServletRequest request);
 
-    public TrueUser convertToTrue() {
+    public User convertToTrue() {
         return this; // TODO
     }
 

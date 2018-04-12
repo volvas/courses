@@ -2,7 +2,7 @@ package com.devproserv.courses.form;
 
 import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.model.PrelUser;
-import com.devproserv.courses.model.TrueUser;
+import com.devproserv.courses.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +43,7 @@ public class LoginForm implements Form {
 
     private String validPath() {
 
-        TrueUser user =  new PrelUser(appContext, login, password);
+        User user =  new PrelUser(appContext, login, password);
 
         /* checks if the user with entered credentials exists in the database */
         if (!user.exists()) {
@@ -54,7 +54,7 @@ public class LoginForm implements Form {
             return LOGIN_PAGE;
         }
 
-        TrueUser trueUser = user.convertToTrue();
+        User trueUser = user.convertToTrue();
         trueUser.loadFields();
 
         /* gets the link to the current session or creates new one and attaches the user to the session */

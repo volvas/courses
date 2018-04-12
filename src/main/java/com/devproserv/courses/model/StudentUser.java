@@ -1,7 +1,6 @@
 package com.devproserv.courses.model;
 
 import com.devproserv.courses.servlet.AppContext;
-import com.devproserv.courses.dao.CourseDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import static com.devproserv.courses.config.MainConfig.GET_USER_FIELDS_SQL;
 import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
@@ -23,7 +21,7 @@ import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
 import static com.devproserv.courses.config.MainConfig.SELECT_SUBSCR_COURSES_SQL;
 import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
 
-public class StudentUser extends TrueUser {
+public class StudentUser extends User {
 
     private static final Logger logger = LogManager.getLogger(StudentUser.class.getName());
 

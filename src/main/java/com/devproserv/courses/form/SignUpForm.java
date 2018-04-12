@@ -1,7 +1,7 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.StudentUser;
-import com.devproserv.courses.model.TrueUser;
+import com.devproserv.courses.model.User;
 import com.devproserv.courses.servlet.AppContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +48,7 @@ public class SignUpForm implements Form {
 
     private String validPath() {
 
-        TrueUser user = new StudentUser(appContext);
+        User user = new StudentUser(appContext);
 
 
 

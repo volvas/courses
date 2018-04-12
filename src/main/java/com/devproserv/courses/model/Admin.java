@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
  * Represents the entity of the Administrator.
  *
  */
-public class Admin extends TrueUser {
+public class Admin extends User {
 
     private final AppContext appContext;
 

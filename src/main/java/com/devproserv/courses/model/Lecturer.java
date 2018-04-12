@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
  * Represents the entity of the Lecturer. Maps the table 'lecturers' in the database.
  *
  */
-public class Lecturer extends TrueUser {
+public class Lecturer extends User {
 
     private final AppContext appContext;
 
