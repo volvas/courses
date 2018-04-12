@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.devproserv.courses.form.NumberValidation;
+import com.devproserv.courses.model.TrueUser;
 import com.devproserv.courses.servlet.AppContext;
 import com.devproserv.courses.dao.CourseDao;
 import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.User;
 import com.devproserv.courses.form.Validation;
 
 /**
@@ -51,7 +51,7 @@ public class Subscribe implements Command {
         }
         /* gets the link to the current user and returns the login page
          * if the user does not exist (e.g. timeout) */
-        User user = (User) session.getAttribute(session.getId());
+        TrueUser user = (TrueUser) session.getAttribute(session.getId());
         if (user == null) {
             return LOGIN_PAGE;
         }
@@ -90,7 +90,7 @@ public class Subscribe implements Command {
      * @param user user
      * @param courses courses
      */
-    private void prepareJsp(HttpServletRequest request, User user, CourseDao courses) {
+    private void prepareJsp(HttpServletRequest request, TrueUser user, CourseDao courses) {
         request.setAttribute("student", user);
 
         List<Course> subscribedCourses = courses.getSubscribedCourses(user);

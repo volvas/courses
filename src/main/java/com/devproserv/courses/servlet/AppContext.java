@@ -8,7 +8,6 @@ import com.devproserv.courses.command.SignUp;
 import com.devproserv.courses.command.Subscribe;
 import com.devproserv.courses.command.Unsubscribe;
 import com.devproserv.courses.dao.CourseDao;
-import com.devproserv.courses.dao.UserDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,14 +80,6 @@ public class AppContext {
         return dataSource;
     }
 
-    /**
-     * Delivers an instance of the {@code UserDao} class
-     * 
-     * @return link to the instance of UserDao
-     */
-    public UserDao getUserDao() {
-        return new UserDao(dataSource);
-    }
 
     /**
      * Delivers an instance of the {@code CourseDao} class

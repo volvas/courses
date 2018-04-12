@@ -1,7 +1,7 @@
 package com.devproserv.courses.dao;
 
 import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.TrueUser;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -43,7 +43,7 @@ public class CourseDao {
      * @param user the current user
      * @return list of available courses from the database
      */
-    public List<Course> getAvailableCourses(User user) {
+    public List<Course> getAvailableCourses(TrueUser user) {
         /* list of the available courses to be returned */
         List<Course> availCourses = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public class CourseDao {
      * @param user the current user
      * @return list of subscribed courses for the user
      */
-    public List<Course> getSubscribedCourses(User user) {
+    public List<Course> getSubscribedCourses(TrueUser user) {
         /* list of the subscribed courses to be returned */
         List<Course> subscrCourses = new ArrayList<>();
 
@@ -114,7 +114,7 @@ public class CourseDao {
      * @param user the current user
      * @param course the current course
      */
-    public void insertUserCourse(User user, Course course) {
+    public void insertUserCourse(TrueUser user, Course course) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement prepStmt = connection.prepareStatement(INSERT_USER_COURSES_SQL)
         ) {
@@ -134,7 +134,7 @@ public class CourseDao {
      * @param user the current user
      * @param course the current course
      */
-    public void deleteUserCourse(User user, Course course) {
+    public void deleteUserCourse(TrueUser user, Course course) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement prepStmt = connection.prepareStatement(DELETE_USER_COURSES_SQL)
         ) {

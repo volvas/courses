@@ -21,6 +21,7 @@ public class LoginForm implements Form {
     private final String password;
 
 
+
     public LoginForm(AppContext appContext, HttpServletRequest request) {
         this.appContext = appContext;
         this.request = request;
