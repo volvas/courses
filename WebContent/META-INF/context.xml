@@ -9,6 +9,7 @@
     factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
     driverClassName="com.mysql.jdbc.Driver"
     url="jdbc:mysql://devproserv.com:54406/coursedb"
+    connectionProperties="useUnicode=yes;characterEncoding=utf8;"
 
     username="javauser"
     password="zSxcvb"
