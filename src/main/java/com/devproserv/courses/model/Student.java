@@ -16,9 +16,11 @@ import java.util.List;
 import static com.devproserv.courses.config.MainConfig.GET_USER_FIELDS_SQL;
 import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
 import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
 import static com.devproserv.courses.config.MainConfig.SELECT_AVAIL_COURSES_SQL;
 import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
 import static com.devproserv.courses.config.MainConfig.SELECT_SUBSCR_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
 import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
 
 public class Student extends User {
@@ -61,6 +63,20 @@ public class Student extends User {
             logger.error("Request to database failed", e);
         }
         setPath(STUDENT_PAGE);
+    }
+
+    public String path(HttpServletRequest request) {
+        /* checks if login exists and if yes returns back to the sign up
+         * page, if no inserts new user into database and proceeds to the login page*/
+        if (loginExists()) {
+            request.setAttribute("message", "User already exists!");
+            return SIGNUP_PAGE;
+        } else if (createUser()) {
+            return LOGIN_PAGE;
+        } else {
+            request.setAttribute("message", "User has not been created. Try again.");
+            return SIGNUP_PAGE;
+        }
     }
 
     /**
@@ -154,14 +170,13 @@ public class Student extends User {
     /**
      * Checks if the specified login exists in the database. The method is used during sign up procedure.
      *
-     * @param login login (user name)
      * @return {@code true} if the user exists and {@code false} if does not
      */
-    public boolean loginExists(String login) {
+    private boolean loginExists() {
         try (Connection connection = appContext.getDataSource().getConnection();
              PreparedStatement prepStmt = connection.prepareStatement(SELECT_LOGIN_SQL)
         ) {
-            prepStmt.setString(1, login);
+            prepStmt.setString(1, getLogin());
             ResultSet result = prepStmt.executeQuery();
             /* returns true if result is not empty */
             return result.next();
@@ -176,20 +191,15 @@ public class Student extends User {
      * checks if the user with specified login exists in the database, and if no
      * inserts the user into the database (tables 'users' and 'students')
      *
-     * @param login argument representing login
-     * @param password argument representing password
-     * @param firstName argument representing first name
-     * @param lastName argument representing last name
-     * @param faculty argument representing faculty
      *
      * @return {@code true} if the user has been created successfully and {@code false} if is not
      */
-    public boolean createUser(String login, String password, String firstName, String lastName, String faculty) {
-        setLogin(login);
-        setPassword(password);
-        setFirstName(firstName);
-        setLastName(lastName);
-        setFaculty(faculty);
+    private boolean createUser() {
+        setLogin(getLogin());
+        setPassword(getPassword());
+        setFirstName(getFirstName());
+        setLastName(getLastName());
+        setFaculty(getFaculty());
 
         return insertUser();
     }
@@ -230,10 +240,10 @@ public class Student extends User {
 
 
 
-    public String getFaculty() {
+    private String getFaculty() {
         return faculty;
     }
-    public void setFaculty(String faculty) {
+    private void setFaculty(String faculty) {
         this.faculty = faculty;
     }
 }
