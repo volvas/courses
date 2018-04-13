@@ -5,9 +5,8 @@ import com.devproserv.courses.command.Login;
 import com.devproserv.courses.command.Logout;
 import com.devproserv.courses.command.NotFound;
 import com.devproserv.courses.command.SignUp;
-import com.devproserv.courses.command.Subscribe;
-import com.devproserv.courses.command.Unsubscribe;
-import com.devproserv.courses.dao.CourseDao;
+import com.devproserv.courses.command.Enroll;
+import com.devproserv.courses.command.Unroll;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,8 +48,8 @@ public class AppContext {
         commandMap.put(COMMAND_SIGNUP, new SignUp(this));
         commandMap.put(COMMAND_LOGIN, new Login(this));
         commandMap.put(COMMAND_LOGOUT, new Logout());
-        commandMap.put(COMMAND_SUBSCRIBE, new Subscribe(this));
-        commandMap.put(COMMAND_UNSUBSCRIBE, new Unsubscribe(this));
+        commandMap.put(COMMAND_SUBSCRIBE, new Enroll(this));
+        commandMap.put(COMMAND_UNSUBSCRIBE, new Unroll(this));
         // get link to database from servlet context
         try {
             InitialContext initContext = new InitialContext();
@@ -80,13 +79,4 @@ public class AppContext {
         return dataSource;
     }
 
-
-    /**
-     * Delivers an instance of the {@code CourseDao} class
-     * 
-     * @return link to the instance of CourseDao
-     */
-    public CourseDao getCourseDao() {
-        return new CourseDao(dataSource);
-    }
 }

@@ -119,7 +119,7 @@ public class Student extends User {
              * the Course, fills in the instance's fields, and put it into
              * result list */
             while (result.next()) {
-                Course course = new Course();
+                Course course = new Course(appContext);
                 course.setId(result.getInt(1));
                 course.setName(result.getString(2));
                 course.setDescription(result.getString(3));
@@ -153,7 +153,7 @@ public class Student extends User {
              * the Course, fills in the instance's fields, and put it into
              * result list */
             while (result.next()) {
-                Course course = new Course();
+                Course course = new Course(appContext);
                 course.setId(result.getInt(1));
                 course.setName(result.getString(2));
                 course.setDescription(result.getString(3));
