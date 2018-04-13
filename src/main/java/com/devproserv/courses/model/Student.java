@@ -240,7 +240,7 @@ public class Student extends User {
 
 
 
-    private String getFaculty() {
+    public String getFaculty() {
         return faculty;
     }
     private void setFaculty(String faculty) {

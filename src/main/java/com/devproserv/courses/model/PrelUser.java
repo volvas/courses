@@ -74,16 +74,15 @@ public class PrelUser extends User {
             return LOGIN_PAGE;
         }
 
-        User trueUser = convertToTrue();
-        trueUser.loadFields();
+        User student = convertToTrue();
 
         /* gets the link to the current session or creates new one and attaches the user to the session */
         HttpSession session = request.getSession(); // TODO add login.jsp filter to check validated session
-        session.setAttribute(session.getId(), trueUser);
+        session.setAttribute(session.getId(), student);
 
-        trueUser.prepareJspData(request);
+        student.prepareJspData(request);
 
-        return trueUser.getPath();
+        return student.getPath();
     }
 
 
