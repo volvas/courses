@@ -33,7 +33,7 @@ public class SignUpForm implements Form {
     }
 
     @Override
-    public String validate() {
+    public String validate(final HttpServletRequest request) {
         Validation validation = new SignUpValidation(login, password, firstName, lastName, faculty);
         return validation.validated() ? validPath() : invalidPath(validation);
     }

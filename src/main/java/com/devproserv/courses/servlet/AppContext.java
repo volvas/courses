@@ -1,14 +1,14 @@
 package com.devproserv.courses.servlet;
 
 import com.devproserv.courses.command.Command;
+import com.devproserv.courses.command.Enroll;
 import com.devproserv.courses.command.Login;
 import com.devproserv.courses.command.Logout;
 import com.devproserv.courses.command.NotFound;
 import com.devproserv.courses.command.SignUp;
-import com.devproserv.courses.command.Enroll;
 import com.devproserv.courses.command.Unroll;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -30,7 +30,7 @@ import static com.devproserv.courses.config.MainConfig.COMMAND_UNSUBSCRIBE;
  */
 public class AppContext {
 
-    private static final Logger logger = LogManager.getLogger(AppContext.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppContext.class);
     private static final String DB_URL = "java:comp/env/jdbc/coursedb";
 
     private DataSource dataSource;
@@ -39,7 +39,7 @@ public class AppContext {
 
     AppContext() {
         initBeans();
-        logger.info("Beans initialized.");
+        LOGGER.debug("Beans initialized.");
     }
 
 
@@ -55,7 +55,7 @@ public class AppContext {
             InitialContext initContext = new InitialContext();
             dataSource = (DataSource) initContext.lookup(DB_URL);
         } catch (NamingException e) {
-            logger.fatal("Database with path \"" + DB_URL + "\" not found!", e);
+            LOGGER.error("Database with path {} not found! Error: {}", DB_URL, e);
         }
     }
 
@@ -69,7 +69,7 @@ public class AppContext {
         final String commandRequest = request.getParameter("command");
         Command command = commandMap.get(commandRequest);
         if (command == null) {
-            logger.warn("Invalid command given!");
+            LOGGER.warn("Invalid command given!");
             command = new NotFound();
         }
         return command.path(request);

@@ -7,20 +7,27 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Treats data from login web form
- *
  */
 public class Login implements Command {
-    
-    private AppContext appContext;
+    private LoginForm loginForm;
 
 
     public Login(AppContext appContext) {
-        this.appContext = appContext;
+        this(new LoginForm(appContext));
+    }
+
+    /**
+     * Primary constructor
+     *
+     * @param loginForm login form instance
+     */
+    public Login(final LoginForm loginForm) {
+        this.loginForm = loginForm;
     }
 
 
     @Override
-    public String path(HttpServletRequest request) {
-        return new LoginForm(appContext, request).validate();
+    public String path(final HttpServletRequest request) {
+        return loginForm.validate(request);
     }
 }

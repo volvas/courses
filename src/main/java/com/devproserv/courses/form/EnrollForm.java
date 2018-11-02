@@ -32,7 +32,7 @@ public class EnrollForm implements Form {
     }
 
     @Override
-    public String validate() {
+    public String validate(final HttpServletRequest request) {
         // check if session still exists
         HttpSession session = request.getSession(false);
         if (session == null) {
