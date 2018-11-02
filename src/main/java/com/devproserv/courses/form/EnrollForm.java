@@ -59,12 +59,8 @@ public class EnrollForm implements Form {
     private String validPath() {
         int courseId = Integer.parseInt(courseIdStr);
 
-        // TODO check the number of the course is not already subscribed
         Course course = new Course(appContext);
         course.setId(courseId);
-        courseHandling.changeEntry(course, user);
-
-        user.prepareJspData(request);
-        return STUDENT_PAGE;
+        return courseHandling.path(course, user, request);
     }
 }

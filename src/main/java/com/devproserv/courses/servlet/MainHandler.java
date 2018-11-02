@@ -45,6 +45,8 @@ public class MainHandler extends HttpServlet {
 
         final String pathToForward = appContext.getPath(request);
         final RequestDispatcher dispatcher = request.getRequestDispatcher(pathToForward);
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         dispatcher.forward(request, response);
     }
 }

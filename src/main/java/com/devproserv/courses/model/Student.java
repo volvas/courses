@@ -36,6 +36,15 @@ public class Student extends User {
         this.appContext = appContext;
     }
 
+    public Student(AppContext appContext, String login, String password, String firstName, String lastName, String faculty) {
+        this.appContext = appContext;
+        setLogin(login);
+        setPassword(password);
+        setFirstName(firstName);
+        setLastName(lastName);
+        this.faculty = faculty;
+    }
+
 
     @Override
     public boolean exists() {
@@ -71,7 +80,7 @@ public class Student extends User {
         if (loginExists()) {
             request.setAttribute("message", "User already exists!");
             return SIGNUP_PAGE;
-        } else if (createUser()) {
+        } else if (insertUser()) {
             return LOGIN_PAGE;
         } else {
             request.setAttribute("message", "User has not been created. Try again.");
@@ -184,24 +193,6 @@ public class Student extends User {
             logger.error("Request to database failed", e);
         }
         return true; // less changes in the database if something is wrong
-    }
-
-    /**
-     * Creates new instance of {@link Student} with given parameters,
-     * checks if the user with specified login exists in the database, and if no
-     * inserts the user into the database (tables 'users' and 'students')
-     *
-     *
-     * @return {@code true} if the user has been created successfully and {@code false} if is not
-     */
-    private boolean createUser() {
-        setLogin(getLogin());
-        setPassword(getPassword());
-        setFirstName(getFirstName());
-        setLastName(getLastName());
-        setFaculty(getFaculty());
-
-        return insertUser();
     }
 
     /**

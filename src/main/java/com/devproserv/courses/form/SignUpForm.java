@@ -45,6 +45,6 @@ public class SignUpForm implements Form {
     }
 
     private String validPath() {
-        return new Student(appContext).path(request);
+        return new Student(appContext, login, password, firstName, lastName, faculty).path(request);
     }
 }
