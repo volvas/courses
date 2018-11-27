@@ -17,18 +17,14 @@ public class EnrollForm implements Form {
     private static final Logger logger = LogManager.getLogger(EnrollForm.class.getName());
 
     private final AppContext appContext;
-    private final HttpServletRequest request;
     private final CourseHandling courseHandling;
-    private final String courseIdStr;
 
     private Student user;
 
 
-    public EnrollForm(AppContext appContext, HttpServletRequest request, CourseHandling courseHandling) {
+    public EnrollForm(AppContext appContext, CourseHandling courseHandling) {
         this.appContext = appContext;
-        this.request = request;
         this.courseHandling = courseHandling;
-        this.courseIdStr = request.getParameter(courseHandling.courseIdParameter());
     }
 
     @Override
@@ -45,18 +41,22 @@ public class EnrollForm implements Form {
         }
 
         /* checks the selection for the valid input */
+        final String courseIdStr = request.getParameter(courseHandling.courseIdParameter());
         Validation validation = new NumberValidation(courseIdStr);
-        return validation.validated() ? validPath() : invalidPath(validation);
+        return validation.validated() ? validPath(request) : invalidPath(validation, request);
     }
 
-    private String invalidPath(Validation validation) {
+    private String invalidPath(final Validation validation,
+                               final HttpServletRequest request) {
         logger.info("Invalid credentials for login " + user.getLogin());
-        request.setAttribute(courseHandling.errorMessageParameter(), validation.errorMessage());
+        request.setAttribute(courseHandling.errorMessageParameter(),
+                validation.errorMessage());
         user.prepareJspData(request);
         return STUDENT_PAGE;
     }
 
-    private String validPath() {
+    private String validPath(final HttpServletRequest request) {
+        final String courseIdStr = request.getParameter(courseHandling.courseIdParameter());
         int courseId = Integer.parseInt(courseIdStr);
 
         Course course = new Course(appContext);

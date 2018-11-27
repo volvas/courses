@@ -21,44 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.command;
-
-import com.devproserv.courses.form.EnrollCourseHandling;
-import com.devproserv.courses.form.EnrollForm;
-import com.devproserv.courses.servlet.AppContext;
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * Handles course number user inputs to subscribe to desired courses.
+ * Contains all classes handling commands from user's html form.
  *
  * @since 1.0.0
  */
-public final class Enroll implements Command {
-    /**
-     * Enroll form instance.
-     */
-    private final EnrollForm form;
-
-    /**
-     * Default constructor.
-     *
-     * @param context Application context
-     */
-    public Enroll(final AppContext context) {
-        this(new EnrollForm(context, new EnrollCourseHandling()));
-    }
-
-    /**
-     * Primary constructor.
-     *
-     * @param form Enroll form
-     */
-    public Enroll(final EnrollForm form) {
-        this.form = form;
-    }
-
-    @Override
-    public String path(final HttpServletRequest request) {
-        return this.form.validate(request);
-    }
-}
+package com.devproserv.courses.command;
