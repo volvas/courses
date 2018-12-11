@@ -8,8 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static com.devproserv.courses.config.MainConfig.DELETE_USER_COURSES_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_USER_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.DEL_USER_CRSES;
+import static com.devproserv.courses.config.MainConfig.INS_USER_CRSES;
 
 /**
  * Represents the entity of the Course. Maps the table 'courses' in the database. 
@@ -41,7 +41,7 @@ public class Course {
      */
     public void insertUserCourse(User user) {
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(INSERT_USER_COURSES_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(INS_USER_CRSES)
         ) {
             prepStmt.setInt(1, getId());
             prepStmt.setString(2, user.getLogin());
@@ -60,7 +60,7 @@ public class Course {
      */
     public void deleteUserCourse(User user) {
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(DELETE_USER_COURSES_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(DEL_USER_CRSES)
         ) {
             prepStmt.setInt(1, getId());
             prepStmt.setInt(2, user.getId());

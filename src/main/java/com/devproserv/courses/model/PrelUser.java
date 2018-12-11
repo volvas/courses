@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
-import static com.devproserv.courses.config.MainConfig.SELECT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.SEL_USER;
 
 public class PrelUser extends User {
 
@@ -41,7 +41,7 @@ public class PrelUser extends User {
     @Override
     public boolean exists() {
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(SEL_USER)
         ) {
             prepStmt.setString(1, login);
             prepStmt.setString(2, password);
@@ -127,7 +127,7 @@ public class PrelUser extends User {
     private Role getUserRole(String login, String password) {
         Role role = Role.STUD;
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SELECT_USER_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(SEL_USER)
         ) {
             prepStmt.setString(1, login);
             prepStmt.setString(2, password);

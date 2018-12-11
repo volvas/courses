@@ -2,7 +2,7 @@ package com.devproserv.courses.servlet;
 
 import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
 import static com.devproserv.courses.config.MainConfig.GENERIC_ERR_PAGE;
-import static com.devproserv.courses.config.MainConfig.EXCEPTION_ERR_PAGE;
+import static com.devproserv.courses.config.MainConfig.EXCEPTION_PAGE;
 
 import java.io.IOException;
 
@@ -36,7 +36,7 @@ public class ErrorHandler extends HttpServlet {
         
         // select three variants: exception, status 404, and others
         if (throwable != null) {
-            pageToRedirect = EXCEPTION_ERR_PAGE;
+            pageToRedirect = EXCEPTION_PAGE;
         } else if (statusCode == 404) {
             pageToRedirect = NOT_FOUND_PAGE;
         }

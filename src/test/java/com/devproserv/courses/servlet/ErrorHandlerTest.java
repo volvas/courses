@@ -9,7 +9,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.devproserv.courses.config.MainConfig.EXCEPTION_ERR_PAGE;
+import static com.devproserv.courses.config.MainConfig.EXCEPTION_PAGE;
 import static com.devproserv.courses.config.MainConfig.GENERIC_ERR_PAGE;
 import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
 import static org.mockito.Mockito.atLeastOnce;
@@ -45,7 +45,7 @@ public class ErrorHandlerTest {
         Throwable exception = new IllegalStateException();
         
         when(request.getAttribute("javax.servlet.error.exception")).thenReturn(exception);
-        when(request.getRequestDispatcher(EXCEPTION_ERR_PAGE)).thenReturn(reqDisp);
+        when(request.getRequestDispatcher(EXCEPTION_PAGE)).thenReturn(reqDisp);
 
         errorHanlder.doGet(request, response);
         verify(reqDisp, atLeastOnce()).forward(request, response);

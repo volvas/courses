@@ -38,9 +38,9 @@ public class UserDaoTest {
 //        userDao = new UserDao(dataSource);
 //        when(dataSource.getConnection()).thenReturn(connection);
 //        // mocks methods of Connection
-//        when(connection.prepareStatement(SELECT_LOGIN_SQL)).thenReturn(prepStmt);
-//        when(connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS)).thenReturn(prepStmt1);
-//        when(connection.prepareStatement(INSERT_STUDENT_SQL)).thenReturn(prepStmt2);
+//        when(connection.prepareStatement(SEL_LOGIN)).thenReturn(prepStmt);
+//        when(connection.prepareStatement(INS_USER, Statement.RETURN_GENERATED_KEYS)).thenReturn(prepStmt1);
+//        when(connection.prepareStatement(INS_STUDENT)).thenReturn(prepStmt2);
 //        // mocks methods of PreparedStatement
 //        doNothing().when(prepStmt).setString(anyInt(), anyString());
 //        doNothing().when(prepStmt1).setString(anyInt(), anyString());

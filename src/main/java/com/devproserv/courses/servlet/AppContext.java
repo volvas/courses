@@ -21,7 +21,7 @@ import static com.devproserv.courses.config.MainConfig.COMMAND_LOGIN;
 import static com.devproserv.courses.config.MainConfig.COMMAND_LOGOUT;
 import static com.devproserv.courses.config.MainConfig.COMMAND_SIGNUP;
 import static com.devproserv.courses.config.MainConfig.COMMAND_SUBSCRIBE;
-import static com.devproserv.courses.config.MainConfig.COMMAND_UNSUBSCRIBE;
+import static com.devproserv.courses.config.MainConfig.COMMAND_UNROLL;
 
 /**
  * {@code AppContext} is a main container controls application lifecycle
@@ -49,7 +49,7 @@ public class AppContext {
         commandMap.put(COMMAND_LOGIN, new Login(this));
         commandMap.put(COMMAND_LOGOUT, new Logout());
         commandMap.put(COMMAND_SUBSCRIBE, new Enroll(this));
-        commandMap.put(COMMAND_UNSUBSCRIBE, new Unroll(this));
+        commandMap.put(COMMAND_UNROLL, new Unroll(this));
         // get link to database from servlet context
         try {
             InitialContext initContext = new InitialContext();

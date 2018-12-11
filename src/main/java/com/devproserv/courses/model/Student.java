@@ -13,13 +13,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.devproserv.courses.config.MainConfig.GET_USER_FIELDS_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_STUDENT_SQL;
-import static com.devproserv.courses.config.MainConfig.INSERT_USER_SQL;
+import static com.devproserv.courses.config.MainConfig.GET_USER_FLDS;
+import static com.devproserv.courses.config.MainConfig.INS_STUDENT;
+import static com.devproserv.courses.config.MainConfig.INS_USER;
 import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
-import static com.devproserv.courses.config.MainConfig.SELECT_AVAIL_COURSES_SQL;
-import static com.devproserv.courses.config.MainConfig.SELECT_LOGIN_SQL;
-import static com.devproserv.courses.config.MainConfig.SELECT_SUBSCR_COURSES_SQL;
+import static com.devproserv.courses.config.MainConfig.SEL_AVAIL_CRSES;
+import static com.devproserv.courses.config.MainConfig.SEL_LOGIN;
+import static com.devproserv.courses.config.MainConfig.SEL_ENROLL_CRSES;
 import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
 import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
 
@@ -58,7 +58,7 @@ public class Student extends User {
     @Override
     public void loadFields() {
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FIELDS_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FLDS)
         ) {
             prepStmt.setString(1, getLogin());
             ResultSet result = prepStmt.executeQuery();
@@ -117,7 +117,7 @@ public class Student extends User {
         List<Course> subscrCourses = new ArrayList<>();
 
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SELECT_SUBSCR_COURSES_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(SEL_ENROLL_CRSES)
         ) {
             prepStmt.setString(1, getLogin());
 
@@ -151,7 +151,7 @@ public class Student extends User {
         List<Course> availCourses = new ArrayList<>();
 
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SELECT_AVAIL_COURSES_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(SEL_AVAIL_CRSES)
         ) {
             prepStmt.setString(1, getLogin());
 
@@ -183,7 +183,7 @@ public class Student extends User {
      */
     private boolean loginExists() {
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SELECT_LOGIN_SQL)
+             PreparedStatement prepStmt = connection.prepareStatement(SEL_LOGIN)
         ) {
             prepStmt.setString(1, getLogin());
             ResultSet result = prepStmt.executeQuery();
@@ -203,8 +203,8 @@ public class Student extends User {
     private boolean insertUser() {
 
         try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmtOne = connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement prepStmtTwo = connection.prepareStatement(INSERT_STUDENT_SQL)
+             PreparedStatement prepStmtOne = connection.prepareStatement(INS_USER, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement prepStmtTwo = connection.prepareStatement(INS_STUDENT)
         ) {
             /* inserts data into the table 'users' */
             prepStmtOne.setString(1, getFirstName());
