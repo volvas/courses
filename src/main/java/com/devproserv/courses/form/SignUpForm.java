@@ -30,14 +30,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Handles sign up form
+ */
 public class SignUpForm implements Form {
-
+    /**
+     * Logger.
+     */
     private static final Logger logger = LogManager.getLogger(SignUpForm.class.getName());
 
-    private final AppContext appContext;
+    /**
+     * Application context.
+     */
+    private final AppContext context;
 
-    public SignUpForm(final AppContext appContext) {
-        this.appContext = appContext;
+    /**
+     * Constructor.
+     * @param context Application context
+     */
+    public SignUpForm(final AppContext context) {
+        this.context = context;
     }
 
     @Override
@@ -47,13 +59,18 @@ public class SignUpForm implements Form {
         final String firstName  = request.getParameter("firstname");
         final String lastName   = request.getParameter("lastname");
         final String faculty    = request.getParameter("faculty");
-        Validation validation = new SignUpValidation(login, password, firstName, lastName, faculty);
-        return validation.validated() ? validPath(request) : invalidPath(validation, request);
+        final Validation validation = new SignUpValidation(
+            login, password, firstName, lastName, faculty
+        );
+        return validation.validated()
+            ? validPath(request)
+            : invalidPath(validation, request);
     }
 
-    private String invalidPath(Validation validation,
-                               final HttpServletRequest request) {
-        final String login      = request.getParameter("login");
+    private String invalidPath(
+            final Validation validation, final HttpServletRequest request
+    ) {
+        final String login = request.getParameter("login");
         logger.info("Invalid credentials for potential login " + login);
         request.setAttribute("message", validation.errorMessage());
         return MainConfig.SIGNUP_PAGE;
@@ -65,6 +82,8 @@ public class SignUpForm implements Form {
         final String firstName  = request.getParameter("firstname");
         final String lastName   = request.getParameter("lastname");
         final String faculty    = request.getParameter("faculty");
-        return new Student(appContext, login, password, firstName, lastName, faculty).path(request);
+        return new Student(
+            context, login, password, firstName, lastName, faculty
+        ).path(request);
     }
 }

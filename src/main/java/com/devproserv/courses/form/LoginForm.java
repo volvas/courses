@@ -21,27 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.config.MainConfig;
 import com.devproserv.courses.model.PrelUser;
 import com.devproserv.courses.servlet.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
-
 /**
- * Represents a login form on web page
+ * Represents a login form on web page.
  */
-public class LoginForm implements Form {
+public final class LoginForm implements Form {
+    /**
+     * Logger.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginForm.class);
 
-    private final AppContext appContext;
+    /**
+     * Application context.
+     */
+    private final AppContext context;
 
-
-    public LoginForm(AppContext appContext) {
-        this.appContext = appContext;
+    /**
+     * Constructor.
+     * @param context Application context
+     */
+    public LoginForm(final AppContext context) {
+        this.context = context;
     }
 
     @Override
@@ -57,13 +66,18 @@ public class LoginForm implements Form {
         }
     }
 
-    private String invalidPath(final Validation validation, final HttpServletRequest request, final String login) {
+    private String invalidPath(
+            final Validation validation,
+            final HttpServletRequest request, final String login
+    ) {
         LOGGER.info("Invalid credentials for login {}", login);
         request.setAttribute("message", validation.errorMessage());
-        return LOGIN_PAGE;
+        return MainConfig.LOGIN_PAGE;
     }
 
-    private String validPath(final HttpServletRequest request, final String login, final String password) {
-        return new PrelUser(appContext, login, password).path(request);
+    private String validPath(
+            final HttpServletRequest request, final String login,
+            final String password) {
+        return new PrelUser(context, login, password).path(request);
     }
 }

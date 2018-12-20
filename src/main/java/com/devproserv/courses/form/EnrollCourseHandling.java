@@ -26,7 +26,12 @@ package com.devproserv.courses.form;
 import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.Student;
 
-public class EnrollCourseHandling extends CourseHandling {
+/**
+ * Handles enrolling to courses.
+ *
+ * @since 1.0.0
+ */
+public final class EnrollCourseHandling extends CourseHandling {
     @Override
     String courseIdParameter() {
         return "coursesubscrid";

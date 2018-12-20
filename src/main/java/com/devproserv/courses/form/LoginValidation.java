@@ -23,13 +23,31 @@
  */
 package com.devproserv.courses.form;
 
-public class LoginValidation implements Validation {
-
+/**
+ * Validation of the login form.
+ */
+public final class LoginValidation implements Validation {
+    /**
+     * Login.
+     */
     private final String login;
+
+    /**
+     * Password.
+     */
     private final String password;
+
+    /**
+     * Message.
+     */
     private String message;
 
-    LoginValidation(String login, String password) {
+    /**
+     * Constructor.
+     * @param login Login
+     * @param password Password
+     */
+    LoginValidation(final String login, final String password) {
         this.login = login;
         this.password = password;
     }

@@ -23,6 +23,9 @@
  */
 package com.devproserv.courses.form;
 
+/**
+ * Sign up validation.
+ */
 public class SignUpValidation implements Validation {
 
     private final String login;
@@ -32,7 +35,10 @@ public class SignUpValidation implements Validation {
     private final String faculty;
     private String message;
 
-    SignUpValidation(String login, String password, String firstName, String lastName, String faculty) {
+    SignUpValidation(
+            final String login, final String password, final String firstName,
+            final String lastName, final String faculty
+    ) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;

@@ -24,10 +24,9 @@
 package com.devproserv.courses.form;
 
 /**
- * Represents an interface validating data user inputs in web forms
+ * Represents an interface validating data user inputs in web forms.
  */
 public interface Validation {
-
     /**
      * Checks if data is valid. Concrete validation rules are defined in
      * implementing classes.
@@ -37,7 +36,7 @@ public interface Validation {
     boolean validated();
 
     /**
-     * Gives information what is wrong in data user inputs
+     * Gives information what is wrong in data user inputs.
      *
      * @return message with description about wrong input
      */

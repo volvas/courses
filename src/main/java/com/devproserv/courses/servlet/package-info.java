@@ -21,27 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
-import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.Student;
 
 /**
- * Handles unrolling from courses
+ * Servlets.
+ *
+ * @since 1.0.0
  */
-public final class UnrollCourseHandling extends CourseHandling {
-    @Override
-    String courseIdParameter() {
-        return "courseunsubscrid";
-    }
-
-    @Override
-    String errorMessageParameter() {
-        return "messageuns";
-    }
-
-    @Override
-    void changeEntry(Course course, Student user) {
-        course.deleteUserCourse(user);
-    }
-}
+package com.devproserv.courses.servlet;

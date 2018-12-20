@@ -23,12 +23,26 @@
  */
 package com.devproserv.courses.form;
 
-public class NumberValidation implements Validation {
-
+/**
+ * Number validation.
+ */
+public final class NumberValidation implements Validation {
+    /**
+     * Number.
+     */
     private final String number;
+
+    /**
+     * Message.
+     */
     private String message;
 
-    public NumberValidation(String number) { // TODO make default access after refactoring subscribe
+    /**
+     * Constructor.
+     * @param number Number
+     */
+    public NumberValidation(String number) {
+        // TODO make default access after refactoring subscribe
         this.number = number;
     }
 
