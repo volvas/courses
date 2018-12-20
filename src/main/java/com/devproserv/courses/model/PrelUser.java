@@ -1,18 +1,44 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Vladimir
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.devproserv.courses.model;
 
+import com.devproserv.courses.jooq.tables.Users;
 import com.devproserv.courses.servlet.AppContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
-import static com.devproserv.courses.config.MainConfig.SEL_USER;
 
 public class PrelUser extends User {
 
@@ -20,36 +46,41 @@ public class PrelUser extends User {
         STUD, LECT, ADMIN
     }
 
-    private static final Logger logger = LogManager.getLogger(PrelUser.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(
+            PrelUser.class.getName()
+    );
 
     private final AppContext appContext;
     private final String login;
     private final String password;
 
-    public PrelUser(AppContext appContext, String login, String password) {
+    public PrelUser(
+        final AppContext appContext, final String login, final String password
+    ) {
         this.appContext = appContext;
         this.login = login;
         this.password = password;
     }
 
     /**
-     * Checks if the user with specified login and password exists in the database.
-     * The method is used during login procedure
+     * Checks if the user with specified login and password exists
+     * in the database. The method is used during login procedure
      *
      * @return {@code true} if the user exists
      */
     @Override
     public boolean exists() {
-        try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SEL_USER)
+        try (Connection con = appContext.getDataSource().getConnection();
+             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            prepStmt.setString(1, login);
-            prepStmt.setString(2, password);
-            ResultSet result = prepStmt.executeQuery();
-            // return true if the result query contains at least one row
-            return result.next();
+            final Result<Record> rs = ctx.select().from(Users.USERS)
+                .where(
+                    Users.USERS.LOGIN.eq(login)
+                        .and(Users.USERS.PASSWORD.eq(password))
+                ).fetch();
+            return rs.isNotEmpty();
         } catch (SQLException e) {
-            logger.error("Request to database failed", e);
+            LOGGER.error("Request to database failed", e);
         }
         return false;
     }
@@ -65,9 +96,8 @@ public class PrelUser extends User {
     }
 
     public String path(HttpServletRequest request) {
-        /* checks if the user with entered credentials exists in the database */
         if (!exists()) {
-            logger.info("Login " + login + " does not exist.");
+            LOGGER.info("Login {} does not exist.", login);
 
             String validResponse = "Wrong username or password! Try again!";
             request.setAttribute("message", validResponse);
@@ -76,7 +106,6 @@ public class PrelUser extends User {
 
         User student = convertToTrue();
 
-        /* gets the link to the current session or creates new one and attaches the user to the session */
         HttpSession session = request.getSession(); // TODO add login.jsp filter to check validated session
         session.setAttribute(session.getId(), student);
 
@@ -126,20 +155,22 @@ public class PrelUser extends User {
      */
     private Role getUserRole(String login, String password) {
         Role role = Role.STUD;
-        try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SEL_USER)
+        try (Connection con = appContext.getDataSource().getConnection();
+             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            prepStmt.setString(1, login);
-            prepStmt.setString(2, password);
-            ResultSet result = prepStmt.executeQuery();
-            if (result.next()) {
-                role = Role.valueOf(result.getString(6));
+            final Result<Record> rs = ctx.select().from(Users.USERS)
+                .where(
+                    Users.USERS.LOGIN.eq(login)
+                        .and(Users.USERS.PASSWORD.eq(password))
+                ).fetch();
+            if (rs.isNotEmpty()) {
+                role = Role.valueOf(
+                    rs.get(0).getValue(Users.USERS.ROLE).name()
+                );
             }
         } catch (SQLException e) {
-            logger.error("Request to database failed", e);
+            LOGGER.error("Request to database failed", e);
         }
         return role;
     }
-
-
 }

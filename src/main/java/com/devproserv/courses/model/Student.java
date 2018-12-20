@@ -1,43 +1,99 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Vladimir
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.devproserv.courses.model;
 
+import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.jooq.enums.UsersRole;
+import com.devproserv.courses.jooq.tables.Courses;
+import com.devproserv.courses.jooq.tables.StudentCourses;
+import com.devproserv.courses.jooq.tables.Students;
+import com.devproserv.courses.jooq.tables.Users;
+import com.devproserv.courses.jooq.tables.records.UsersRecord;
 import com.devproserv.courses.servlet.AppContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Record4;
+import org.jooq.Result;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.devproserv.courses.config.MainConfig.GET_USER_FLDS;
-import static com.devproserv.courses.config.MainConfig.INS_STUDENT;
-import static com.devproserv.courses.config.MainConfig.INS_USER;
-import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
-import static com.devproserv.courses.config.MainConfig.SEL_AVAIL_CRSES;
-import static com.devproserv.courses.config.MainConfig.SEL_LOGIN;
-import static com.devproserv.courses.config.MainConfig.SEL_ENROLL_CRSES;
-import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
-import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
+import static org.jooq.impl.DSL.select;
 
+/**
+ * Represents a student entity
+ *
+ * @since 1.0.0
+ */
 public class Student extends User {
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(
+            Student.class.getName()
+    );
 
-    private static final Logger logger = LogManager.getLogger(Student.class.getName());
+    /**
+     * Application context.
+     */
+    private final AppContext context;
 
-    private final AppContext appContext;
-
+    /**
+     * Faculty field.
+     */
     private String faculty;
 
-
-    public Student(AppContext appContext) {
-        this.appContext = appContext;
+    /**
+     * Constructor.
+     * @param context Application context
+     */
+    public Student(final AppContext context) {
+        this.context = context;
     }
 
-    public Student(AppContext appContext, String login, String password, String firstName, String lastName, String faculty) {
-        this.appContext = appContext;
+    /**
+     * Constructor.
+     * @param context Application context
+     * @param login Login
+     * @param password Password
+     * @param firstName First name
+     * @param lastName Last name
+     * @param faculty Faculty
+     */
+    public Student(
+            final AppContext context, final String login, final String password,
+            final String firstName, final String lastName, final String faculty
+    ) {
+        this.context = context;
         setLogin(login);
         setPassword(password);
         setFirstName(firstName);
@@ -45,99 +101,103 @@ public class Student extends User {
         this.faculty = faculty;
     }
 
-
     @Override
     public boolean exists() {
         return true; // TODO
     }
 
-    /**
-     * Adds rest of the fields into the object.
-     *
-     */
     @Override
     public void loadFields() {
-        try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(GET_USER_FLDS)
+        try (Connection con = context.getDataSource().getConnection();
+             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            prepStmt.setString(1, getLogin());
-            ResultSet result = prepStmt.executeQuery();
-            while (result.next()) {
-                setId(result.getInt(1));
-                setFirstName(result.getString(2));
-                setLastName(result.getString(3));
-                setFaculty(result.getString(4));
-            }
+            final Result<Record4<Integer, String, String, String>> rs = ctx
+                .select(
+                    Users.USERS.USER_ID, Users.USERS.FIRSTNAME,
+                    Users.USERS.LASTNAME, Students.STUDENTS.FACULTY
+                )
+                .from(Users.USERS)
+                .join(Students.STUDENTS)
+                .on(Users.USERS.USER_ID.eq(Students.STUDENTS.STUD_ID))
+                .where(Users.USERS.LOGIN.eq(getLogin()))
+                .fetch();
+
+            rs.forEach(r -> {
+                    setId       (r.value1());
+                    setFirstName(r.value2());
+                    setLastName (r.value2());
+                    setFaculty  (r.value2());
+            });
         } catch (SQLException e) {
-            logger.error("Request to database failed", e);
+            LOGGER.error("Request to database failed", e);
         }
-        setPath(STUDENT_PAGE);
+        setPath(MainConfig.STUDENT_PAGE);
     }
 
-    public String path(HttpServletRequest request) {
-        /* checks if login exists and if yes returns back to the sign up
-         * page, if no inserts new user into database and proceeds to the login page*/
+    public String path(final HttpServletRequest request) {
         if (loginExists()) {
             request.setAttribute("message", "User already exists!");
-            return SIGNUP_PAGE;
+            return MainConfig.SIGNUP_PAGE;
         } else if (insertUser()) {
-            return LOGIN_PAGE;
+            return MainConfig.LOGIN_PAGE;
         } else {
-            request.setAttribute("message", "User has not been created. Try again.");
-            return SIGNUP_PAGE;
+            request.setAttribute("message",
+                "User has not been created. Try again."
+            );
+            return MainConfig.SIGNUP_PAGE;
         }
     }
 
     /**
-     * Prepares data to be displayed on the own student's page and attaches the data
-     * to HTTP request. Then JSP servlet will handle this request.
+     * Prepares data to be displayed on the own student's page and
+     * attaches the data to HTTP request.
+     * Then JSP servlet will handle this request.
      *
      * @param request HTTP request
      */
     @Override
-    public void prepareJspData(HttpServletRequest request) {
-
+    public void prepareJspData(final HttpServletRequest request) {
         request.setAttribute("student", this);
-
-        /* gets subscribed courses and available courses */
-        List<Course> subscribedCourses = getSubscribedCourses();
+        final List<Course> subscribedCourses = getSubscribedCourses();
         request.setAttribute("subscrcourses", subscribedCourses);
-        List<Course> availableCourses = getAvailableCourses();
+        final List<Course> availableCourses = getAvailableCourses();
         request.setAttribute("courses", availableCourses);
     }
 
     /**
      * Executes request into the database for getting the courses that a student
-     * has been subscribed to
+     * has been subscribed to.
      *
      * @return list of subscribed courses for the user
      */
     private List<Course> getSubscribedCourses() {
-        /* list of the subscribed courses to be returned */
-        List<Course> subscrCourses = new ArrayList<>();
-
-        try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SEL_ENROLL_CRSES)
+        try (Connection con = context.getDataSource().getConnection();
+             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            prepStmt.setString(1, getLogin());
-
-            /* executes the query and receives the result table */
-            ResultSet result = prepStmt.executeQuery();
-
-            /* runs through all rows of the result table, creates an instance of
-             * the Course, fills in the instance's fields, and put it into
-             * result list */
-            while (result.next()) {
-                Course course = new Course(appContext);
-                course.setId(result.getInt(1));
-                course.setName(result.getString(2));
-                course.setDescription(result.getString(3));
-                subscrCourses.add(course);
-            }
+            final Result<Record> rs = ctx.select()
+                .from(Courses.COURSES)
+                .where(Courses.COURSES.COURSE_ID.in(
+                    select(StudentCourses.STUDENT_COURSES.COURSE_ID)
+                    .from(StudentCourses.STUDENT_COURSES, Users.USERS)
+                    .where(StudentCourses.STUDENT_COURSES.STUD_ID
+                            .eq(Users.USERS.USER_ID)
+                            .and(Users.USERS.LOGIN.eq(getLogin()))
+                    )
+                ))
+                .fetch();
+            return rs.stream()
+                .map(r -> {
+                final Course course = new Course(context);
+                course.setId         (r.getValue(Courses.COURSES.COURSE_ID));
+                course.setName       (r.getValue(Courses.COURSES.NAME));
+                course.setDescription(r.getValue(Courses.COURSES.DESCRIPTION));
+                return course;
+                })
+                .collect(Collectors.toList());
         } catch (SQLException e) {
-            logger.error("Request to database failed", e);
+            LOGGER.error("Request to database failed", e);
         }
-        return subscrCourses;
+        return Collections.emptyList();
     }
 
     /**
@@ -147,94 +207,98 @@ public class Student extends User {
      * @return list of available courses from the database
      */
     private List<Course> getAvailableCourses() {
-        /* list of the available courses to be returned */
-        List<Course> availCourses = new ArrayList<>();
-
-        try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SEL_AVAIL_CRSES)
+        try (Connection con = context.getDataSource().getConnection();
+             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            prepStmt.setString(1, getLogin());
-
-            /* executes the query and receives the result table wrapped by ResultSet */
-            ResultSet result = prepStmt.executeQuery();
-
-            /* runs through all rows of the result table, creates an instance of
-             * the Course, fills in the instance's fields, and put it into
-             * result list */
-            while (result.next()) {
-                Course course = new Course(appContext);
-                course.setId(result.getInt(1));
-                course.setName(result.getString(2));
-                course.setDescription(result.getString(3));
-                availCourses.add(course);
-            }
+            final Result<Record> rs = ctx.select()
+                .from(Courses.COURSES)
+                .where(Courses.COURSES.COURSE_ID.notIn(
+                    select(StudentCourses.STUDENT_COURSES.COURSE_ID)
+                        .from(StudentCourses.STUDENT_COURSES, Users.USERS)
+                        .where(StudentCourses.STUDENT_COURSES.STUD_ID
+                            .eq(Users.USERS.USER_ID)
+                            .and(Users.USERS.LOGIN.eq(getLogin()))
+                        )
+                ))
+                .fetch();
+            return rs.stream()
+                .map(r -> {
+                    final Course course = new Course(context);
+                    course.setId         (r.getValue(Courses.COURSES.COURSE_ID));
+                    course.setName       (r.getValue(Courses.COURSES.NAME));
+                    course.setDescription(r.getValue(Courses.COURSES.DESCRIPTION));
+                    return course;
+                })
+                .collect(Collectors.toList());
         } catch (SQLException e) {
-            logger.error("Request to database failed", e);
+            LOGGER.error("Request to database failed", e);
         }
-        return availCourses;
+        return Collections.emptyList();
     }
 
 
-    // signup
     /**
-     * Checks if the specified login exists in the database. The method is used during sign up procedure.
+     * Checks if the specified login exists in the database.
+     * The method is used during sign up procedure.
      *
      * @return {@code true} if the user exists and {@code false} if does not
      */
     private boolean loginExists() {
-        try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmt = connection.prepareStatement(SEL_LOGIN)
+        try (Connection con = context.getDataSource().getConnection();
+             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            prepStmt.setString(1, getLogin());
-            ResultSet result = prepStmt.executeQuery();
-            /* returns true if result is not empty */
-            return result.next();
+            final Result<Record> rs = ctx.select()
+                .from(Users.USERS)
+                .where(Users.USERS.LOGIN.eq(getLogin()))
+                .fetch();
+            return rs.isNotEmpty();
         } catch (SQLException e) {
-            logger.error("Request to database failed", e);
+            LOGGER.error("Request to database failed", e);
         }
         return true; // less changes in the database if something is wrong
     }
 
     /**
-     * Executes request into the database (tables 'users' and 'students') to insert the current user.
+     * Executes request into the database (tables 'users' and 'students')
+     * to insert the current user.
      *
-     * @return {@code true} if the user has been created successfully and {@code false} if is not
+     * @return {@code true} if the user has been created successfully
+     * and {@code false} if is not.
      */
     private boolean insertUser() {
-
-        try (Connection connection = appContext.getDataSource().getConnection();
-             PreparedStatement prepStmtOne = connection.prepareStatement(INS_USER, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement prepStmtTwo = connection.prepareStatement(INS_STUDENT)
+        try (Connection con = context.getDataSource().getConnection();
+             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            /* inserts data into the table 'users' */
-            prepStmtOne.setString(1, getFirstName());
-            prepStmtOne.setString(2, getLastName());
-            prepStmtOne.setString(3, getLogin());
-            prepStmtOne.setString(4, getPassword());
-            prepStmtOne.setString(5, PrelUser.Role.STUD.toString());
-            /* returns false if inserting fails */
-            if (prepStmtOne.executeUpdate() == 0) return false;
-            /* returns autogenerated ID and assigns it to the user instance */
-            ResultSet generatedKey = prepStmtOne.getGeneratedKeys();
-            if (generatedKey.next()) {
-                setId(generatedKey.getInt(1));
-            }
-            /* inserts data into the table 'students' */
-            prepStmtTwo.setInt(1, getId());
-            prepStmtTwo.setString(2, getFaculty());
-            return prepStmtTwo.executeUpdate() != 0;
+            final Result<UsersRecord> rs = ctx.insertInto(
+                Users.USERS, Users.USERS.FIRSTNAME, Users.USERS.LASTNAME,
+                    Users.USERS.LOGIN, Users.USERS.PASSWORD,
+                    Users.USERS.ROLE
+                )
+                .values(
+                    getFirstName(), getLastName(), getLogin(), getPassword(),
+                    UsersRole.STUD
+                )
+                .returning(Users.USERS.USER_ID)
+                .fetch();
+            setId(rs.get(0).getValue(Users.USERS.USER_ID));
+            final int insertingResult = ctx.insertInto(
+                Students.STUDENTS, Students.STUDENTS.STUD_ID,
+                Students.STUDENTS.FACULTY
+            )
+            .values(getId(), getFaculty())
+            .execute();
+            return insertingResult != 0;
         } catch (SQLException e) {
-            logger.error("Request to database failed", e);
+            LOGGER.error("Request to database failed", e);
         }
         return false;
     }
 
-
-
     public String getFaculty() {
         return faculty;
     }
-    private void setFaculty(String faculty) {
+
+    private void setFaculty(final String faculty) {
         this.faculty = faculty;
     }
 }

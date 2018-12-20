@@ -95,67 +95,6 @@ public final class MainConfig {
     public static final String COMMAND_UNROLL = "unsubscribe";
 
     /**
-     * Select user SQL query.
-     */
-    public static final String SEL_USER =
-        "SELECT * FROM users WHERE login=? AND password=?";
-
-    /**
-     * Select login SQL query.
-     */
-    public static final String SEL_LOGIN =
-        "SELECT * FROM users WHERE login=?";
-
-    /**
-     * Insert login SQL query.
-     */
-    public static final String INS_USER = "INSERT INTO users (firstname,"
-        + " lastname, login, password, role) VALUES(?, ?, ?, ?, ?)";
-
-    /**
-     * Select student SQL query.
-     */
-    public static final String INS_STUDENT =
-        "INSERT INTO students (stud_id, faculty) VALUES(?, ?)";
-
-    /**
-     * Select user fields SQL query.
-     */
-    public static final String GET_USER_FLDS = "SELECT user_id,"
-        + " firstname, lastname, faculty FROM users JOIN students"
-        + " ON users.user_id = students.stud_id WHERE login = ?";
-
-    /**
-     * Select enrolled courses SQL query.
-     */
-    public static final String SEL_ENROLL_CRSES = "SELECT * "
-        + "FROM courses WHERE courses.course_id IN ("
-        + "SELECT student_courses.course_id FROM student_courses, users "
-        + "WHERE student_courses.stud_id = users.user_id AND users.login = ?)";
-
-    /**
-     * Select available courses SQL query.
-     */
-    public static final String SEL_AVAIL_CRSES = "SELECT * "
-        + "FROM courses WHERE course_id NOT IN ("
-        + "SELECT course_id FROM student_courses WHERE stud_id IN ("
-        + "SELECT user_id FROM users WHERE login = ?))";
-
-    /**
-     * Insert user courses SQL query.
-     */
-    public static final String INS_USER_CRSES = "INSERT INTO "
-        + "student_courses (course_id, stud_id, status) "
-        + "VALUES(?, (SELECT users.user_id FROM users WHERE login = ?), "
-        + "'STARTED')";
-
-    /**
-     * Delete courses from user SQL query.
-     */
-    public static final String DEL_USER_CRSES = "DELETE FROM "
-        + "student_courses WHERE course_id = ? AND stud_id = ?";
-
-    /**
      * Private constructor avoiding instantiation.
      */
     private MainConfig() {
