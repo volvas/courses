@@ -54,7 +54,7 @@ import static org.jooq.impl.DSL.select;
  *
  * @since 1.0.0
  */
-public class Student extends User {
+public final class Student extends User {
     /**
      * Logger.
      */

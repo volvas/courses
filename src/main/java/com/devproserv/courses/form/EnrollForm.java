@@ -28,19 +28,23 @@ import com.devproserv.courses.config.MainConfig;
 import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.Student;
 import com.devproserv.courses.servlet.AppContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Handles enroll form.
+ *
+ * @since 1.0.0
  */
 public final class EnrollForm implements Form {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LogManager.getLogger(EnrollForm.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(
+        EnrollForm.class.getName()
+    );
 
     /**
      * Application context.
@@ -48,9 +52,9 @@ public final class EnrollForm implements Form {
     private final AppContext context;
 
     /**
-     * Course handler
+     * Course handler.
      */
-    private final CourseHandling courseHandling;
+    private final CourseHandling handling;
 
     /**
      * User.
@@ -59,52 +63,76 @@ public final class EnrollForm implements Form {
 
     /**
      * Constructor.
+     *
      * @param context Application context
-     * @param courseHandling Course handler
+     * @param handling Course handler
      */
     public EnrollForm(
-        final AppContext context, final CourseHandling courseHandling
+        final AppContext context, final CourseHandling handling
     ) {
         this.context = context;
-        this.courseHandling = courseHandling;
+        this.handling = handling;
     }
 
     @Override
     public String validate(final HttpServletRequest request) {
         final HttpSession session = request.getSession(false);
+        final String path;
         if (session == null) {
-            return MainConfig.LOGIN_PAGE;
+            path = MainConfig.LOGIN_PAGE;
+        } else {
+            this.user = (Student) session.getAttribute(session.getId());
+            if (this.user == null) {
+                path = MainConfig.LOGIN_PAGE;
+            } else {
+                final String par = request.getParameter(
+                    this.handling.courseIdParameter()
+                );
+                final Validation validation = new NumberValidation(par);
+                if (validation.validated()) {
+                    path = this.validPath(request);
+                } else {
+                    path = this.invalidPath(validation, request);
+                }
+            }
         }
-
-        user = (Student) session.getAttribute(session.getId());
-        if (user == null) {
-            return MainConfig.LOGIN_PAGE;
-        }
-
-        final String courseIdStr = request.getParameter(
-            courseHandling.courseIdParameter()
-        );
-        final Validation validation = new NumberValidation(courseIdStr);
-        return validation.validated()
-                ? validPath(request)
-                : invalidPath(validation, request);
+        return path;
     }
 
+    /**
+     * Forms an error message in case of invalid path.
+     *
+     * @param validation Validation
+     * @param request HTTP request
+     * @return Invalid path
+     */
     private String invalidPath(final Validation validation,
-                               final HttpServletRequest request) {
-        LOGGER.info("Invalid credentials for login {}", user.getLogin());
-        request.setAttribute(
-            courseHandling.errorMessageParameter(), validation.errorMessage()
+        final HttpServletRequest request
+    ) {
+        LOGGER.info(
+            "Invalid credentials for login {}", this.user.getLogin()
         );
-        user.prepareJspData(request);
+        request.setAttribute(
+            this.handling.errorMessageParameter(),
+            validation.errorMessage()
+        );
+        this.user.prepareJspData(request);
         return MainConfig.STUDENT_PAGE;
     }
 
+    /**
+     * Creates a course.
+     *
+     * @param request HTTP request
+     * @return Valid path
+     */
     private String validPath(final HttpServletRequest request) {
-        final String courseIdStr = request.getParameter(courseHandling.courseIdParameter());
-        final int courseId = Integer.parseInt(courseIdStr);
-        final Course course = new Course(context);
-        course.setId(courseId);
-        return courseHandling.path(course, user, request);
+        final String par = request.getParameter(
+            this.handling.courseIdParameter()
+        );
+        final int id = Integer.parseInt(par);
+        final Course course = new Course(this.context);
+        course.setId(id);
+        return this.handling.path(course, this.user, request);
     }
 }

@@ -28,14 +28,16 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Represents a web form. Validates the data and handles request.
+ *
+ * @since 1.0.0
  */
 public interface Form {
     /**
      * Checks all data user inputs in web forms.
      *
      * @param request HTTP request
-     * @return Path to the same page containing the form in case of invalidated data
-     *         or path to further page if validation is successful
+     * @return Path to the same page containing the form in case
+     *  of invalidated data or path to further page if validation is successful
      */
     String validate(HttpServletRequest request);
 }

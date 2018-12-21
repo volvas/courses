@@ -40,7 +40,12 @@ import java.sql.SQLException;
 
 import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
 
-public class PrelUser extends User {
+/**
+ * Preliminary user.
+ *
+ * @since 1.0.0
+ */
+public final class PrelUser extends User {
 
     public enum Role {
         STUD, LECT, ADMIN
@@ -104,9 +109,10 @@ public class PrelUser extends User {
             return LOGIN_PAGE;
         }
 
-        User student = convertToTrue();
+        final User student = convertToTrue();
 
-        HttpSession session = request.getSession(); // TODO add login.jsp filter to check validated session
+        HttpSession session = request.getSession();
+        // TODO add login.jsp filter to check validated session
         session.setAttribute(session.getId(), student);
 
         student.prepareJspData(request);
@@ -116,11 +122,9 @@ public class PrelUser extends User {
 
 
     /**
-     * TODO
      * Creates new instance of  with given login and password.
      * Login and password should match to ones in the database
      * (the method should be called after {@code userExists} method.
-     *
      *
      * @return new instance of Student, Lecturer or Administrator
      */

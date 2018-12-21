@@ -33,17 +33,17 @@ import com.devproserv.courses.model.Student;
  */
 public final class EnrollCourseHandling extends CourseHandling {
     @Override
-    String courseIdParameter() {
+    public String courseIdParameter() {
         return "coursesubscrid";
     }
 
     @Override
-    String errorMessageParameter() {
+    public String errorMessageParameter() {
         return "messagesub";
     }
 
     @Override
-    void changeEntry(final Course course, final Student user) {
+    public void changeEntry(final Course course, final Student user) {
         course.insertUserCourse(user);
     }
 }

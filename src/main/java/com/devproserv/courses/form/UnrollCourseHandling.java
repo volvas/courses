@@ -31,17 +31,17 @@ import com.devproserv.courses.model.Student;
  */
 public final class UnrollCourseHandling extends CourseHandling {
     @Override
-    String courseIdParameter() {
+    public String courseIdParameter() {
         return "courseunsubscrid";
     }
 
     @Override
-    String errorMessageParameter() {
+    public String errorMessageParameter() {
         return "messageuns";
     }
 
     @Override
-    void changeEntry(Course course, Student user) {
+    public void changeEntry(Course course, Student user) {
         course.deleteUserCourse(user);
     }
 }

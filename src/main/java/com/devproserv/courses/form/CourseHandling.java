@@ -39,13 +39,13 @@ abstract class CourseHandling {
      * Returns course ID parameter.
      * @return Course ID
      */
-    abstract String courseIdParameter();
+    public abstract String courseIdParameter();
 
     /**
      * Returns error message.
      * @return Error message
      */
-    abstract String errorMessageParameter();
+    public abstract String errorMessageParameter();
 
     /**
      * Changes entry.
@@ -53,20 +53,20 @@ abstract class CourseHandling {
      * @param course Course instance
      * @param user User instance
      */
-    abstract void changeEntry(Course course, Student user);
+    public abstract void changeEntry(Course course, Student user);
 
     /**
      * Returns a string containing the path.
+     *
      * @param course Course instance
      * @param user User instance
      * @param request HTTP request
      * @return Path
      */
-    String path(
+    public String path(
         final Course course, final Student user,
         final HttpServletRequest request
     ) {
-        // TODO check the number of the course is not already subscribed
         this.changeEntry(course, user);
         user.prepareJspData(request);
         return MainConfig.STUDENT_PAGE;
