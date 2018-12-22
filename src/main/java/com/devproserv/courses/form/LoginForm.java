@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.PrelUser;
 import com.devproserv.courses.servlet.AppContext;
 import org.slf4j.Logger;
@@ -67,17 +67,17 @@ public final class LoginForm implements Form {
     }
 
     private String invalidPath(
-            final Validation validation,
-            final HttpServletRequest request, final String login
+        final Validation validation,
+        final HttpServletRequest request, final String login
     ) {
         LOGGER.info("Invalid credentials for login {}", login);
         request.setAttribute("message", validation.errorMessage());
-        return MainConfig.LOGIN_PAGE;
+        return Conf.LOGIN_PAGE;
     }
 
     private String validPath(
-            final HttpServletRequest request, final String login,
-            final String password) {
+        final HttpServletRequest request, final String login,
+        final String password) {
         return new PrelUser(context, login, password).path(request);
     }
 }

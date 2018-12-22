@@ -23,7 +23,7 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,6 +47,6 @@ public final class Logout implements Command {
         final HttpSession session = request.getSession();
         session.invalidate();
         LOGGER.info("User logged out.");
-        return MainConfig.HOME_PAGE;
+        return Conf.HOME_PAGE;
     }
 }

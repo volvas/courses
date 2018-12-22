@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.Student;
 import javax.servlet.http.HttpServletRequest;
@@ -69,6 +69,6 @@ abstract class CourseHandling {
     ) {
         this.changeEntry(course, user);
         user.prepareJspData(request);
-        return MainConfig.STUDENT_PAGE;
+        return Conf.STUDENT_PAGE;
     }
 }

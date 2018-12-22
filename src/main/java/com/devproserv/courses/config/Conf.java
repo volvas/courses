@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.devproserv.courses.config;
 
 /**
@@ -28,7 +29,7 @@ package com.devproserv.courses.config;
  *
  * @since 1.0.0
  */
-public final class MainConfig {
+public final class Conf {
     /**
      * Home page file name.
      */
@@ -97,6 +98,6 @@ public final class MainConfig {
     /**
      * Private constructor avoiding instantiation.
      */
-    private MainConfig() {
+    private Conf() {
     }
 }

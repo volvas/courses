@@ -38,7 +38,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
+import static com.devproserv.courses.config.Conf.LOGIN_PAGE;
 
 /**
  * Preliminary user.

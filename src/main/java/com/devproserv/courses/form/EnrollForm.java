@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.Student;
 import com.devproserv.courses.servlet.AppContext;
@@ -79,11 +79,11 @@ public final class EnrollForm implements Form {
         final HttpSession session = request.getSession(false);
         final String path;
         if (session == null) {
-            path = MainConfig.LOGIN_PAGE;
+            path = Conf.LOGIN_PAGE;
         } else {
             this.user = (Student) session.getAttribute(session.getId());
             if (this.user == null) {
-                path = MainConfig.LOGIN_PAGE;
+                path = Conf.LOGIN_PAGE;
             } else {
                 final String par = request.getParameter(
                     this.handling.courseIdParameter()
@@ -117,7 +117,7 @@ public final class EnrollForm implements Form {
             validation.errorMessage()
         );
         this.user.prepareJspData(request);
-        return MainConfig.STUDENT_PAGE;
+        return Conf.STUDENT_PAGE;
     }
 
     /**

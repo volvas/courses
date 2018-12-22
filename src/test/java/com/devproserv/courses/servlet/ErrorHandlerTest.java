@@ -9,9 +9,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.devproserv.courses.config.MainConfig.EXCEPTION_PAGE;
-import static com.devproserv.courses.config.MainConfig.GENERIC_ERR_PAGE;
-import static com.devproserv.courses.config.MainConfig.NOT_FOUND_PAGE;
+import static com.devproserv.courses.config.Conf.EXCEPTION_PAGE;
+import static com.devproserv.courses.config.Conf.GENERIC_ERR_PAGE;
+import static com.devproserv.courses.config.Conf.NOT_FOUND_PAGE;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

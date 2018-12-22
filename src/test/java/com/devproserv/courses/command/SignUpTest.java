@@ -8,7 +8,7 @@ import org.mockito.MockitoAnnotations;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.devproserv.courses.config.MainConfig.SIGNUP_PAGE;
+import static com.devproserv.courses.config.Conf.SIGNUP_PAGE;
 import static org.junit.Assert.assertEquals;
 
 /**

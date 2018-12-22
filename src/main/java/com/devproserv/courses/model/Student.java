@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.jooq.enums.UsersRole;
 import com.devproserv.courses.jooq.tables.Courses;
 import com.devproserv.courses.jooq.tables.StudentCourses;
@@ -131,20 +131,20 @@ public final class Student extends User {
         } catch (SQLException e) {
             LOGGER.error("Request to database failed", e);
         }
-        setPath(MainConfig.STUDENT_PAGE);
+        setPath(Conf.STUDENT_PAGE);
     }
 
     public String path(final HttpServletRequest request) {
         if (loginExists()) {
             request.setAttribute("message", "User already exists!");
-            return MainConfig.SIGNUP_PAGE;
+            return Conf.SIGNUP_PAGE;
         } else if (insertUser()) {
-            return MainConfig.LOGIN_PAGE;
+            return Conf.LOGIN_PAGE;
         } else {
             request.setAttribute("message",
                 "User has not been created. Try again."
             );
-            return MainConfig.SIGNUP_PAGE;
+            return Conf.SIGNUP_PAGE;
         }
     }
 

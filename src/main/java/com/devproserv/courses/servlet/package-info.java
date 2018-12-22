@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-
 /**
  * Servlets.
  *

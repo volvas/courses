@@ -1,5 +1,31 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Vladimir
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.devproserv.courses.servlet;
 
+import com.devproserv.courses.config.Conf;
+import java.io.IOException;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -9,39 +35,34 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static com.devproserv.courses.config.MainConfig.HOME_PAGE;
-import static com.devproserv.courses.config.MainConfig.LECTURER_PAGE;
-import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
 
 /**
  * Filter forbids direct access to internal JSP. In case of direct typing
  * address in the browser the filter redirects to home page.
  * 
  * @author vovas11
- *
+ * @since 1.0.0
  */
-@WebFilter(urlPatterns = {STUDENT_PAGE, LECTURER_PAGE},
-           dispatcherTypes = {DispatcherType.REQUEST})
+@WebFilter(urlPatterns = {Conf.STUDENT_PAGE, Conf.LECTURER_PAGE},
+    dispatcherTypes = {DispatcherType.REQUEST})
 public class JspFilter implements Filter {
 
     @Override
-    public void init(FilterConfig config) {
+    public void init(final FilterConfig config) {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException {
-        
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        
-        // redirect to home page
-        httpResponse.sendRedirect(httpRequest.getContextPath() + HOME_PAGE);
+    public void doFilter(
+        final ServletRequest request, final ServletResponse response,
+        final FilterChain chain
+    ) throws IOException {
+        final HttpServletRequest httpRequest = (HttpServletRequest) request;
+        final HttpServletResponse httpResponse = (HttpServletResponse) response;
+        httpResponse.sendRedirect(
+            httpRequest.getContextPath() + Conf.HOME_PAGE
+        );
     }
 
     @Override
     public void destroy() {}
-
 }

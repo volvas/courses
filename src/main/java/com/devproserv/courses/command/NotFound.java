@@ -23,7 +23,7 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.config.Conf;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -34,6 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 public final class NotFound implements Command {
     @Override
     public String path(final HttpServletRequest request) {
-        return MainConfig.NOT_FOUND_PAGE;
+        return Conf.NOT_FOUND_PAGE;
     }
 }

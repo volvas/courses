@@ -23,7 +23,7 @@
  */
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.config.MainConfig;
+import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.Student;
 import com.devproserv.courses.servlet.AppContext;
 import org.apache.logging.log4j.LogManager;
@@ -73,7 +73,7 @@ public class SignUpForm implements Form {
         final String login = request.getParameter("login");
         logger.info("Invalid credentials for potential login " + login);
         request.setAttribute("message", validation.errorMessage());
-        return MainConfig.SIGNUP_PAGE;
+        return Conf.SIGNUP_PAGE;
     }
 
     private String validPath(final HttpServletRequest request) {
