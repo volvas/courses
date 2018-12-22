@@ -118,8 +118,7 @@ public class Course {
             .where(
                 StudentCourses.STUDENT_COURSES.COURSE_ID.eq(this.getId())
                 .and(StudentCourses.STUDENT_COURSES.STUD_ID.eq(user.getId()))
-            )
-            .execute();
+            ).execute();
         } catch (final SQLException exc) {
             LOGGER.error("User not deleted!", exc);
         }

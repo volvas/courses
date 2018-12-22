@@ -24,38 +24,48 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.servlet.AppContext;
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
- * Represents the entity of the Administrator.
+ * Encapsulates response from users.
  *
  * @since 1.0.0
  */
-public final class Admin extends User {
+public class Response {
+    /**
+     * Path.
+     */
+    private final String path;
 
-    private final AppContext context;
+    /**
+     * Payload.
+     */
+    private final Map<String, Object> payload;
 
-    public Admin(
-        final AppContext context, final String login, final String password
-    ) {
-        super(login, password);
-        this.context = context;
+    /**
+     * Primary constructor.
+     *
+     * @param path Path
+     * @param payload Payload
+     */
+    public Response(final String path, final Map<String, Object> payload) {
+        this.path    = path;
+        this.payload = payload;
     }
 
-    @Override
-    public void loadFields() {
-        // TODO
+    /**
+     * Getter.
+     * @return Path
+     */
+    public String path() {
+        return this.path;
     }
 
-    @Override
-    public void prepareJspData(HttpServletRequest request) {
-        // TODO
-        request.setAttribute("message", "This account is not accessible!");
-    }
-
-    @Override
-    public Response response() {
-        return null;
+    /**
+     * Getter.
+     * @return Payload
+     */
+    public Map<String, Object> payload() {
+        return this.payload;
     }
 }

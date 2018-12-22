@@ -32,25 +32,25 @@ import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
 import com.devproserv.courses.jooq.tables.records.UsersRecord;
 import com.devproserv.courses.servlet.AppContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record4;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.jooq.impl.DSL.select;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Represents a student entity
+ * Represents a student entity.
  *
  * @since 1.0.0
  */
@@ -58,9 +58,7 @@ public final class Student extends User {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LogManager.getLogger(
-            Student.class.getName()
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(Student.class);
 
     /**
      * Application context.
@@ -74,44 +72,44 @@ public final class Student extends User {
 
     /**
      * Constructor.
-     * @param context Application context
-     */
-    public Student(final AppContext context) {
-        this.context = context;
-    }
-
-    /**
-     * Constructor.
+     *
      * @param context Application context
      * @param login Login
      * @param password Password
-     * @param firstName First name
-     * @param lastName Last name
+     */
+    public Student(
+        final AppContext context, final String login, final String password
+    ) {
+        this(context, login, password, null, null, null);
+    }
+
+    /**
+     * Primary constructor.
+     *
+     * @param context Application context
+     * @param login Login
+     * @param password Password
+     * @param fname First name
+     * @param lname Last name
      * @param faculty Faculty
      */
     public Student(
             final AppContext context, final String login, final String password,
-            final String firstName, final String lastName, final String faculty
+            final String fname, final String lname, final String faculty
     ) {
+        super(login, password);
         this.context = context;
-        setLogin(login);
-        setPassword(password);
-        setFirstName(firstName);
-        setLastName(lastName);
+        setFirstName(fname);
+        setLastName(lname);
         this.faculty = faculty;
     }
 
     @Override
-    public boolean exists() {
-        return true; // TODO
-    }
-
-    @Override
     public void loadFields() {
-        try (Connection con = context.getDataSource().getConnection();
-             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
+        try (Connection con = this.context.getDataSource().getConnection();
+            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            final Result<Record4<Integer, String, String, String>> rs = ctx
+            final Result<Record4<Integer, String, String, String>> res = ctx
                 .select(
                     Users.USERS.USER_ID, Users.USERS.FIRSTNAME,
                     Users.USERS.LASTNAME, Students.STUDENTS.FACULTY
@@ -119,19 +117,18 @@ public final class Student extends User {
                 .from(Users.USERS)
                 .join(Students.STUDENTS)
                 .on(Users.USERS.USER_ID.eq(Students.STUDENTS.STUD_ID))
-                .where(Users.USERS.LOGIN.eq(getLogin()))
+                .where(Users.USERS.LOGIN.eq(this.getLogin()))
                 .fetch();
-
-            rs.forEach(r -> {
-                    setId       (r.value1());
-                    setFirstName(r.value2());
-                    setLastName (r.value2());
-                    setFaculty  (r.value2());
+            res.forEach(
+                r -> {
+                    this.setId(r.value1());
+                    this.setFirstName(r.value2());
+                    this.setLastName(r.value3());
+                    this.setFaculty(r.value4());
             });
-        } catch (SQLException e) {
-            LOGGER.error("Request to database failed", e);
+        } catch (final SQLException ex) {
+            LOGGER.error("Field loading failed!", ex);
         }
-        setPath(Conf.STUDENT_PAGE);
     }
 
     public String path(final HttpServletRequest request) {
@@ -164,6 +161,18 @@ public final class Student extends User {
         request.setAttribute("courses", availableCourses);
     }
 
+    @Override
+    public Response response() {
+        this.loadFields();
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("student", this);
+        final List<Course> subscribed = this.getSubscribedCourses();
+        payload.put("subscrcourses", subscribed);
+        final List<Course> available = this.getAvailableCourses();
+        payload.put("courses", available);
+        return new Response(Conf.STUDENT_PAGE, payload);
+    }
+
     /**
      * Executes request into the database for getting the courses that a student
      * has been subscribed to.
@@ -172,12 +181,12 @@ public final class Student extends User {
      */
     private List<Course> getSubscribedCourses() {
         try (Connection con = context.getDataSource().getConnection();
-             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
+            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record> rs = ctx.select()
                 .from(Courses.COURSES)
                 .where(Courses.COURSES.COURSE_ID.in(
-                    select(StudentCourses.STUDENT_COURSES.COURSE_ID)
+                    DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
                     .from(StudentCourses.STUDENT_COURSES, Users.USERS)
                     .where(StudentCourses.STUDENT_COURSES.STUD_ID
                             .eq(Users.USERS.USER_ID)
@@ -194,8 +203,8 @@ public final class Student extends User {
                 return course;
                 })
                 .collect(Collectors.toList());
-        } catch (SQLException e) {
-            LOGGER.error("Request to database failed", e);
+        } catch (final SQLException ex) {
+            LOGGER.error("Request to database failed", ex);
         }
         return Collections.emptyList();
     }
@@ -208,16 +217,16 @@ public final class Student extends User {
      */
     private List<Course> getAvailableCourses() {
         try (Connection con = context.getDataSource().getConnection();
-             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
+            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record> rs = ctx.select()
                 .from(Courses.COURSES)
                 .where(Courses.COURSES.COURSE_ID.notIn(
-                    select(StudentCourses.STUDENT_COURSES.COURSE_ID)
+                    DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
                         .from(StudentCourses.STUDENT_COURSES, Users.USERS)
                         .where(StudentCourses.STUDENT_COURSES.STUD_ID
                             .eq(Users.USERS.USER_ID)
-                            .and(Users.USERS.LOGIN.eq(getLogin()))
+                            .and(Users.USERS.LOGIN.eq(this.getLogin()))
                         )
                 ))
                 .fetch();
@@ -230,8 +239,8 @@ public final class Student extends User {
                     return course;
                 })
                 .collect(Collectors.toList());
-        } catch (SQLException e) {
-            LOGGER.error("Request to database failed", e);
+        } catch (final SQLException ex) {
+            LOGGER.error("Request to database failed", ex);
         }
         return Collections.emptyList();
     }
@@ -295,7 +304,7 @@ public final class Student extends User {
     }
 
     public String getFaculty() {
-        return faculty;
+        return this.faculty;
     }
 
     private void setFaculty(final String faculty) {

@@ -24,6 +24,9 @@
 
 package com.devproserv.courses.model;
 
+import com.devproserv.courses.config.Conf;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -32,9 +35,13 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0.0
  */
 public final class EmptyUser extends User {
-    @Override
-    public boolean exists() {
-        return false; // TODO
+    /**
+     * Primary constructor.
+     * @param login Login
+     * @param password Password
+     */
+    public EmptyUser(final String login, final String password) {
+        super(login, password);
     }
 
     @Override
@@ -45,5 +52,13 @@ public final class EmptyUser extends User {
     @Override
     public void prepareJspData(final HttpServletRequest request) {
         // TODO
+    }
+
+    @Override
+    public Response response() {
+        final String message = "Wrong username or password! Try again!";
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", message);
+        return new Response(Conf.LOGIN_PAGE, payload);
     }
 }

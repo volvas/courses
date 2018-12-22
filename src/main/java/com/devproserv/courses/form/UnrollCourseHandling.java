@@ -24,7 +24,7 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
 
 /**
  * Handles unrolling from courses
@@ -41,7 +41,7 @@ public final class UnrollCourseHandling extends CourseHandling {
     }
 
     @Override
-    public void changeEntry(Course course, Student user) {
+    public void changeEntry(Course course, User user) {
         course.deleteUserCourse(user);
     }
 }

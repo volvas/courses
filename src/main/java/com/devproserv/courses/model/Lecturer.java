@@ -33,10 +33,14 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0.0
  */
 public final class Lecturer extends User {
-
+    /**
+     * Application context.
+     */
     private final AppContext context;
 
-    // additional fields representing columns in the table 'lecturers'
+    /**
+     * Degree.
+     */
     private String degree;
 
     public String getDegree() {
@@ -46,14 +50,11 @@ public final class Lecturer extends User {
         this.degree = degree;
     }
 
-
-    public Lecturer(final AppContext context) {
+    public Lecturer(
+        final AppContext context, final String login, final String password
+    ) {
+        super(login, password);
         this.context = context;
-    }
-
-    @Override
-    public boolean exists() {
-        return true; // TODO
     }
 
     @Override
@@ -65,5 +66,10 @@ public final class Lecturer extends User {
     public void prepareJspData(final HttpServletRequest request) {
         // TODO
         request.setAttribute("message", "This account is not accessible!");
+    }
+
+    @Override
+    public Response response() {
+        return null;
     }
 }

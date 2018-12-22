@@ -24,7 +24,7 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
 
 /**
  * Handles enrolling to courses.
@@ -43,7 +43,7 @@ public final class EnrollCourseHandling extends CourseHandling {
     }
 
     @Override
-    public void changeEntry(final Course course, final Student user) {
+    public void changeEntry(final Course course, final User user) {
         course.insertUserCourse(user);
     }
 }

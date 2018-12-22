@@ -26,7 +26,7 @@ package com.devproserv.courses.form;
 
 import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -53,7 +53,7 @@ abstract class CourseHandling {
      * @param course Course instance
      * @param user User instance
      */
-    public abstract void changeEntry(Course course, Student user);
+    public abstract void changeEntry(Course course, User user);
 
     /**
      * Returns a string containing the path.
@@ -64,7 +64,7 @@ abstract class CourseHandling {
      * @return Path
      */
     public String path(
-        final Course course, final Student user,
+        final Course course, final User user,
         final HttpServletRequest request
     ) {
         this.changeEntry(course, user);

@@ -50,12 +50,12 @@ public abstract class User {
     /**
      * First name.
      */
-    private String firstName;
+    private String fname;
 
     /**
      * Last name.
      */
-    private String lastName;
+    private String lname;
 
     /**
      * Path.
@@ -63,10 +63,14 @@ public abstract class User {
     private String path;
 
     /**
-     * Defines whether the user exists.
-     * @return {@code true} if user exists
+     * Primary constructor.
+     * @param login Login
+     * @param password Password
      */
-    public abstract boolean exists();
+    public User(final String login, final String password) {
+        this.login = login;
+        this.password = password;
+    }
 
     /**
      * Loads fields for the user.
@@ -78,14 +82,6 @@ public abstract class User {
      * @param request HTTP request
      */
     public abstract void prepareJspData(HttpServletRequest request);
-
-    /**
-     * Converts user from preliminary to true one.
-     * @return User
-     */
-    public User convertToTrue() {
-        return this; // TODO
-    }
 
     /**
      * Getter.
@@ -108,7 +104,7 @@ public abstract class User {
      * @return Login
      */
     public String getLogin() {
-        return login;
+        return this.login;
     }
 
     /**
@@ -119,32 +115,74 @@ public abstract class User {
         this.login = login;
     }
 
+    /**
+     * Getter.
+     * @return Password
+     */
     public String getPassword() {
         return this.password;
     }
+
+    /**
+     * Setter.
+     * @param password Password
+     */
     public void setPassword(final String password) {
         this.password = password;
     }
 
+    /**
+     * Getter.
+     * @return First name
+     */
     public String getFirstName() {
-        return this.firstName;
+        return this.fname;
     }
+
+    /**
+     * Setter.
+     * @param firstName First name
+     */
     public void setFirstName(final String firstName) {
-        this.firstName = firstName;
+        this.fname = firstName;
     }
 
+    /**
+     * Getter.
+     * @return Last name
+     */
     public String getLastName() {
-        return this.lastName;
-    }
-    public void setLastName(final String lastName) {
-        this.lastName = lastName;
+        return this.lname;
     }
 
+    /**
+     * Setter.
+     * @param lastName Last name
+     */
+    public void setLastName(final String lastName) {
+        this.lname = lastName;
+    }
+
+    /**
+     * Getter.
+     * @return Path
+     */
     public String getPath() {
         return this.path;
     }
+
+    /**
+     * Setter.
+     * @param path Path
+     */
     public void setPath(final String path) {
         this.path = path;
     }
 
+    /**
+     * Returns payload.
+     *
+     * @return Response
+     */
+    public abstract Response response();
 }

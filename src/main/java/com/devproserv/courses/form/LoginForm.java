@@ -25,7 +25,7 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.config.Conf;
-import com.devproserv.courses.model.PrelUser;
+import com.devproserv.courses.model.Roles;
 import com.devproserv.courses.servlet.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +78,6 @@ public final class LoginForm implements Form {
     private String validPath(
         final HttpServletRequest request, final String login,
         final String password) {
-        return new PrelUser(context, login, password).path(request);
+        return new Roles(context, login, password).path(request);
     }
 }
