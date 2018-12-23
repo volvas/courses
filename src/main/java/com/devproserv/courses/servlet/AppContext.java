@@ -31,7 +31,6 @@ import com.devproserv.courses.command.Logout;
 import com.devproserv.courses.command.NotFound;
 import com.devproserv.courses.command.SignUp;
 import com.devproserv.courses.command.Unroll;
-import com.devproserv.courses.config.Conf;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.InitialContext;
@@ -42,11 +41,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * {@code AppContext} is a main container controls application lifecycle.
+ * Controls application lifecycle.
  *
  * @since 1.0.0
  */
 public class AppContext {
+    /**
+     * Sign up command name.
+     */
+    private static final String COMMAND_SIGNUP = "signup";
+
+    /**
+     * Login command name.
+     */
+    static final String COMMAND_LOGIN = "login";
+
+    /**
+     * Logout command name.
+     */
+    private static final String COMMAND_LOGOUT = "logout";
+
+    /**
+     * Enroll command name.
+     */
+    private static final String COMMAND_SUBSCRIBE = "subscribe";
+
+    /**
+     * Unroll command name.
+     */
+    private static final String COMMAND_UNROLL = "unsubscribe";
+
     /**
      * Logger.
      */
@@ -73,11 +97,11 @@ public class AppContext {
      * Constructor.
      */
     AppContext() {
-        this.commands.put(Conf.COMMAND_SIGNUP, new SignUp(this));
-        this.commands.put(Conf.COMMAND_LOGIN, new Login(this));
-        this.commands.put(Conf.COMMAND_LOGOUT, new Logout());
-        this.commands.put(Conf.COMMAND_SUBSCRIBE, new Enroll(this));
-        this.commands.put(Conf.COMMAND_UNROLL, new Unroll(this));
+        this.commands.put(COMMAND_SIGNUP, new SignUp(this));
+        this.commands.put(COMMAND_LOGIN, new Login(this));
+        this.commands.put(COMMAND_LOGOUT, new Logout());
+        this.commands.put(COMMAND_SUBSCRIBE, new Enroll(this));
+        this.commands.put(COMMAND_UNROLL, new Unroll(this));
         try {
             final InitialContext ctx = new InitialContext();
             this.source = (DataSource) ctx.lookup(AppContext.DB_URL);

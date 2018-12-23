@@ -24,7 +24,8 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.config.Conf;
+import com.devproserv.courses.form.EnrollForm;
+import com.devproserv.courses.form.SignUpForm;
 import com.devproserv.courses.jooq.enums.UsersRole;
 import com.devproserv.courses.jooq.tables.Courses;
 import com.devproserv.courses.jooq.tables.StudentCourses;
@@ -134,14 +135,14 @@ public final class Student extends User {
     public String path(final HttpServletRequest request) {
         if (loginExists()) {
             request.setAttribute("message", "User already exists!");
-            return Conf.SIGNUP_PAGE;
+            return SignUpForm.SIGNUP_PAGE;
         } else if (insertUser()) {
-            return Conf.LOGIN_PAGE;
+            return EnrollForm.LOGIN_PAGE;
         } else {
             request.setAttribute("message",
                 "User has not been created. Try again."
             );
-            return Conf.SIGNUP_PAGE;
+            return SignUpForm.SIGNUP_PAGE;
         }
     }
 
@@ -170,7 +171,7 @@ public final class Student extends User {
         payload.put("subscrcourses", subscribed);
         final List<Course> available = this.getAvailableCourses();
         payload.put("courses", available);
-        return new Response(Conf.STUDENT_PAGE, payload);
+        return new Response(EnrollForm.STUDENT_PAGE, payload);
     }
 
     /**

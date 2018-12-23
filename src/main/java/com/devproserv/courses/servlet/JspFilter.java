@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.servlet;
 
-import com.devproserv.courses.config.Conf;
+import com.devproserv.courses.form.EnrollForm;
 import java.io.IOException;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -43,9 +43,18 @@ import javax.servlet.http.HttpServletResponse;
  * @author vovas11
  * @since 1.0.0
  */
-@WebFilter(urlPatterns = {Conf.STUDENT_PAGE, Conf.LECTURER_PAGE},
+@WebFilter(urlPatterns = {EnrollForm.STUDENT_PAGE, JspFilter.LECTURER_PAGE},
     dispatcherTypes = {DispatcherType.REQUEST})
 public class JspFilter implements Filter {
+    /**
+     * Home page file name.
+     */
+    public static final String HOME_PAGE = "/index.html";
+
+    /**
+     * Lecturer JSP page file name.
+     */
+    static final String LECTURER_PAGE = "/students.jsp";
 
     @Override
     public void init(final FilterConfig config) {
@@ -59,7 +68,7 @@ public class JspFilter implements Filter {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         final HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.sendRedirect(
-            httpRequest.getContextPath() + Conf.HOME_PAGE
+            httpRequest.getContextPath() + HOME_PAGE
         );
     }
 

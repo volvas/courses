@@ -24,9 +24,8 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.User;
 import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,6 +38,14 @@ import org.apache.logging.log4j.Logger;
  * @since 1.0.0
  */
 public final class EnrollForm implements Form {
+    /**
+     * Course JSP page file name.
+     */
+    public static final String STUDENT_PAGE = "/courses.jsp";
+    /**
+     * Login JSP page file name.
+     */
+    public static final String LOGIN_PAGE = "/login.jsp";
     /**
      * Logger.
      */
@@ -59,7 +66,7 @@ public final class EnrollForm implements Form {
     /**
      * User.
      */
-    private Student user;
+    private User user;
 
     /**
      * Constructor.
@@ -79,11 +86,11 @@ public final class EnrollForm implements Form {
         final HttpSession session = request.getSession(false);
         final String path;
         if (session == null) {
-            path = Conf.LOGIN_PAGE;
+            path = LOGIN_PAGE;
         } else {
-            this.user = (Student) session.getAttribute(session.getId());
+            this.user = (User) session.getAttribute(session.getId());
             if (this.user == null) {
-                path = Conf.LOGIN_PAGE;
+                path = LOGIN_PAGE;
             } else {
                 final String par = request.getParameter(
                     this.handling.courseIdParameter()
@@ -106,8 +113,8 @@ public final class EnrollForm implements Form {
      * @param request HTTP request
      * @return Invalid path
      */
-    private String invalidPath(final Validation validation,
-        final HttpServletRequest request
+    private String invalidPath(
+        final Validation validation, final HttpServletRequest request
     ) {
         LOGGER.info(
             "Invalid credentials for login {}", this.user.getLogin()
@@ -117,7 +124,7 @@ public final class EnrollForm implements Form {
             validation.errorMessage()
         );
         this.user.prepareJspData(request);
-        return Conf.STUDENT_PAGE;
+        return STUDENT_PAGE;
     }
 
     /**

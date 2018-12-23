@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.servlet;
 
-import com.devproserv.courses.config.Conf;
+import com.devproserv.courses.command.NotFound;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,6 +41,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = {"/error"}, name = "errorHandler")
 public final class ErrorHandler extends HttpServlet {
     /**
+     * Exception page file name.
+     */
+    static final String EXCEPTION_PAGE = "/errorexcep.html";
+    /**
+     * Generic error page file name.
+     */
+    static final String GENERIC_ERR_PAGE = "/errorgen.html";
+
+    /**
      * Serial number.
      */
     private static final long serialVersionUID = -9152573062248666207L;
@@ -55,11 +64,11 @@ public final class ErrorHandler extends HttpServlet {
         final Integer statusCode = (Integer) request.getAttribute(
             "javax.servlet.error.status_code"
         );
-        String pageToRedirect = Conf.GENERIC_ERR_PAGE;
+        String pageToRedirect = GENERIC_ERR_PAGE;
         if (throwable != null) {
-            pageToRedirect = Conf.EXCEPTION_PAGE;
+            pageToRedirect = EXCEPTION_PAGE;
         } else if (statusCode == 404) {
-            pageToRedirect = Conf.NOT_FOUND_PAGE;
+            pageToRedirect = NotFound.NOT_FOUND_PAGE;
         }
         final RequestDispatcher dispatcher = request.getRequestDispatcher(
             pageToRedirect

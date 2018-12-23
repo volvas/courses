@@ -7,7 +7,7 @@ import org.mockito.MockitoAnnotations;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.devproserv.courses.config.Conf.NOT_FOUND_PAGE;
+import static com.devproserv.courses.command.NotFound.NOT_FOUND_PAGE;
 import static org.junit.Assert.assertEquals;
 
 /**

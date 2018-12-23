@@ -23,7 +23,6 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.config.Conf;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -32,8 +31,13 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0.0
  */
 public final class NotFound implements Command {
+    /**
+     * Not found page file name.
+     */
+    public static final String NOT_FOUND_PAGE = "/404.html";
+
     @Override
     public String path(final HttpServletRequest request) {
-        return Conf.NOT_FOUND_PAGE;
+        return NOT_FOUND_PAGE;
     }
 }

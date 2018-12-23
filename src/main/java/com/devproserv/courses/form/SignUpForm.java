@@ -23,7 +23,6 @@
  */
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.Student;
 import com.devproserv.courses.servlet.AppContext;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +33,10 @@ import javax.servlet.http.HttpServletRequest;
  * Handles sign up form
  */
 public class SignUpForm implements Form {
+    /**
+     * Sign up JSP page file name.
+     */
+    public static final String SIGNUP_PAGE = "/signup.jsp";
     /**
      * Logger.
      */
@@ -73,7 +76,7 @@ public class SignUpForm implements Form {
         final String login = request.getParameter("login");
         logger.info("Invalid credentials for potential login " + login);
         request.setAttribute("message", validation.errorMessage());
-        return Conf.SIGNUP_PAGE;
+        return SIGNUP_PAGE;
     }
 
     private String validPath(final HttpServletRequest request) {

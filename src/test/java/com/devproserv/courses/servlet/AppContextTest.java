@@ -24,7 +24,8 @@
 
 package com.devproserv.courses.servlet;
 
-import com.devproserv.courses.config.Conf;
+import com.devproserv.courses.command.NotFound;
+import com.devproserv.courses.form.EnrollForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -63,9 +64,9 @@ public class AppContextTest {
     @Test
     public void testGetPathOk() {
         when(this.request.getParameter("command"))
-            .thenReturn(Conf.COMMAND_LOGIN);
+            .thenReturn(AppContext.COMMAND_LOGIN);
         final String path = this.context.getPath(this.request);
-        assertEquals("Not login page.", Conf.LOGIN_PAGE, path);
+        assertEquals("Not login page.", EnrollForm.LOGIN_PAGE, path);
     }
 
     @Test
@@ -73,6 +74,6 @@ public class AppContextTest {
         when(this.request.getParameter("command"))
             .thenReturn("invalid command");
         final String path = this.context.getPath(this.request);
-        assertEquals("Not notfound page", Conf.NOT_FOUND_PAGE, path);
+        assertEquals("Not notfound page", NotFound.NOT_FOUND_PAGE, path);
     }
 }

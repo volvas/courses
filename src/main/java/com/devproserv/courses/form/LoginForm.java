@@ -24,7 +24,6 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.config.Conf;
 import com.devproserv.courses.model.Roles;
 import com.devproserv.courses.servlet.AppContext;
 import org.slf4j.Logger;
@@ -72,7 +71,7 @@ public final class LoginForm implements Form {
     ) {
         LOGGER.info("Invalid credentials for login {}", login);
         request.setAttribute("message", validation.errorMessage());
-        return Conf.LOGIN_PAGE;
+        return EnrollForm.LOGIN_PAGE;
     }
 
     private String validPath(

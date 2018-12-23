@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.config.Conf;
+import com.devproserv.courses.form.EnrollForm;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +59,6 @@ public final class EmptyUser extends User {
         final String message = "Wrong username or password! Try again!";
         final Map<String, Object> payload = new HashMap<>();
         payload.put("message", message);
-        return new Response(Conf.LOGIN_PAGE, payload);
+        return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
 }

@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 
 import static org.mockito.Mockito.doNothing;
 
-import static com.devproserv.courses.config.Conf.HOME_PAGE;
+import static com.devproserv.courses.servlet.JspFilter.HOME_PAGE;
 
 /**
  * Contains unit-tests to check functionality of {@link Logout} class
