@@ -26,18 +26,22 @@ package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Roles;
 import com.devproserv.courses.servlet.AppContext;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Represents a login form on web page.
+ *
+ * @since 1.0.0
  */
 public final class LoginForm implements Form {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+        LoginForm.class
+    );
 
     /**
      * Application context.
@@ -59,12 +63,19 @@ public final class LoginForm implements Form {
         final Validation validation = new LoginValidation(login, password);
         if (validation.validated()) {
             LOGGER.debug("Login '{}' and password are valid.", login);
-            return validPath(request, login, password);
+            return this.validPath(request, login, password);
         } else {
-            return invalidPath(validation, request, login);
+            return this.invalidPath(validation, request, login);
         }
     }
 
+    /**
+     * Handles invalid path.
+     * @param validation Validation
+     * @param request HTTP Request
+     * @param login Login
+     * @return Path
+     */
     private String invalidPath(
         final Validation validation,
         final HttpServletRequest request, final String login
@@ -74,9 +85,17 @@ public final class LoginForm implements Form {
         return EnrollForm.LOGIN_PAGE;
     }
 
+    /**
+     * Handles valid path.
+     * @param request HTTP Request
+     * @param login Login
+     * @param password Password
+     * @return Path
+     */
     private String validPath(
         final HttpServletRequest request, final String login,
-        final String password) {
-        return new Roles(context, login, password).path(request);
+        final String password
+    ) {
+        return new Roles(this.context, login, password).path(request);
     }
 }

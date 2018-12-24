@@ -1,39 +1,76 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Vladimir
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.devproserv.courses.command;
 
+import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.servlet.AppContext;
+import javax.servlet.http.HttpServletRequest;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static com.devproserv.courses.form.EnrollForm.LOGIN_PAGE;
-import static org.junit.Assert.assertEquals;
-
 /**
- * Contains unit-tests to check functionality of {@link Login} class
- * 
+ * Contains unit-tests to check functionality of {@link Login} class.
+ *
+ * @since 1.0.0
  */
 public class LoginTest {
+    /**
+     * Application context.
+     */
     @Mock
-    private AppContext appContext;
+    private AppContext context;
+
+    /**
+     * HTTP request.
+     */
     @Mock
     private HttpServletRequest request;
 
+    /**
+     * Login.
+     */
     private Login login;
 
-
+    /**
+     * Prepare data.
+     */
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        login = new Login(appContext);
+        this.login = new Login(this.context);
     }
 
-
+    /**
+     * Checks correct path.
+     */
     @Test
     public void testPathOk() {
-        String path = login.path(request);
-        assertEquals(LOGIN_PAGE, path);
+        final String path = this.login.path(this.request);
+        Assert.assertEquals(EnrollForm.LOGIN_PAGE, path);
     }
 }

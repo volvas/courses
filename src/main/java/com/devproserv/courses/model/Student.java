@@ -25,13 +25,10 @@
 package com.devproserv.courses.model;
 
 import com.devproserv.courses.form.EnrollForm;
-import com.devproserv.courses.form.SignUpForm;
-import com.devproserv.courses.jooq.enums.UsersRole;
 import com.devproserv.courses.jooq.tables.Courses;
 import com.devproserv.courses.jooq.tables.StudentCourses;
 import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
-import com.devproserv.courses.jooq.tables.records.UsersRecord;
 import com.devproserv.courses.servlet.AppContext;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -129,20 +126,6 @@ public final class Student extends User {
             });
         } catch (final SQLException ex) {
             LOGGER.error("Field loading failed!", ex);
-        }
-    }
-
-    public String path(final HttpServletRequest request) {
-        if (loginExists()) {
-            request.setAttribute("message", "User already exists!");
-            return SignUpForm.SIGNUP_PAGE;
-        } else if (insertUser()) {
-            return EnrollForm.LOGIN_PAGE;
-        } else {
-            request.setAttribute("message",
-                "User has not been created. Try again."
-            );
-            return SignUpForm.SIGNUP_PAGE;
         }
     }
 
@@ -244,64 +227,6 @@ public final class Student extends User {
             LOGGER.error("Request to database failed", ex);
         }
         return Collections.emptyList();
-    }
-
-
-    /**
-     * Checks if the specified login exists in the database.
-     * The method is used during sign up procedure.
-     *
-     * @return {@code true} if the user exists and {@code false} if does not
-     */
-    private boolean loginExists() {
-        try (Connection con = context.getDataSource().getConnection();
-             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            final Result<Record> rs = ctx.select()
-                .from(Users.USERS)
-                .where(Users.USERS.LOGIN.eq(getLogin()))
-                .fetch();
-            return rs.isNotEmpty();
-        } catch (SQLException e) {
-            LOGGER.error("Request to database failed", e);
-        }
-        return true; // less changes in the database if something is wrong
-    }
-
-    /**
-     * Executes request into the database (tables 'users' and 'students')
-     * to insert the current user.
-     *
-     * @return {@code true} if the user has been created successfully
-     * and {@code false} if is not.
-     */
-    private boolean insertUser() {
-        try (Connection con = context.getDataSource().getConnection();
-             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            final Result<UsersRecord> rs = ctx.insertInto(
-                Users.USERS, Users.USERS.FIRSTNAME, Users.USERS.LASTNAME,
-                    Users.USERS.LOGIN, Users.USERS.PASSWORD,
-                    Users.USERS.ROLE
-                )
-                .values(
-                    getFirstName(), getLastName(), getLogin(), getPassword(),
-                    UsersRole.STUD
-                )
-                .returning(Users.USERS.USER_ID)
-                .fetch();
-            setId(rs.get(0).getValue(Users.USERS.USER_ID));
-            final int insertingResult = ctx.insertInto(
-                Students.STUDENTS, Students.STUDENTS.STUD_ID,
-                Students.STUDENTS.FACULTY
-            )
-            .values(getId(), getFaculty())
-            .execute();
-            return insertingResult != 0;
-        } catch (SQLException e) {
-            LOGGER.error("Request to database failed", e);
-        }
-        return false;
     }
 
     public String getFaculty() {

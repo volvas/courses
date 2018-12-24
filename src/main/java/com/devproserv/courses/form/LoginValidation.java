@@ -25,6 +25,8 @@ package com.devproserv.courses.form;
 
 /**
  * Validation of the login form.
+ *
+ * @since 1.0.0
  */
 public final class LoginValidation implements Validation {
     /**
@@ -55,18 +57,18 @@ public final class LoginValidation implements Validation {
     @Override
     public boolean validated() {
         boolean result = true;
-        message = "ok";
-        if (login == null || password == null) {
-            message = "Username and password should not be empty!";
+        this.message = "ok";
+        if (this.login == null || this.password == null) {
+            this.message = "Username and password should not be empty!";
             result = false;
-        } else if (login.isEmpty() || password.isEmpty()) {
-            message = "Username and password should not be empty!";
+        } else if (this.login.isEmpty() || this.password.isEmpty()) {
+            this.message = "Username and password should not be empty!";
             result = false;
-        } else if (login.matches("^[^a-zA-Z]+.*")) {
-            message = "Username should not start with a digit or non letter!";
+        } else if (this.login.matches("^[^a-zA-Z]+.*")) {
+            this.message = "Username shouldn't start with digit or non letter!";
             result = false;
-        } else if (login.matches(".*\\W+.*")) {
-            message = "Username should contain only letters and digits!";
+        } else if (this.login.matches(".*\\W+.*")) {
+            this.message = "Username should contain only letters and digits!";
             result = false;
         }
         return result;
@@ -74,6 +76,6 @@ public final class LoginValidation implements Validation {
 
     @Override
     public String errorMessage() {
-        return message;
+        return this.message;
     }
 }

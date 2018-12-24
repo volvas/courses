@@ -23,24 +23,28 @@
  */
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.model.Student;
 import com.devproserv.courses.servlet.AppContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Handles sign up form
+ * Handles sign up form.
+ *
+ * @since 1.0.0
  */
-public class SignUpForm implements Form {
+public final class SignUpForm implements Form {
     /**
      * Sign up JSP page file name.
      */
     public static final String SIGNUP_PAGE = "/signup.jsp";
+
     /**
      * Logger.
      */
-    private static final Logger logger = LogManager.getLogger(SignUpForm.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+        SignUpForm.class
+    );
 
     /**
      * Application context.
@@ -57,36 +61,36 @@ public class SignUpForm implements Form {
 
     @Override
     public String validate(final HttpServletRequest request) {
-        final String login      = request.getParameter("login");
-        final String password   = request.getParameter("password");
-        final String firstName  = request.getParameter("firstname");
-        final String lastName   = request.getParameter("lastname");
-        final String faculty    = request.getParameter("faculty");
-        final Validation validation = new SignUpValidation(
-            login, password, firstName, lastName, faculty
-        );
+        final SignupPars pars = new SignupPars(request).extract();
+        final Validation validation = new SignUpValidation(pars);
         return validation.validated()
-            ? validPath(request)
-            : invalidPath(validation, request);
+            ? this.validPath(request)
+            : this.invalidPath(validation, request);
     }
 
+    /**
+     * Handles invalid path.
+     * @param validation Validation
+     * @param request HTTP Request
+     * @return Path
+     */
     private String invalidPath(
-            final Validation validation, final HttpServletRequest request
+        final Validation validation, final HttpServletRequest request
     ) {
         final String login = request.getParameter("login");
-        logger.info("Invalid credentials for potential login " + login);
+        LOGGER.info("Invalid credentials for potential login {}", login);
         request.setAttribute("message", validation.errorMessage());
-        return SIGNUP_PAGE;
+        return SignUpForm.SIGNUP_PAGE;
     }
 
+    /**
+     * Handles valid path.
+     * @param request HTTP Request
+     * @return Path
+     */
     private String validPath(final HttpServletRequest request) {
-        final String login      = request.getParameter("login");
-        final String password   = request.getParameter("password");
-        final String firstName  = request.getParameter("firstname");
-        final String lastName   = request.getParameter("lastname");
-        final String faculty    = request.getParameter("faculty");
-        return new Student(
-            context, login, password, firstName, lastName, faculty
-        ).path(request);
+        final SignupPars pars = new SignupPars(request).extract();
+        return new SignupUser(this.context, pars).path(request);
     }
+
 }

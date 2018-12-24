@@ -25,51 +25,95 @@ package com.devproserv.courses.form;
 
 /**
  * Sign up validation.
+ *
+ * @since 1.0.0
  */
-public class SignUpValidation implements Validation {
-
+public final class SignUpValidation implements Validation {
+    /**
+     * Login.
+     */
     private final String login;
+
+    /**
+     * Password.
+     */
     private final String password;
-    private final String firstName;
-    private final String lastName;
+
+    /**
+     * First name.
+     */
+    private final String fname;
+
+    /**
+     * Last name.
+     */
+    private final String lname;
+
+    /**
+     * Faculty.
+     */
     private final String faculty;
+
+    /**
+     * Validation message.
+     */
     private String message;
 
+    /**
+     * Constructor.
+     * @param login Login
+     * @param password Password
+     * @param fname First name
+     * @param lname Last name
+     * @param faculty Faculty
+     */
     SignUpValidation(
-            final String login, final String password, final String firstName,
-            final String lastName, final String faculty
+        final String login, final String password, final String fname,
+        final String lname, final String faculty
     ) {
-        this.login = login;
+        this.login    = login;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.faculty = faculty;
+        this.fname    = fname;
+        this.lname    = lname;
+        this.faculty  = faculty;
+    }
+
+    /**
+     * Constructor.
+     * @param pars Parameters
+     */
+    public SignUpValidation(final SignupPars pars) {
+        this.login    = pars.getLogin();
+        this.password = pars.getPassword();
+        this.fname    = pars.getFirstName();
+        this.lname    = pars.getLastName();
+        this.faculty  = pars.getFaculty();
     }
 
     @Override
     public boolean validated() {
         boolean result = true;
-        message = "ok";
-        if (login == null || password == null) {
-            message = "Username and password should not be empty!";
+        this.message = "ok";
+        if (this.login == null || this.password == null) {
+            this.message = "Username and password should not be empty!";
             result = false;
-        } else if (login.isEmpty() || password.isEmpty()) {
-            message = "Username and password should not be empty!";
+        } else if (this.login.isEmpty() || this.password.isEmpty()) {
+            this.message = "Username and password should not be empty!";
             result = false;
-        } else if (login.matches("^[^a-zA-Z]+.*")) {
-            message = "Username should not start with a digit or non letter!";
+        } else if (this.login.matches("^[^a-zA-Z]+.*")) {
+            this.message = "Username shouldn't start with digit or non letter!";
             result = false;
-        } else if (login.matches(".*\\W+.*")) {
-            message = "Username should contain only letters and digits!";
+        } else if (this.login.matches(".*\\W+.*")) {
+            this.message = "Username should contain only letters and digits!";
             result = false;
-        } else if (firstName == null || firstName.isEmpty()) {
-            message = "First name should not be empty!";
+        } else if (this.fname == null || this.fname.isEmpty()) {
+            this.message = "First name should not be empty!";
             result = false;
-        } else if (lastName == null || lastName.isEmpty()) {
-            message = "Last name should not be empty!";
+        } else if (this.lname == null || this.lname.isEmpty()) {
+            this.message = "Last name should not be empty!";
             result = false;
-        } else if (faculty == null || faculty.isEmpty()) {
-            message = "Faculty should not be empty!";
+        } else if (this.faculty == null || this.faculty.isEmpty()) {
+            this.message = "Faculty should not be empty!";
             result = false;
         }
         return result;
@@ -77,6 +121,6 @@ public class SignUpValidation implements Validation {
 
     @Override
     public String errorMessage() {
-        return message;
+        return this.message;
     }
 }

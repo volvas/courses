@@ -24,9 +24,9 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.servlet.AppContext;
+import com.devproserv.courses.servlet.JspFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import com.devproserv.courses.servlet.JspFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

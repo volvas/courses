@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet handles errors related to wrong requests and JVM's exceptions.
- * 
+ *
  * @since 1.0.0
  */
 @WebServlet(urlPatterns = {"/error"}, name = "errorHandler")
@@ -58,20 +58,21 @@ public final class ErrorHandler extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
         final HttpServletResponse response
     ) throws ServletException, IOException {
+        final int nfound = 404;
         final Throwable throwable = (Throwable) request.getAttribute(
             "javax.servlet.error.exception"
         );
-        final Integer statusCode = (Integer) request.getAttribute(
+        final Integer status = (Integer) request.getAttribute(
             "javax.servlet.error.status_code"
         );
-        String pageToRedirect = GENERIC_ERR_PAGE;
+        String page = GENERIC_ERR_PAGE;
         if (throwable != null) {
-            pageToRedirect = EXCEPTION_PAGE;
-        } else if (statusCode == 404) {
-            pageToRedirect = NotFound.NOT_FOUND_PAGE;
+            page = EXCEPTION_PAGE;
+        } else if (status == nfound) {
+            page = NotFound.NOT_FOUND_PAGE;
         }
         final RequestDispatcher dispatcher = request.getRequestDispatcher(
-            pageToRedirect
+            page
         );
         dispatcher.forward(request, response);
     }

@@ -42,10 +42,12 @@ public final class EnrollForm implements Form {
      * Course JSP page file name.
      */
     public static final String STUDENT_PAGE = "/courses.jsp";
+
     /**
      * Login JSP page file name.
      */
     public static final String LOGIN_PAGE = "/login.jsp";
+
     /**
      * Logger.
      */
@@ -86,11 +88,11 @@ public final class EnrollForm implements Form {
         final HttpSession session = request.getSession(false);
         final String path;
         if (session == null) {
-            path = LOGIN_PAGE;
+            path = EnrollForm.LOGIN_PAGE;
         } else {
             this.user = (User) session.getAttribute(session.getId());
             if (this.user == null) {
-                path = LOGIN_PAGE;
+                path = EnrollForm.LOGIN_PAGE;
             } else {
                 final String par = request.getParameter(
                     this.handling.courseIdParameter()
@@ -124,7 +126,7 @@ public final class EnrollForm implements Form {
             validation.errorMessage()
         );
         this.user.prepareJspData(request);
-        return STUDENT_PAGE;
+        return EnrollForm.STUDENT_PAGE;
     }
 
     /**

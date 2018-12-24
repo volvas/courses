@@ -38,6 +38,6 @@ public final class NotFound implements Command {
 
     @Override
     public String path(final HttpServletRequest request) {
-        return NOT_FOUND_PAGE;
+        return NotFound.NOT_FOUND_PAGE;
     }
 }

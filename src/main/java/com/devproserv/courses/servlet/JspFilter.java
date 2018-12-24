@@ -39,13 +39,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Filter forbids direct access to internal JSP. In case of direct typing
  * address in the browser the filter redirects to home page.
- * 
- * @author vovas11
+ *
  * @since 1.0.0
  */
 @WebFilter(urlPatterns = {EnrollForm.STUDENT_PAGE, JspFilter.LECTURER_PAGE},
     dispatcherTypes = {DispatcherType.REQUEST})
-public class JspFilter implements Filter {
+public final class JspFilter implements Filter {
     /**
      * Home page file name.
      */
@@ -65,13 +64,15 @@ public class JspFilter implements Filter {
         final ServletRequest request, final ServletResponse response,
         final FilterChain chain
     ) throws IOException {
-        final HttpServletRequest httpRequest = (HttpServletRequest) request;
-        final HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.sendRedirect(
-            httpRequest.getContextPath() + HOME_PAGE
+        final HttpServletRequest hrequest = (HttpServletRequest) request;
+        final HttpServletResponse hresponse = (HttpServletResponse) response;
+        hresponse.sendRedirect(
+            hrequest.getContextPath() + HOME_PAGE
         );
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+
+    }
 }

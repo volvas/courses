@@ -33,9 +33,17 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0.0
  */
 public final class Admin extends User {
-
+    /**
+     * Application context.
+     */
     private final AppContext context;
 
+    /**
+     * Contstructor.
+     * @param context Application context
+     * @param login Login
+     * @param password Password
+     */
     public Admin(
         final AppContext context, final String login, final String password
     ) {
@@ -45,12 +53,10 @@ public final class Admin extends User {
 
     @Override
     public void loadFields() {
-        // TODO
     }
 
     @Override
-    public void prepareJspData(HttpServletRequest request) {
-        // TODO
+    public void prepareJspData(final HttpServletRequest request) {
         request.setAttribute("message", "This account is not accessible!");
     }
 

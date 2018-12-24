@@ -21,48 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
 /**
- * Number validation.
- *
- * @since 1.0.0
+ * Tests for servlets.
  */
-public final class NumberValidation implements Validation {
-    /**
-     * Number.
-     */
-    private final String number;
-
-    /**
-     * Message.
-     */
-    private String message;
-
-    /**
-     * Constructor.
-     * @param number Number
-     */
-    NumberValidation(final String number) {
-        this.number = number;
-    }
-
-    @Override
-    public boolean validated() {
-        boolean result = true;
-        this.message = "ok";
-        if (this.number == null || this.number.isEmpty()) {
-            this.message = "Field should not be empty!";
-            result = false;
-        } else if (this.number.matches(".*\\D+.*")) {
-            this.message = "Field should contain only digits";
-            result = false;
-        }
-        return result;
-    }
-
-    @Override
-    public String errorMessage() {
-        return this.message;
-    }
-}
+package com.devproserv.courses.servlet;

@@ -47,14 +47,14 @@ import org.slf4j.LoggerFactory;
  */
 public class AppContext {
     /**
-     * Sign up command name.
-     */
-    private static final String COMMAND_SIGNUP = "signup";
-
-    /**
      * Login command name.
      */
     static final String COMMAND_LOGIN = "login";
+
+    /**
+     * Sign up command name.
+     */
+    private static final String COMMAND_SIGNUP = "signup";
 
     /**
      * Logout command name.
@@ -97,11 +97,11 @@ public class AppContext {
      * Constructor.
      */
     AppContext() {
-        this.commands.put(COMMAND_SIGNUP, new SignUp(this));
-        this.commands.put(COMMAND_LOGIN, new Login(this));
-        this.commands.put(COMMAND_LOGOUT, new Logout());
-        this.commands.put(COMMAND_SUBSCRIBE, new Enroll(this));
-        this.commands.put(COMMAND_UNROLL, new Unroll(this));
+        this.commands.put(AppContext.COMMAND_SIGNUP, new SignUp(this));
+        this.commands.put(AppContext.COMMAND_LOGIN, new Login(this));
+        this.commands.put(AppContext.COMMAND_LOGOUT, new Logout());
+        this.commands.put(AppContext.COMMAND_SUBSCRIBE, new Enroll(this));
+        this.commands.put(AppContext.COMMAND_UNROLL, new Unroll(this));
         try {
             final InitialContext ctx = new InitialContext();
             this.source = (DataSource) ctx.lookup(AppContext.DB_URL);
@@ -128,7 +128,7 @@ public class AppContext {
      * @param request HTTP request
      * @return String with a path defined by parameter "command" in request
      */
-    public String getPath(final HttpServletRequest request) {
+    String getPath(final HttpServletRequest request) {
         final String par = request.getParameter("command");
         Command command = this.commands.get(par);
         if (command == null) {

@@ -26,14 +26,13 @@ package com.devproserv.courses.servlet;
 
 import com.devproserv.courses.command.NotFound;
 import com.devproserv.courses.form.EnrollForm;
+import javax.servlet.http.HttpServletRequest;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import javax.servlet.http.HttpServletRequest;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 
 /**
  * Contains unit-tests to check functionality of {@link AppContext} class.
@@ -61,19 +60,27 @@ public class AppContextTest {
         this.context = new AppContext();
     }
 
+    /**
+     * Test.
+     */
     @Test
     public void testGetPathOk() {
-        when(this.request.getParameter("command"))
+        Mockito.when(this.request.getParameter("command"))
             .thenReturn(AppContext.COMMAND_LOGIN);
         final String path = this.context.getPath(this.request);
-        assertEquals("Not login page.", EnrollForm.LOGIN_PAGE, path);
+        Assert.assertEquals("Not login page.", EnrollForm.LOGIN_PAGE, path);
     }
 
+    /**
+     * Test.
+     */
     @Test
     public void testGetPathWrongCommand() {
-        when(this.request.getParameter("command"))
+        Mockito.when(this.request.getParameter("command"))
             .thenReturn("invalid command");
         final String path = this.context.getPath(this.request);
-        assertEquals("Not notfound page", NotFound.NOT_FOUND_PAGE, path);
+        Assert.assertEquals(
+            "Not notfound page", NotFound.NOT_FOUND_PAGE, path
+        );
     }
 }
