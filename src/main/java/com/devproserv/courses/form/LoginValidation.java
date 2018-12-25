@@ -59,7 +59,7 @@ public final class LoginValidation implements Validation {
         boolean result = true;
         this.message = "ok";
         if (this.login == null || this.password == null) {
-            this.message = "Username and password should not be empty!";
+            this.message = "Username and password should not be null!";
             result = false;
         } else if (this.login.isEmpty() || this.password.isEmpty()) {
             this.message = "Username and password should not be empty!";

@@ -24,50 +24,50 @@
 
 package com.devproserv.courses.form;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Contains unit-tests to check functionality of {@link LoginValidation} class.
  *
  * @since 1.0.0
  */
-public class LoginValidationTest {
+class LoginValidationTest {
     /**
      * Test.
      */
     @Test
-    public void testValidatedOk() {
+    void testValidatedOk() {
         final Validation validation = new LoginValidation("user", "password");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertTrue(result);
-        Assert.assertEquals("ok", message);
+        Assertions.assertTrue(result);
+        Assertions.assertEquals("ok", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedOkLoginEndsDigit() {
+    void testValidatedOkLoginEndsDigit() {
         final Validation validation = new LoginValidation("user4", "pass");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertTrue(result);
-        Assert.assertEquals("ok", message);
+        Assertions.assertTrue(result);
+        Assertions.assertEquals("ok", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedNull() {
+    void testValidatedNull() {
         final Validation validation = new LoginValidation(null, null);
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
-            "Username and password should not be empty!", message
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
+            "Username and password should not be null!", message
         );
     }
 
@@ -75,12 +75,12 @@ public class LoginValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedEmpty() {
+    void testValidatedEmpty() {
         final Validation validation = new LoginValidation("", "pass");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username and password should not be empty!", message
         );
     }
@@ -89,13 +89,13 @@ public class LoginValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginBeginsDigit() {
+    void testValidatedLoginBeginsDigit() {
         final Validation validation = new LoginValidation("25user", "pass");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
-            "Username should not start with a digit or non letter!", message
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 
@@ -103,13 +103,13 @@ public class LoginValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginBeginsNotLetter() {
+    void testValidatedLoginBeginsNotLetter() {
         final Validation validation = new LoginValidation("#user", "pass");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
-            "Username should not start with a digit or non letter!", message
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 
@@ -117,13 +117,13 @@ public class LoginValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginContainsSpaceOne() {
+    void testValidatedLoginContainsSpaceOne() {
         final Validation validation = new LoginValidation(" user", "pass");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
-            "Username should not start with a digit or non letter!", message
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 
@@ -131,12 +131,12 @@ public class LoginValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginContainsSpaceTwo() {
+    void testValidatedLoginContainsSpaceTwo() {
         final Validation validation = new LoginValidation("user name", "pass");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username should contain only letters and digits!", message
         );
     }
@@ -145,13 +145,13 @@ public class LoginValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginStartsWithUnderscore() {
+    void testValidatedLoginStartsWithUnderscore() {
         final Validation validation = new LoginValidation("_user", "pass");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
-            "Username should not start with a digit or non letter!", message
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 }

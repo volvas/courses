@@ -30,8 +30,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -42,7 +42,7 @@ import org.mockito.MockitoAnnotations;
  *
  * @since 1.0.0
  */
-public class MainHandlerTest {
+class MainHandlerTest {
     /**
      * Main handler.
      */
@@ -76,8 +76,8 @@ public class MainHandlerTest {
     /**
      * Prepare data.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         this.handler = new MainHandler();
         MockitoAnnotations.initMocks(this);
     }
@@ -88,7 +88,7 @@ public class MainHandlerTest {
      * @throws ServletException Servlet exception
      */
     @Test
-    public void testDoPostOk() throws IOException, ServletException {
+    void testDoPostOk() throws IOException, ServletException {
         Mockito.when(this.context.getPath(this.request))
             .thenReturn(EnrollForm.STUDENT_PAGE);
         Mockito.when(this.request.getRequestDispatcher(EnrollForm.STUDENT_PAGE))

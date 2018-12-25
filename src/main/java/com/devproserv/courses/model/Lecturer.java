@@ -24,47 +24,44 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Represents the entity of the Lecturer. Maps the table 'lecturers' in the database.
+ * Represents the entity of the Lecturer.
+ * Maps the table 'lecturers' in the database.
  *
  * @since 1.0.0
  */
 public final class Lecturer extends User {
     /**
-     * Application context.
-     */
-    private final AppContext context;
-
-    /**
      * Degree.
      */
     private String degree;
 
-    public String getDegree() {
-        return degree;
-    }
-    public void setDegree(final String degree) {
-        this.degree = degree;
+    /**
+     * Constructor.
+     * @param login Login
+     * @param password Password
+     */
+    public Lecturer(final String login, final String password) {
+        super(login, password);
     }
 
-    public Lecturer(
-        final AppContext context, final String login, final String password
-    ) {
-        super(login, password);
-        this.context = context;
+    /**
+     * Getter.
+     * @return Degree
+     */
+    public String getDegree() {
+        return this.degree;
     }
 
     @Override
     public void loadFields() {
-        // TODO
+        System.out.println("Not implemented");
     }
 
     @Override
     public void prepareJspData(final HttpServletRequest request) {
-        // TODO
         request.setAttribute("message", "This account is not accessible!");
     }
 

@@ -24,7 +24,6 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -34,25 +33,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class Admin extends User {
     /**
-     * Application context.
-     */
-    private final AppContext context;
-
-    /**
-     * Contstructor.
-     * @param context Application context
+     * Constructor.
      * @param login Login
      * @param password Password
      */
-    public Admin(
-        final AppContext context, final String login, final String password
-    ) {
+    public Admin(final String login, final String password) {
         super(login, password);
-        this.context = context;
     }
 
     @Override
     public void loadFields() {
+        System.out.println("Not implemented");
     }
 
     @Override

@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.model.Roles;
+import com.devproserv.courses.model.UserRoles;
 import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -61,12 +61,14 @@ public final class LoginForm implements Form {
         final String login          = request.getParameter("login");
         final String password       = request.getParameter("password");
         final Validation validation = new LoginValidation(login, password);
+        final String path;
         if (validation.validated()) {
             LOGGER.debug("Login '{}' and password are valid.", login);
-            return this.validPath(request, login, password);
+            path = this.validPath(request, login, password);
         } else {
-            return this.invalidPath(validation, request, login);
+            path = this.invalidPath(validation, request, login);
         }
+        return path;
     }
 
     /**
@@ -96,6 +98,6 @@ public final class LoginForm implements Form {
         final HttpServletRequest request, final String login,
         final String password
     ) {
-        return new Roles(this.context, login, password).path(request);
+        return new UserRoles(this.context, login, password).path(request);
     }
 }

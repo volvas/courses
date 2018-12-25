@@ -62,8 +62,9 @@ public final class MainHandler extends HttpServlet {
     ) throws ServletException, IOException {
         final String path = this.context.getPath(request);
         final RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
+        final String encoding = "UTF-8";
+        request.setCharacterEncoding(encoding);
+        response.setCharacterEncoding(encoding);
         dispatcher.forward(request, response);
     }
 }

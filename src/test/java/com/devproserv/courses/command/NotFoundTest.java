@@ -25,9 +25,9 @@
 package com.devproserv.courses.command;
 
 import javax.servlet.http.HttpServletRequest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -36,7 +36,7 @@ import org.mockito.MockitoAnnotations;
  *
  * @since 1.0.0
  */
-public class NotFoundTest {
+class NotFoundTest {
 
     /**
      * HTTP request.
@@ -52,16 +52,16 @@ public class NotFoundTest {
     /**
      * Prepare data.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         this.nfound = new NotFound();
     }
 
     @Test
-    public void testExecuteCommandOk() {
+    void testExecuteCommandOk() {
         final String path = this.nfound.path(this.request);
-        Assert.assertEquals(
+        Assertions.assertEquals(
             String.format("Should be equal to %s", NotFound.NOT_FOUND_PAGE),
             NotFound.NOT_FOUND_PAGE, path
         );

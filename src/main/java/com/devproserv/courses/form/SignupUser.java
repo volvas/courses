@@ -61,27 +61,27 @@ public final class SignupUser {
     /**
      * Login.
      */
-    private String login;
+    private final String login;
 
     /**
      * Password.
      */
-    private String password;
+    private final String password;
 
     /**
      * First name.
      */
-    private String fname;
+    private final String fname;
 
     /**
      * Last name.
      */
-    private String lname;
+    private final String lname;
 
     /**
      * Faculty field.
      */
-    private String faculty;
+    private final String faculty;
 
     /**
      * Primary constructor.
@@ -89,7 +89,7 @@ public final class SignupUser {
      * @param context Application context
      * @param pars Sign up parameters
      */
-    SignupUser(final AppContext context, final SignupPars pars) {
+    SignupUser(final AppContext context, final SignupParams pars) {
         this.context  = context;
         this.login    = pars.getLogin();
         this.password = pars.getPassword();
@@ -99,22 +99,25 @@ public final class SignupUser {
     }
 
     /**
-     * Provides path after creating new user
+     * Provides path after creating new user.
      * @param request HTTP request
      * @return Path
      */
     public String path(final HttpServletRequest request) {
+        final String attribute = "message";
+        final String path;
         if (this.loginExists()) {
-            request.setAttribute("message", "User already exists!");
-            return SignUpForm.SIGNUP_PAGE;
+            request.setAttribute(attribute, "User already exists!");
+            path = SignUpForm.SIGNUP_PAGE;
         } else if (this.insertUser()) {
-            return EnrollForm.LOGIN_PAGE;
+            path = EnrollForm.LOGIN_PAGE;
         } else {
             request.setAttribute(
-                "message", "User has not been created. Try again."
+                attribute, "User has not been created. Try again."
             );
-            return SignUpForm.SIGNUP_PAGE;
+            path = SignUpForm.SIGNUP_PAGE;
         }
+        return path;
     }
 
     /**
@@ -123,6 +126,7 @@ public final class SignupUser {
      * @return True if the user exists
      */
     private boolean loginExists() {
+        boolean exists = true;
         try (Connection con = this.context.getDataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
@@ -130,11 +134,11 @@ public final class SignupUser {
                 .from(Users.USERS)
                 .where(Users.USERS.LOGIN.eq(this.login))
                 .fetch();
-            return res.isNotEmpty();
+            exists = res.isNotEmpty();
         } catch (final SQLException ex) {
             LOGGER.error("SQL query during checking login exists failed!", ex);
         }
-        return true;
+        return exists;
     }
 
     /**
@@ -144,7 +148,8 @@ public final class SignupUser {
      * @return True if the user has been created successfully
      */
     private boolean insertUser() {
-        try (Connection con = context.getDataSource().getConnection();
+        boolean success = false;
+        try (Connection con = this.context.getDataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<UsersRecord> res = ctx.insertInto(
@@ -160,10 +165,10 @@ public final class SignupUser {
                 Students.STUDENTS, Students.STUDENTS.STUD_ID,
                 Students.STUDENTS.FACULTY
             ).values(id, this.faculty).execute();
-            return inserted != 0;
+            success = inserted != 0;
         } catch (final SQLException ex) {
             LOGGER.error("Inserting user to DB failed!", ex);
         }
-        return false;
+        return success;
     }
 }

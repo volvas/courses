@@ -24,60 +24,60 @@
 
 package com.devproserv.courses.form;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Contains tests to check functionality of {@link NumberValidation} class.
  *
  * @since 1.0.0
  */
-public class NumberValidationTest {
+class NumberValidationTest {
     /**
      * Test.
      */
     @Test
-    public void testValidatedOk() {
+    void testValidatedOk() {
         final Validation validation = new NumberValidation("32");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertTrue(result);
-        Assert.assertEquals("ok", message);
+        Assertions.assertTrue(result);
+        Assertions.assertEquals("ok", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedNull() {
+    void testValidatedNull() {
         final Validation validation = new NumberValidation(null);
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("Field should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("Field should not be empty!", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedEmpty() {
+    void testValidatedEmpty() {
         final Validation validation = new NumberValidation("");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("Field should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("Field should not be empty!", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedNotNumber() {
+    void testValidatedNotNumber() {
         final Validation validation = new NumberValidation("3dh2");
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("Field should contain only digits", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("Field should contain only digits", message);
     }
 }

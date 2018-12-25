@@ -27,9 +27,9 @@ package com.devproserv.courses.servlet;
 import com.devproserv.courses.command.NotFound;
 import com.devproserv.courses.form.EnrollForm;
 import javax.servlet.http.HttpServletRequest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -39,7 +39,12 @@ import org.mockito.MockitoAnnotations;
  *
  * @since 1.0.0
  */
-public class AppContextTest {
+class AppContextTest {
+    /**
+     * Command.
+     */
+    private static final String COMMAND = "command";
+
     /**
      * HTTP request.
      */
@@ -54,8 +59,8 @@ public class AppContextTest {
     /**
      * Setup.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         this.context = new AppContext();
     }
@@ -64,22 +69,24 @@ public class AppContextTest {
      * Test.
      */
     @Test
-    public void testGetPathOk() {
-        Mockito.when(this.request.getParameter("command"))
+    void testGetPathOk() {
+        Mockito.when(this.request.getParameter(AppContextTest.COMMAND))
             .thenReturn(AppContext.COMMAND_LOGIN);
         final String path = this.context.getPath(this.request);
-        Assert.assertEquals("Not login page.", EnrollForm.LOGIN_PAGE, path);
+        Assertions.assertEquals(
+            "Not login page.", EnrollForm.LOGIN_PAGE, path
+        );
     }
 
     /**
      * Test.
      */
     @Test
-    public void testGetPathWrongCommand() {
-        Mockito.when(this.request.getParameter("command"))
+    void testGetPathWrongCommand() {
+        Mockito.when(this.request.getParameter(AppContextTest.COMMAND))
             .thenReturn("invalid command");
         final String path = this.context.getPath(this.request);
-        Assert.assertEquals(
+        Assertions.assertEquals(
             "Not notfound page", NotFound.NOT_FOUND_PAGE, path
         );
     }

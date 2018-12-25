@@ -24,51 +24,51 @@
 
 package com.devproserv.courses.form;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Contains unit-tests to check functionality of {@link SignUpValidation} class.
  *
  * @since 1.0.0
  */
-public final class SignUpValidationTest {
+final class SignUpValidationTest {
     /**
      * Test.
      */
     @Test
-    public void testValidatedOk() {
+    void testValidatedOk() {
         final Validation validation = new SignUpValidation(
             "user", "password", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
-        Assert.assertTrue("Should be true", result);
+        Assertions.assertTrue(result, "Should be true");
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedOkLoginEndsDigit() {
+    void testValidatedOkLoginEndsDigit() {
         final Validation validation = new SignUpValidation(
             "user4", "pass", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
-        Assert.assertTrue(result);
+        Assertions.assertTrue(result);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedNull() {
+    void testValidatedNull() {
         final Validation validation = new SignUpValidation(
             null, null, "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username and password should not be empty!", message
         );
     }
@@ -77,14 +77,14 @@ public final class SignUpValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedEmpty() {
+    void testValidatedEmpty() {
         final Validation validation = new SignUpValidation(
             "", "pass", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username and password should not be empty!", message
         );
     }
@@ -93,14 +93,14 @@ public final class SignUpValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginBeginsDigit() {
+    void testValidatedLoginBeginsDigit() {
         final Validation validation = new SignUpValidation(
             "25user", "pass", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username should not start with a digit or non letter!", message
         );
     }
@@ -109,14 +109,14 @@ public final class SignUpValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginBeginsNotLetter() {
+    void testValidatedLoginBeginsNotLetter() {
         final Validation validation = new SignUpValidation(
             "#user", "pass", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username should not start with a digit or non letter!", message
         );
     }
@@ -125,14 +125,14 @@ public final class SignUpValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginContainsSpaceOne() {
+    void testValidatedLoginContainsSpaceOne() {
         final Validation validation = new SignUpValidation(
             " user", "pass", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username should not start with a digit or non letter!", message
         );
     }
@@ -141,14 +141,14 @@ public final class SignUpValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginContainsSpaceTwo() {
+    void testValidatedLoginContainsSpaceTwo() {
         final Validation validation = new SignUpValidation(
             "user name", "pass", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username should contain only letters and digits!", message
         );
     }
@@ -157,14 +157,14 @@ public final class SignUpValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedLoginStartsWithUnderscore() {
+    void testValidatedLoginStartsWithUnderscore() {
         final Validation validation = new SignUpValidation(
             "_user", "pass", "firstName", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals(
+        Assertions.assertFalse(result);
+        Assertions.assertEquals(
             "Username should not start with a digit or non letter!", message
         );
     }
@@ -173,83 +173,83 @@ public final class SignUpValidationTest {
      * Test.
      */
     @Test
-    public void testValidatedFirstNameNull() {
+    void testValidatedFirstNameNull() {
         final Validation validation = new SignUpValidation(
             "user", "pass", null, "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("First name should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("First name should not be empty!", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedFirstNameEmpty() {
+    void testValidatedFirstNameEmpty() {
         final Validation validation = new SignUpValidation(
             "user", "pass", "", "lastName", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("First name should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("First name should not be empty!", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedLastNameNull() {
+    void testValidatedLastNameNull() {
         final Validation validation = new SignUpValidation(
             "user", "pass", "firstName", null, "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("Last name should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("Last name should not be empty!", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedLastNameEmpty() {
+    void testValidatedLastNameEmpty() {
         final Validation validation = new SignUpValidation(
             "user", "pass", "firstName", "", "faculty"
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("Last name should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("Last name should not be empty!", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedFacultyNull() {
+    void testValidatedFacultyNull() {
         final Validation validation = new SignUpValidation(
             "user", "pass", "firstName", "lastName", null
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("Faculty should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("Faculty should not be empty!", message);
     }
 
     /**
      * Test.
      */
     @Test
-    public void testValidatedFacultyEmpty() {
+    void testValidatedFacultyEmpty() {
         final Validation validation = new SignUpValidation(
             "user", "pass", "firstName", "lastName", ""
         );
         final boolean result = validation.validated();
         final String message = validation.errorMessage();
-        Assert.assertFalse(result);
-        Assert.assertEquals("Faculty should not be empty!", message);
+        Assertions.assertFalse(result);
+        Assertions.assertEquals("Faculty should not be empty!", message);
     }
 }

@@ -61,7 +61,7 @@ public final class SignUpForm implements Form {
 
     @Override
     public String validate(final HttpServletRequest request) {
-        final SignupPars pars = new SignupPars(request).extract();
+        final SignupParams pars = new SignupParams(request).extract();
         final Validation validation = new SignUpValidation(pars);
         return validation.validated()
             ? this.validPath(request)
@@ -74,7 +74,7 @@ public final class SignUpForm implements Form {
      * @param request HTTP Request
      * @return Path
      */
-    private String invalidPath(
+    private static String invalidPath(
         final Validation validation, final HttpServletRequest request
     ) {
         final String login = request.getParameter("login");
@@ -89,7 +89,7 @@ public final class SignUpForm implements Form {
      * @return Path
      */
     private String validPath(final HttpServletRequest request) {
-        final SignupPars pars = new SignupPars(request).extract();
+        final SignupParams pars = new SignupParams(request).extract();
         return new SignupUser(this.context, pars).path(request);
     }
 

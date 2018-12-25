@@ -28,8 +28,8 @@ import com.devproserv.courses.command.NotFound;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -39,7 +39,12 @@ import org.mockito.MockitoAnnotations;
  *
  * @since 1.0.0
  */
-public class ErrorHandlerTest {
+class ErrorHandlerTest {
+    /**
+     * Status code.
+     */
+    private static final String STATUS_CODE = "javax.servlet.error.status_code";
+
     /**
      * Error handler.
      */
@@ -66,8 +71,8 @@ public class ErrorHandlerTest {
     /**
      * Prepare data.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         this.handler = new ErrorHandler();
     }
@@ -77,7 +82,7 @@ public class ErrorHandlerTest {
      * @throws Exception Servlet error exception
      */
     @Test
-    public void testForServerError() throws Exception {
+    void testForServerError() throws Exception {
         final Throwable exception = new IllegalStateException();
         Mockito.when(
             this.request.getAttribute("javax.servlet.error.exception")
@@ -95,10 +100,10 @@ public class ErrorHandlerTest {
      * @throws Exception Servlet error exception
      */
     @Test
-    public void testForNotFoundPageError() throws Exception {
+    void testForNotFoundPageError() throws Exception {
         final int notfound = 404;
         Mockito.when(
-            this.request.getAttribute("javax.servlet.error.status_code")
+            this.request.getAttribute(ErrorHandlerTest.STATUS_CODE)
         ).thenReturn(notfound);
         Mockito.when(
             this.request.getRequestDispatcher(NotFound.NOT_FOUND_PAGE)
@@ -113,10 +118,10 @@ public class ErrorHandlerTest {
      * @throws Exception Servlet error exception
      */
     @Test
-    public void testForOtherError() throws Exception {
+    void testForOtherError() throws Exception {
         final int notallowed = 405;
         Mockito.when(
-            this.request.getAttribute("javax.servlet.error.status_code")
+            this.request.getAttribute(ErrorHandlerTest.STATUS_CODE)
         ).thenReturn(notallowed);
         Mockito.when(
             this.request.getRequestDispatcher(ErrorHandler.GENERIC_ERR_PAGE)

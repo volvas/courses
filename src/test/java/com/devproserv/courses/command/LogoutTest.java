@@ -27,9 +27,9 @@ package com.devproserv.courses.command;
 import com.devproserv.courses.servlet.JspFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -39,7 +39,7 @@ import org.mockito.MockitoAnnotations;
  *
  * @since 1.0.0
  */
-public class LogoutTest {
+class LogoutTest {
     /**
      * HTTP request.
      */
@@ -60,8 +60,8 @@ public class LogoutTest {
     /**
      * Prepare data.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         this.logout = new Logout();
         Mockito.when(this.request.getSession()).thenReturn(this.session);
@@ -72,9 +72,9 @@ public class LogoutTest {
      * Checks correct path.
      */
     @Test
-    public void testExecuteCommandOk() {
+    void testExecuteCommandOk() {
         final String path = this.logout.path(this.request);
-        Assert.assertEquals(
+        Assertions.assertEquals(
             String.format("Should be equal to %s", JspFilter.HOME_PAGE),
             JspFilter.HOME_PAGE, path
         );

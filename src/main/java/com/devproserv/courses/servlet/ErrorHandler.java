@@ -44,6 +44,7 @@ public final class ErrorHandler extends HttpServlet {
      * Exception page file name.
      */
     static final String EXCEPTION_PAGE = "/errorexcep.html";
+
     /**
      * Generic error page file name.
      */
@@ -65,11 +66,15 @@ public final class ErrorHandler extends HttpServlet {
         final Integer status = (Integer) request.getAttribute(
             "javax.servlet.error.status_code"
         );
-        String page = GENERIC_ERR_PAGE;
-        if (throwable != null) {
-            page = EXCEPTION_PAGE;
-        } else if (status == nfound) {
-            page = NotFound.NOT_FOUND_PAGE;
+        final String page;
+        if (throwable == null) {
+            if (status == nfound) {
+                page = NotFound.NOT_FOUND_PAGE;
+            } else {
+                page = ErrorHandler.GENERIC_ERR_PAGE;
+            }
+        } else {
+            page = ErrorHandler.EXCEPTION_PAGE;
         }
         final RequestDispatcher dispatcher = request.getRequestDispatcher(
             page

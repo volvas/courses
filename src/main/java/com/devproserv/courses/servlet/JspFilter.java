@@ -35,6 +35,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Filter forbids direct access to internal JSP. In case of direct typing
@@ -55,8 +57,16 @@ public final class JspFilter implements Filter {
      */
     static final String LECTURER_PAGE = "/students.jsp";
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+        JspFilter.class
+    );
+
     @Override
     public void init(final FilterConfig config) {
+        LOGGER.debug("The instance initialized.");
     }
 
     @Override
@@ -67,12 +77,12 @@ public final class JspFilter implements Filter {
         final HttpServletRequest hrequest = (HttpServletRequest) request;
         final HttpServletResponse hresponse = (HttpServletResponse) response;
         hresponse.sendRedirect(
-            hrequest.getContextPath() + HOME_PAGE
+            hrequest.getContextPath() + JspFilter.HOME_PAGE
         );
     }
 
     @Override
     public void destroy() {
-
+        LOGGER.debug("The instance destroyed.");
     }
 }

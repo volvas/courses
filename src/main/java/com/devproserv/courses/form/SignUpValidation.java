@@ -80,14 +80,14 @@ public final class SignUpValidation implements Validation {
 
     /**
      * Constructor.
-     * @param pars Parameters
+     * @param params Parameters
      */
-    public SignUpValidation(final SignupPars pars) {
-        this.login    = pars.getLogin();
-        this.password = pars.getPassword();
-        this.fname    = pars.getFirstName();
-        this.lname    = pars.getLastName();
-        this.faculty  = pars.getFaculty();
+    public SignUpValidation(final SignupParams params) {
+        this.login    = params.getLogin();
+        this.password = params.getPassword();
+        this.fname    = params.getFirstName();
+        this.lname    = params.getLastName();
+        this.faculty  = params.getFaculty();
     }
 
     @Override
@@ -95,7 +95,7 @@ public final class SignUpValidation implements Validation {
         boolean result = true;
         this.message = "ok";
         if (this.login == null || this.password == null) {
-            this.message = "Username and password should not be empty!";
+            this.message = "Username and password should not be null!";
             result = false;
         } else if (this.login.isEmpty() || this.password.isEmpty()) {
             this.message = "Username and password should not be empty!";

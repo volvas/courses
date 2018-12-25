@@ -46,11 +46,13 @@ import org.slf4j.LoggerFactory;
  *
  * @since 1.0.0
  */
-public class Roles {
+public class UserRoles {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Roles.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+        UserRoles.class
+    );
 
     /**
      * Application context.
@@ -72,17 +74,17 @@ public class Roles {
      */
     private enum UserRole {
         /**
-         * Student role
+         * Student role.
          */
         STUD,
 
         /**
-         * Lecturer role
+         * Lecturer role.
          */
         LECT,
 
         /**
-         * Administrator role
+         * Administrator role.
          */
         ADMIN
     }
@@ -99,7 +101,7 @@ public class Roles {
      * @param login Login
      * @param password Password
      */
-    public Roles(
+    public UserRoles(
         final AppContext context, final String login, final String password
     ) {
         this.context  = context;
@@ -110,10 +112,10 @@ public class Roles {
             UserRole.STUD,  () -> new Student(context, login, password)
         );
         this.roles.put(
-            UserRole.LECT,  () -> new Lecturer(context, login, password)
+            UserRole.LECT,  () -> new Lecturer(login, password)
         );
         this.roles.put(
-            UserRole.ADMIN, () -> new Admin(context, login, password)
+            UserRole.ADMIN, () -> new Admin(login, password)
         );
     }
 

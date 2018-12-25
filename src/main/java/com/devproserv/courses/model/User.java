@@ -141,10 +141,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param firstName First name
+     * @param fname First name
      */
-    public void setFirstName(final String firstName) {
-        this.fname = firstName;
+    public void setFirstName(final String fname) {
+        this.fname = fname;
     }
 
     /**
@@ -157,10 +157,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param lastName Last name
+     * @param lname Last name
      */
-    public void setLastName(final String lastName) {
-        this.lname = lastName;
+    public void setLastName(final String lname) {
+        this.lname = lname;
     }
 
     /**

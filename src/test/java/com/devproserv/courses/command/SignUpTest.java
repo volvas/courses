@@ -27,9 +27,9 @@ package com.devproserv.courses.command;
 import com.devproserv.courses.form.SignUpForm;
 import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -38,7 +38,7 @@ import org.mockito.MockitoAnnotations;
  *
  * @since 1.0.0
  */
-public class SignUpTest {
+class SignUpTest {
     /**
      * Application context.
      */
@@ -59,8 +59,8 @@ public class SignUpTest {
     /**
      * Prepare data.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         this.signup = new SignUp(this.context);
     }
@@ -69,8 +69,8 @@ public class SignUpTest {
      * Checks if path is correct.
      */
     @Test
-    public void testPathOk() {
+    void testPathOk() {
         final String path = this.signup.path(this.request);
-        Assert.assertEquals(SignUpForm.SIGNUP_PAGE, path);
+        Assertions.assertEquals(SignUpForm.SIGNUP_PAGE, path);
     }
 }

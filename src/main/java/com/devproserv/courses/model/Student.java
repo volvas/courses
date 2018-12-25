@@ -92,8 +92,8 @@ public final class Student extends User {
      * @param faculty Faculty
      */
     public Student(
-            final AppContext context, final String login, final String password,
-            final String fname, final String lname, final String faculty
+        final AppContext context, final String login, final String password,
+        final String fname, final String lname, final String faculty
     ) {
         super(login, password);
         this.context = context;
@@ -123,26 +123,19 @@ public final class Student extends User {
                     this.setFirstName(r.value2());
                     this.setLastName(r.value3());
                     this.setFaculty(r.value4());
-            });
+                });
         } catch (final SQLException ex) {
             LOGGER.error("Field loading failed!", ex);
         }
     }
 
-    /**
-     * Prepares data to be displayed on the own student's page and
-     * attaches the data to HTTP request.
-     * Then JSP servlet will handle this request.
-     *
-     * @param request HTTP request
-     */
     @Override
     public void prepareJspData(final HttpServletRequest request) {
         request.setAttribute("student", this);
-        final List<Course> subscribedCourses = getSubscribedCourses();
-        request.setAttribute("subscrcourses", subscribedCourses);
-        final List<Course> availableCourses = getAvailableCourses();
-        request.setAttribute("courses", availableCourses);
+        final List<Course> enrolled = this.getEnrolledCourses();
+        request.setAttribute("subscrcourses", enrolled);
+        final List<Course> available = this.getAvailableCourses();
+        request.setAttribute("courses", available);
     }
 
     @Override
@@ -150,7 +143,7 @@ public final class Student extends User {
         this.loadFields();
         final Map<String, Object> payload = new HashMap<>();
         payload.put("student", this);
-        final List<Course> subscribed = this.getSubscribedCourses();
+        final List<Course> subscribed = this.getEnrolledCourses();
         payload.put("subscrcourses", subscribed);
         final List<Course> available = this.getAvailableCourses();
         payload.put("courses", available);
@@ -158,82 +151,95 @@ public final class Student extends User {
     }
 
     /**
-     * Executes request into the database for getting the courses that a student
-     * has been subscribed to.
-     *
-     * @return list of subscribed courses for the user
+     * Getter.
+     * @return Faculty
      */
-    private List<Course> getSubscribedCourses() {
-        try (Connection con = context.getDataSource().getConnection();
-            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            final Result<Record> rs = ctx.select()
-                .from(Courses.COURSES)
-                .where(Courses.COURSES.COURSE_ID.in(
-                    DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
-                    .from(StudentCourses.STUDENT_COURSES, Users.USERS)
-                    .where(StudentCourses.STUDENT_COURSES.STUD_ID
-                            .eq(Users.USERS.USER_ID)
-                            .and(Users.USERS.LOGIN.eq(getLogin()))
-                    )
-                ))
-                .fetch();
-            return rs.stream()
-                .map(r -> {
-                final Course course = new Course(context);
-                course.setId         (r.getValue(Courses.COURSES.COURSE_ID));
-                course.setName       (r.getValue(Courses.COURSES.NAME));
-                course.setDescription(r.getValue(Courses.COURSES.DESCRIPTION));
-                return course;
-                })
-                .collect(Collectors.toList());
-        } catch (final SQLException ex) {
-            LOGGER.error("Request to database failed", ex);
-        }
-        return Collections.emptyList();
+    public String getFaculty() {
+        return this.faculty;
     }
 
     /**
-     * Executes request into the database and returns list of courses that are
-     * available for the current student to subscribe.
-     *
-     * @return list of available courses from the database
+     * Setter.
+     * @param fac Faculty
      */
-    private List<Course> getAvailableCourses() {
-        try (Connection con = context.getDataSource().getConnection();
+    private void setFaculty(final String fac) {
+        this.faculty = fac;
+    }
+
+    /**
+     * Fetches courses user has enrolled to.
+     *
+     * @return List of enrolled courses for the user
+     */
+    private List<Course> getEnrolledCourses() {
+        List<Course> courses = Collections.emptyList();
+        try (Connection con = this.context.getDataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            final Result<Record> rs = ctx.select()
+            final Result<Record> res = ctx.select()
                 .from(Courses.COURSES)
-                .where(Courses.COURSES.COURSE_ID.notIn(
-                    DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
+                .where(
+                    Courses.COURSES.COURSE_ID.in(
+                        DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
+                        .from(StudentCourses.STUDENT_COURSES, Users.USERS)
+                        .where(StudentCourses.STUDENT_COURSES.STUD_ID
+                            .eq(Users.USERS.USER_ID)
+                            .and(Users.USERS.LOGIN.eq(getLogin()))
+                        )
+                    )
+                )
+                .fetch();
+            courses = res.stream()
+                .map(this::makeCourse)
+                .collect(Collectors.toList());
+        } catch (final SQLException ex) {
+            LOGGER.error("Query for enrolled courses failed.", ex);
+        }
+        return courses;
+    }
+
+    /**
+     * Fetches available courses user cab enroll to.
+     *
+     * @return List of available courses
+     */
+    private List<Course> getAvailableCourses() {
+        List<Course> courses = Collections.emptyList();
+        try (Connection con = this.context.getDataSource().getConnection();
+            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
+        ) {
+            final Result<Record> res = ctx.select()
+                .from(Courses.COURSES)
+                .where(
+                    Courses.COURSES.COURSE_ID.notIn(
+                        DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
                         .from(StudentCourses.STUDENT_COURSES, Users.USERS)
                         .where(StudentCourses.STUDENT_COURSES.STUD_ID
                             .eq(Users.USERS.USER_ID)
                             .and(Users.USERS.LOGIN.eq(this.getLogin()))
                         )
-                ))
+                    )
+                )
                 .fetch();
-            return rs.stream()
-                .map(r -> {
-                    final Course course = new Course(context);
-                    course.setId         (r.getValue(Courses.COURSES.COURSE_ID));
-                    course.setName       (r.getValue(Courses.COURSES.NAME));
-                    course.setDescription(r.getValue(Courses.COURSES.DESCRIPTION));
-                    return course;
-                })
+            courses = res.stream()
+                .map(this::makeCourse)
                 .collect(Collectors.toList());
         } catch (final SQLException ex) {
-            LOGGER.error("Request to database failed", ex);
+            LOGGER.error("Query for available courses failed.", ex);
         }
-        return Collections.emptyList();
+        return courses;
     }
 
-    public String getFaculty() {
-        return this.faculty;
-    }
-
-    private void setFaculty(final String faculty) {
-        this.faculty = faculty;
+    /**
+     * Makes Course.
+     * @param rec Record
+     * @return Course
+     */
+    private Course makeCourse(final Record rec) {
+        final Course course = new Course(this.context);
+        course.setId(rec.getValue(Courses.COURSES.COURSE_ID));
+        course.setName(rec.getValue(Courses.COURSES.NAME));
+        course.setDescription(rec.getValue(Courses.COURSES.DESCRIPTION));
+        return course;
     }
 }
