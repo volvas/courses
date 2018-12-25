@@ -22,49 +22,51 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.command;
+package com.devproserv.courses.model;
 
-import com.devproserv.courses.form.EnrollForm;
-import com.devproserv.courses.model.Db;
-import javax.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Contains unit-tests to check functionality of {@link Login} class.
+ * Provides connection to the database.
  *
  * @since 1.0.0
  */
-class LoginTest {
+public class Db {
     /**
-     * HTTP request.
+     * Logger.
      */
-    @Mock
-    private HttpServletRequest request;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Db.class);
 
     /**
-     * Login.
+     * DB URL.
      */
-    private Login login;
+    private static final String DB_URL = "java:comp/env/jdbc/coursedb";
 
     /**
-     * Prepare data.
+     * DataSource.
      */
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-        this.login = new Login();
-    }
+    private DataSource source;
 
     /**
-     * Checks correct path.
+     * Finds a data source that can give a DB connection.
+     * @return DataSource
      */
-    @Test
-    void testPathOk() {
-        final String path = this.login.path(this.request);
-        Assertions.assertEquals(EnrollForm.LOGIN_PAGE, path, "Should be null");
+    public DataSource dataSource() {
+        if (this.source == null) {
+            try {
+                final InitialContext ctx = new InitialContext();
+                this.source = (DataSource) ctx.lookup(Db.DB_URL);
+            } catch (final NamingException exc) {
+                LOGGER.error(
+                    "Source with path '{}' not found! Error: {}",
+                    Db.DB_URL, exc
+                );
+            }
+        }
+        return this.source;
     }
 }

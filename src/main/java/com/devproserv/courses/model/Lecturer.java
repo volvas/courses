@@ -57,7 +57,7 @@ public final class Lecturer extends User {
 
     @Override
     public void loadFields() {
-        System.out.println("Not implemented");
+        System.getProperties();
     }
 
     @Override

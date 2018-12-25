@@ -40,12 +40,6 @@ import org.mockito.MockitoAnnotations;
  */
 class SignUpTest {
     /**
-     * Application context.
-     */
-    @Mock
-    private AppContext context;
-
-    /**
      * HTTP request.
      */
     @Mock
@@ -62,7 +56,7 @@ class SignUpTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.signup = new SignUp(this.context);
+        this.signup = new SignUp();
     }
 
     /**

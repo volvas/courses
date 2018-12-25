@@ -24,7 +24,6 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.SignUpForm;
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -41,11 +40,9 @@ public final class SignUp implements Command {
 
     /**
      * Constructor.
-     *
-     * @param context Application context
      */
-    public SignUp(final AppContext context) {
-        this(new SignUpForm(context));
+    public SignUp() {
+        this(new SignUpForm());
     }
 
     /**
@@ -53,7 +50,7 @@ public final class SignUp implements Command {
      *
      * @param form SignUp form
      */
-    public SignUp(final SignUpForm form) {
+    SignUp(final SignUpForm form) {
         this.form = form;
     }
 

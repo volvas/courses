@@ -33,10 +33,7 @@ import com.devproserv.courses.command.SignUp;
 import com.devproserv.courses.command.Unroll;
 import java.util.HashMap;
 import java.util.Map;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,16 +76,6 @@ public class AppContext {
     );
 
     /**
-     * DB URL.
-     */
-    private static final String DB_URL = "java:comp/env/jdbc/coursedb";
-
-    /**
-     * DataSource.
-     */
-    private DataSource source;
-
-    /**
      * Commands.
      */
     private final Map<String, Command> commands = new HashMap<>();
@@ -97,29 +84,11 @@ public class AppContext {
      * Constructor.
      */
     AppContext() {
-        this.commands.put(AppContext.COMMAND_SIGNUP, new SignUp(this));
-        this.commands.put(AppContext.COMMAND_LOGIN, new Login(this));
+        this.commands.put(AppContext.COMMAND_SIGNUP, new SignUp());
+        this.commands.put(AppContext.COMMAND_LOGIN, new Login());
         this.commands.put(AppContext.COMMAND_LOGOUT, new Logout());
-        this.commands.put(AppContext.COMMAND_SUBSCRIBE, new Enroll(this));
-        this.commands.put(AppContext.COMMAND_UNROLL, new Unroll(this));
-        try {
-            final InitialContext ctx = new InitialContext();
-            this.source = (DataSource) ctx.lookup(AppContext.DB_URL);
-        } catch (final NamingException exc) {
-            LOGGER.error(
-                "Database with path {} not found! Error: {}",
-                AppContext.DB_URL, exc
-            );
-        }
-        LOGGER.debug("Beans initialized.");
-    }
-
-    /**
-     * Getter.
-     * @return DataSource
-     */
-    public DataSource getDataSource() {
-        return this.source;
+        this.commands.put(AppContext.COMMAND_SUBSCRIBE, new Enroll());
+        this.commands.put(AppContext.COMMAND_UNROLL, new Unroll());
     }
 
     /**

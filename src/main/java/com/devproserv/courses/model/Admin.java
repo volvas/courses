@@ -43,7 +43,7 @@ public final class Admin extends User {
 
     @Override
     public void loadFields() {
-        System.out.println("Not implemented");
+        System.getProperties();
     }
 
     @Override

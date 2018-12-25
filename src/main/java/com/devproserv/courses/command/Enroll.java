@@ -25,7 +25,6 @@ package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollCourseHandling;
 import com.devproserv.courses.form.EnrollForm;
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -41,11 +40,9 @@ public final class Enroll implements Command {
 
     /**
      * Default constructor.
-     *
-     * @param context Application context
      */
-    public Enroll(final AppContext context) {
-        this(new EnrollForm(context, new EnrollCourseHandling()));
+    public Enroll() {
+        this(new EnrollForm(new EnrollCourseHandling()));
     }
 
     /**
@@ -53,7 +50,7 @@ public final class Enroll implements Command {
      *
      * @param form Enroll form
      */
-    public Enroll(final EnrollForm form) {
+    Enroll(final EnrollForm form) {
         this.form = form;
     }
 

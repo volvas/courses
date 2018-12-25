@@ -25,7 +25,6 @@
 package com.devproserv.courses.model;
 
 import com.devproserv.courses.jooq.tables.Users;
-import com.devproserv.courses.servlet.AppContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.EnumMap;
@@ -55,9 +54,9 @@ public class UserRoles {
     );
 
     /**
-     * Application context.
+     * Database.
      */
-    private final AppContext context;
+    private final Db dbase;
 
     /**
      * Login.
@@ -95,21 +94,29 @@ public class UserRoles {
     private final Map<UserRole, Supplier<User>> roles;
 
     /**
-     * Primary constructor.
+     * Constructor.
      *
-     * @param context Application context
      * @param login Login
      * @param password Password
      */
-    public UserRoles(
-        final AppContext context, final String login, final String password
-    ) {
-        this.context  = context;
+    public UserRoles(final String login, final String password) {
+        this(new Db(), login, password);
+    }
+
+    /**
+     * Primary constructor.
+     *
+     * @param dbase Database
+     * @param login Login
+     * @param password Password
+     */
+    UserRoles(final Db dbase, final String login, final String password) {
+        this.dbase    = dbase;
         this.login    = login;
         this.password = password;
         this.roles    = new EnumMap<>(UserRole.class);
         this.roles.put(
-            UserRole.STUD,  () -> new Student(context, login, password)
+            UserRole.STUD,  () -> new Student(dbase, login, password)
         );
         this.roles.put(
             UserRole.LECT,  () -> new Lecturer(login, password)
@@ -141,7 +148,7 @@ public class UserRoles {
      */
     private User user() {
         final User user;
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record> res = ctx.select().from(Users.USERS)

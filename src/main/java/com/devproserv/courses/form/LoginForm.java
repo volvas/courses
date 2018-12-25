@@ -25,7 +25,6 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.UserRoles;
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,19 +42,6 @@ public final class LoginForm implements Form {
         LoginForm.class
     );
 
-    /**
-     * Application context.
-     */
-    private final AppContext context;
-
-    /**
-     * Constructor.
-     * @param context Application context
-     */
-    public LoginForm(final AppContext context) {
-        this.context = context;
-    }
-
     @Override
     public String validate(final HttpServletRequest request) {
         final String login          = request.getParameter("login");
@@ -64,9 +50,9 @@ public final class LoginForm implements Form {
         final String path;
         if (validation.validated()) {
             LOGGER.debug("Login '{}' and password are valid.", login);
-            path = this.validPath(request, login, password);
+            path = validPath(request, login, password);
         } else {
-            path = this.invalidPath(validation, request, login);
+            path = invalidPath(validation, request, login);
         }
         return path;
     }
@@ -78,7 +64,7 @@ public final class LoginForm implements Form {
      * @param login Login
      * @return Path
      */
-    private String invalidPath(
+    private static String invalidPath(
         final Validation validation,
         final HttpServletRequest request, final String login
     ) {
@@ -94,10 +80,10 @@ public final class LoginForm implements Form {
      * @param password Password
      * @return Path
      */
-    private String validPath(
+    private static String validPath(
         final HttpServletRequest request, final String login,
         final String password
     ) {
-        return new UserRoles(this.context, login, password).path(request);
+        return new UserRoles(login, password).path(request);
     }
 }

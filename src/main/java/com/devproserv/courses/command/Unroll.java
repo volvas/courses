@@ -25,7 +25,6 @@ package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.form.UnrollCourseHandling;
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -41,11 +40,9 @@ public final class Unroll implements Command {
 
     /**
      * Constructor.
-     *
-     * @param context Application form
      */
-    public Unroll(final AppContext context) {
-        this(new EnrollForm(context, new UnrollCourseHandling()));
+    public Unroll() {
+        this(new EnrollForm(new UnrollCourseHandling()));
     }
 
     /**
@@ -53,7 +50,7 @@ public final class Unroll implements Command {
      *
      * @param form Enroll form
      */
-    public Unroll(final EnrollForm form) {
+    Unroll(final EnrollForm form) {
         this.form = form;
     }
 

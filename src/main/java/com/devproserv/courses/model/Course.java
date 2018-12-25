@@ -25,7 +25,6 @@
 package com.devproserv.courses.model;
 
 import com.devproserv.courses.jooq.tables.StudentCourses;
-import com.devproserv.courses.servlet.AppContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.logging.log4j.LogManager;
@@ -49,9 +48,9 @@ public class Course {
     );
 
     /**
-     * Application context.
+     * Database.
      */
-    private final AppContext context;
+    private final Db dbase;
 
     /**
      * ID.
@@ -70,10 +69,10 @@ public class Course {
 
     /**
      * Constructor.
-     * @param context Application context
+     * @param dbase Database
      */
-    public Course(final AppContext context) {
-        this.context = context;
+    public Course(final Db dbase) {
+        this.dbase = dbase;
     }
 
     /**
@@ -84,7 +83,7 @@ public class Course {
      * @param user Current user
      */
     public void insertUserCourse(final User user) {
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             ctx.insertInto(
@@ -111,7 +110,7 @@ public class Course {
      * @param user Current user
      */
     public void deleteUserCourse(final User user) {
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             ctx.deleteFrom(StudentCourses.STUDENT_COURSES)

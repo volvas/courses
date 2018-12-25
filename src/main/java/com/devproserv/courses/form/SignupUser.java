@@ -28,7 +28,7 @@ import com.devproserv.courses.jooq.enums.UsersRole;
 import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
 import com.devproserv.courses.jooq.tables.records.UsersRecord;
-import com.devproserv.courses.servlet.AppContext;
+import com.devproserv.courses.model.Db;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
@@ -54,9 +54,9 @@ public final class SignupUser {
     );
 
     /**
-     * Application context.
+     * Database.
      */
-    private final AppContext context;
+    private final Db dbase;
 
     /**
      * Login.
@@ -86,11 +86,11 @@ public final class SignupUser {
     /**
      * Primary constructor.
      *
-     * @param context Application context
+     * @param dbase Database
      * @param pars Sign up parameters
      */
-    SignupUser(final AppContext context, final SignupParams pars) {
-        this.context  = context;
+    SignupUser(final Db dbase, final SignupParams pars) {
+        this.dbase    = dbase;
         this.login    = pars.getLogin();
         this.password = pars.getPassword();
         this.fname    = pars.getFirstName();
@@ -127,7 +127,7 @@ public final class SignupUser {
      */
     private boolean loginExists() {
         boolean exists = true;
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record> res = ctx.select()
@@ -149,7 +149,7 @@ public final class SignupUser {
      */
     private boolean insertUser() {
         boolean success = false;
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<UsersRecord> res = ctx.insertInto(

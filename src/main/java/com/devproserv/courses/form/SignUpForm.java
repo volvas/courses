@@ -23,7 +23,7 @@
  */
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.servlet.AppContext;
+import com.devproserv.courses.model.Db;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,16 +47,23 @@ public final class SignUpForm implements Form {
     );
 
     /**
-     * Application context.
+     * Database.
      */
-    private final AppContext context;
+    private final Db dbase;
 
     /**
      * Constructor.
-     * @param context Application context
      */
-    public SignUpForm(final AppContext context) {
-        this.context = context;
+    public SignUpForm() {
+        this(new Db());
+    }
+
+    /**
+     * Primary constructor.
+     * @param dbase Database
+     */
+    SignUpForm(final Db dbase) {
+        this.dbase = dbase;
     }
 
     @Override
@@ -90,7 +97,7 @@ public final class SignUpForm implements Form {
      */
     private String validPath(final HttpServletRequest request) {
         final SignupParams pars = new SignupParams(request).extract();
-        return new SignupUser(this.context, pars).path(request);
+        return new SignupUser(this.dbase, pars).path(request);
     }
 
 }

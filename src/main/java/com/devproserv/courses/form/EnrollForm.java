@@ -25,8 +25,8 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Course;
+import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.User;
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -56,9 +56,9 @@ public final class EnrollForm implements Form {
     );
 
     /**
-     * Application context.
+     * Application contextDatabase.
      */
-    private final AppContext context;
+    private final Db dbase;
 
     /**
      * Course handler.
@@ -73,13 +73,20 @@ public final class EnrollForm implements Form {
     /**
      * Constructor.
      *
-     * @param context Application context
      * @param handling Course handler
      */
-    public EnrollForm(
-        final AppContext context, final CourseHandling handling
-    ) {
-        this.context = context;
+    public EnrollForm(final CourseHandling handling) {
+        this(new Db(), handling);
+    }
+
+    /**
+     * Primary constructor.
+     *
+     * @param dbase Database
+     * @param handling Course handler
+     */
+    public EnrollForm(final Db dbase, final CourseHandling handling) {
+        this.dbase = dbase;
         this.handling = handling;
     }
 
@@ -140,7 +147,7 @@ public final class EnrollForm implements Form {
             this.handling.courseIdParameter()
         );
         final int id = Integer.parseInt(par);
-        final Course course = new Course(this.context);
+        final Course course = new Course(this.dbase);
         course.setId(id);
         return this.handling.path(course, this.user, request);
     }

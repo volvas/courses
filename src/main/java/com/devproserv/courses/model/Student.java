@@ -29,7 +29,6 @@ import com.devproserv.courses.jooq.tables.Courses;
 import com.devproserv.courses.jooq.tables.StudentCourses;
 import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
-import com.devproserv.courses.servlet.AppContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -59,9 +58,9 @@ public final class Student extends User {
     private static final Logger LOGGER = LoggerFactory.getLogger(Student.class);
 
     /**
-     * Application context.
+     * Database.
      */
-    private final AppContext context;
+    private final Db dbase;
 
     /**
      * Faculty field.
@@ -71,20 +70,18 @@ public final class Student extends User {
     /**
      * Constructor.
      *
-     * @param context Application context
+     * @param dbase Database
      * @param login Login
      * @param password Password
      */
-    public Student(
-        final AppContext context, final String login, final String password
-    ) {
-        this(context, login, password, null, null, null);
+    public Student(final Db dbase, final String login, final String password) {
+        this(dbase, login, password, null, null, null);
     }
 
     /**
      * Primary constructor.
      *
-     * @param context Application context
+     * @param dbase Database
      * @param login Login
      * @param password Password
      * @param fname First name
@@ -92,11 +89,11 @@ public final class Student extends User {
      * @param faculty Faculty
      */
     public Student(
-        final AppContext context, final String login, final String password,
+        final Db dbase, final String login, final String password,
         final String fname, final String lname, final String faculty
     ) {
         super(login, password);
-        this.context = context;
+        this.dbase = dbase;
         setFirstName(fname);
         setLastName(lname);
         this.faculty = faculty;
@@ -104,7 +101,7 @@ public final class Student extends User {
 
     @Override
     public void loadFields() {
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record4<Integer, String, String, String>> res = ctx
@@ -173,7 +170,7 @@ public final class Student extends User {
      */
     private List<Course> getEnrolledCourses() {
         List<Course> courses = Collections.emptyList();
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record> res = ctx.select()
@@ -205,7 +202,7 @@ public final class Student extends User {
      */
     private List<Course> getAvailableCourses() {
         List<Course> courses = Collections.emptyList();
-        try (Connection con = this.context.getDataSource().getConnection();
+        try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record> res = ctx.select()
@@ -236,7 +233,7 @@ public final class Student extends User {
      * @return Course
      */
     private Course makeCourse(final Record rec) {
-        final Course course = new Course(this.context);
+        final Course course = new Course(this.dbase);
         course.setId(rec.getValue(Courses.COURSES.COURSE_ID));
         course.setName(rec.getValue(Courses.COURSES.NAME));
         course.setDescription(rec.getValue(Courses.COURSES.DESCRIPTION));

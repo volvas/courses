@@ -24,7 +24,6 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.LoginForm;
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -40,11 +39,9 @@ public final class Login implements Command {
 
     /**
      * Default constructor.
-     *
-     * @param context Application context
      */
-    public Login(final AppContext context) {
-        this(new LoginForm(context));
+    public Login() {
+        this(new LoginForm());
     }
 
     /**
