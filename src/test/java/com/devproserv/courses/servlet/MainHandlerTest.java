@@ -53,7 +53,7 @@ class MainHandlerTest {
      * Application context.
      */
     @Mock
-    private AppContext context;
+    private Commands context;
 
     /**
      * HTTP request.

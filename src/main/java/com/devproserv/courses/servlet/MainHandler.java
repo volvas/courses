@@ -47,20 +47,20 @@ public final class MainHandler extends HttpServlet {
     private static final long serialVersionUID = 901070610445666149L;
 
     /**
-     * Application context.
+     * Command manager.
      */
-    private AppContext context;
+    private Commands commands;
 
     @Override
     public void init(final ServletConfig config) {
-        this.context = new AppContext();
+        this.commands = new Commands().build();
     }
 
     @Override
     protected void doPost(
         final HttpServletRequest request, final HttpServletResponse response
     ) throws ServletException, IOException {
-        final String path = this.context.getPath(request);
+        final String path = this.commands.getPath(request);
         final RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         final String encoding = "UTF-8";
         request.setCharacterEncoding(encoding);

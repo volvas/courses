@@ -33,16 +33,17 @@ import com.devproserv.courses.command.SignUp;
 import com.devproserv.courses.command.Unroll;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controls application lifecycle.
+ * Defines application commands.
  *
  * @since 1.0.0
  */
-public class AppContext {
+public class Commands {
     /**
      * Login command name.
      */
@@ -72,23 +73,25 @@ public class AppContext {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(
-        AppContext.class
+        Commands.class
     );
 
     /**
      * Commands.
      */
-    private final Map<String, Command> commands = new HashMap<>();
+    private final Map<String, Supplier<Command>> map = new HashMap<>();
 
     /**
-     * Constructor.
+     * Builds commands. Provides lazy initialization.
+     * @return This instance
      */
-    AppContext() {
-        this.commands.put(AppContext.COMMAND_SIGNUP, new SignUp());
-        this.commands.put(AppContext.COMMAND_LOGIN, new Login());
-        this.commands.put(AppContext.COMMAND_LOGOUT, new Logout());
-        this.commands.put(AppContext.COMMAND_SUBSCRIBE, new Enroll());
-        this.commands.put(AppContext.COMMAND_UNROLL, new Unroll());
+    public Commands build() {
+        this.map.put(Commands.COMMAND_SIGNUP,    SignUp::new);
+        this.map.put(Commands.COMMAND_LOGIN,     Login::new);
+        this.map.put(Commands.COMMAND_LOGOUT,    Logout::new);
+        this.map.put(Commands.COMMAND_SUBSCRIBE, Enroll::new);
+        this.map.put(Commands.COMMAND_UNROLL,    Unroll::new);
+        return this;
     }
 
     /**
@@ -99,7 +102,7 @@ public class AppContext {
      */
     String getPath(final HttpServletRequest request) {
         final String par = request.getParameter("command");
-        Command command = this.commands.get(par);
+        Command command = this.map.get(par).get();
         if (command == null) {
             LOGGER.warn("Invalid command given!");
             command = new NotFound();

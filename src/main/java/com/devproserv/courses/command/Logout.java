@@ -23,7 +23,7 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.servlet.AppContext;
+import com.devproserv.courses.servlet.Commands;
 import com.devproserv.courses.servlet.JspFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,7 +40,7 @@ public final class Logout implements Command {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory
-        .getLogger(AppContext.class);
+        .getLogger(Commands.class);
 
     @Override
     public String path(final HttpServletRequest request) {

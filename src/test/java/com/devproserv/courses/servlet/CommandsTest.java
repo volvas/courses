@@ -35,11 +35,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 /**
- * Contains unit-tests to check functionality of {@link AppContext} class.
+ * Contains unit-tests to check functionality of {@link Commands} class.
  *
  * @since 1.0.0
  */
-class AppContextTest {
+class CommandsTest {
     /**
      * Command.
      */
@@ -54,7 +54,7 @@ class AppContextTest {
     /**
      * Application context.
      */
-    private AppContext context;
+    private Commands context;
 
     /**
      * Setup.
@@ -62,7 +62,7 @@ class AppContextTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.context = new AppContext();
+        this.context = new Commands();
     }
 
     /**
@@ -70,8 +70,8 @@ class AppContextTest {
      */
     @Test
     void testGetPathOk() {
-        Mockito.when(this.request.getParameter(AppContextTest.COMMAND))
-            .thenReturn(AppContext.COMMAND_LOGIN);
+        Mockito.when(this.request.getParameter(CommandsTest.COMMAND))
+            .thenReturn(Commands.COMMAND_LOGIN);
         final String path = this.context.getPath(this.request);
         Assertions.assertEquals(
             "Not login page.", EnrollForm.LOGIN_PAGE, path
@@ -83,7 +83,7 @@ class AppContextTest {
      */
     @Test
     void testGetPathWrongCommand() {
-        Mockito.when(this.request.getParameter(AppContextTest.COMMAND))
+        Mockito.when(this.request.getParameter(CommandsTest.COMMAND))
             .thenReturn("invalid command");
         final String path = this.context.getPath(this.request);
         Assertions.assertEquals(

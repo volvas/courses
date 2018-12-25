@@ -25,7 +25,6 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.SignUpForm;
-import com.devproserv.courses.servlet.AppContext;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
