@@ -63,8 +63,8 @@ class NotFoundTest {
     void testExecuteCommandOk() {
         final Response response = this.nfound.response(this.request);
         Assertions.assertEquals(
-            String.format("Should be equal to %s", NotFound.NOT_FOUND_PAGE),
-            NotFound.NOT_FOUND_PAGE, response.getPath()
+            NotFound.NOT_FOUND_PAGE, response.getPath(),
+            String.format("Should be equal to %s", NotFound.NOT_FOUND_PAGE)
         );
     }
 }

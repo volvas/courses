@@ -76,8 +76,8 @@ class LogoutTest {
     void testExecuteCommandOk() {
         final Response response = this.logout.response(this.request);
         Assertions.assertEquals(
-            String.format("Should be equal to %s", JspFilter.HOME_PAGE),
-            JspFilter.HOME_PAGE, response.getPath()
+            JspFilter.HOME_PAGE, response.getPath(),
+            String.format("Should be equal to %s", JspFilter.HOME_PAGE)
         );
     }
 }

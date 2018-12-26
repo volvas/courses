@@ -69,7 +69,7 @@ final class SignUpValidationTest {
         final String message = validation.errorMessage();
         Assertions.assertFalse(result);
         Assertions.assertEquals(
-            "Username and password should not be empty!", message
+            "Username and password should not be null!", message
         );
     }
 
@@ -101,7 +101,7 @@ final class SignUpValidationTest {
         final String message = validation.errorMessage();
         Assertions.assertFalse(result);
         Assertions.assertEquals(
-            "Username should not start with a digit or non letter!", message
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 
@@ -117,7 +117,7 @@ final class SignUpValidationTest {
         final String message = validation.errorMessage();
         Assertions.assertFalse(result);
         Assertions.assertEquals(
-            "Username should not start with a digit or non letter!", message
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 
@@ -133,7 +133,7 @@ final class SignUpValidationTest {
         final String message = validation.errorMessage();
         Assertions.assertFalse(result);
         Assertions.assertEquals(
-            "Username should not start with a digit or non letter!", message
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 
@@ -165,7 +165,7 @@ final class SignUpValidationTest {
         final String message = validation.errorMessage();
         Assertions.assertFalse(result);
         Assertions.assertEquals(
-            "Username should not start with a digit or non letter!", message
+            "Username shouldn't start with digit or non letter!", message
         );
     }
 
