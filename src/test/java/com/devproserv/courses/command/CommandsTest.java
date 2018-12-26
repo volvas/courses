@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.servlet;
+package com.devproserv.courses.command;
 
-import com.devproserv.courses.command.NotFound;
 import com.devproserv.courses.form.EnrollForm;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
@@ -71,7 +70,7 @@ class CommandsTest {
     @Test
     void testGetPathOk() {
         Mockito.when(this.request.getParameter(CommandsTest.COMMAND))
-            .thenReturn(Commands.COMMAND_LOGIN);
+            .thenReturn("login");
         final String path = this.context.getPath(this.request);
         Assertions.assertEquals(
             "Not login page.", EnrollForm.LOGIN_PAGE, path

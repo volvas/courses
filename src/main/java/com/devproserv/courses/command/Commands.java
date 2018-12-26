@@ -22,15 +22,8 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.servlet;
+package com.devproserv.courses.command;
 
-import com.devproserv.courses.command.Command;
-import com.devproserv.courses.command.Enroll;
-import com.devproserv.courses.command.Login;
-import com.devproserv.courses.command.Logout;
-import com.devproserv.courses.command.NotFound;
-import com.devproserv.courses.command.SignUp;
-import com.devproserv.courses.command.Unroll;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -47,7 +40,7 @@ public class Commands {
     /**
      * Login command name.
      */
-    static final String COMMAND_LOGIN = "login";
+    private static final String COMMAND_LOGIN = "login";
 
     /**
      * Sign up command name.
@@ -100,7 +93,7 @@ public class Commands {
      * @param request HTTP request
      * @return String with a path defined by parameter "command" in request
      */
-    String getPath(final HttpServletRequest request) {
+    public String getPath(final HttpServletRequest request) {
         final String par = request.getParameter("command");
         Command command = this.map.get(par).get();
         if (command == null) {
