@@ -24,7 +24,6 @@
 
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.form.SignUpForm;
 import com.devproserv.courses.model.Response;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
@@ -65,6 +64,6 @@ class SignUpTest {
     @Test
     void testPathOk() {
         final Response response = this.signup.response(this.request);
-        Assertions.assertEquals(SignUpForm.SIGNUP_PAGE, response.getPath());
+        Assertions.assertEquals(SignUp.SIGNUP_PAGE, response.getPath());
     }
 }

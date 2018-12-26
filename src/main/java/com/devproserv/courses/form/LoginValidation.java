@@ -49,7 +49,7 @@ public final class LoginValidation implements Validation {
      * @param login Login
      * @param password Password
      */
-    LoginValidation(final String login, final String password) {
+    public LoginValidation(final String login, final String password) {
         this.login = login;
         this.password = password;
     }

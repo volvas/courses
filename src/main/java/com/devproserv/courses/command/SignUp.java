@@ -23,9 +23,17 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.form.SignUpForm;
+import com.devproserv.courses.form.SignUpValidation;
+import com.devproserv.courses.form.SignupParams;
+import com.devproserv.courses.form.SignupUser;
+import com.devproserv.courses.form.Validation;
+import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Creates a new user using data from the HTTP request.
@@ -35,28 +43,68 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class SignUp implements Command {
     /**
-     * SignUp form.
+     * Sign up JSP page file name.
      */
-    private final SignUpForm form;
+    public static final String SIGNUP_PAGE = "/signup.jsp";
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SignUp.class);
+
+    /**
+     * Database.
+     */
+    private final Db dbase;
 
     /**
      * Constructor.
      */
     SignUp() {
-        this(new SignUpForm());
+        this(new Db());
     }
 
     /**
      * Primary constructor.
      *
-     * @param form SignUp form
+     * @param dbase Database
      */
-    SignUp(final SignUpForm form) {
-        this.form = form;
+    SignUp(final Db dbase) {
+        this.dbase = dbase;
     }
 
     @Override
     public Response response(final HttpServletRequest request) {
-        return this.form.validate(request);
+        final SignupParams pars = new SignupParams(request).extract();
+        final Validation validation = new SignUpValidation(pars);
+        return validation.validated()
+            ? this.validPath(request)
+            : invalidPath(validation, request);
+    }
+
+    /**
+     * Handles invalid path.
+     * @param validation Validation
+     * @param request HTTP Request
+     * @return Response
+     */
+    private static Response invalidPath(
+            final Validation validation, final HttpServletRequest request
+    ) {
+        final String login = request.getParameter("login");
+        LOGGER.info("Invalid credentials for potential login {}", login);
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", validation.errorMessage());
+        return new Response(SignUp.SIGNUP_PAGE, payload);
+    }
+
+    /**
+     * Handles valid path.
+     * @param request HTTP Request
+     * @return Response
+     */
+    private Response validPath(final HttpServletRequest request) {
+        final SignupParams pars = new SignupParams(request).extract();
+        return new SignupUser(this.dbase, pars).response();
     }
 }

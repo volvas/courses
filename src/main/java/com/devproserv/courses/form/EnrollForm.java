@@ -31,15 +31,15 @@ import com.devproserv.courses.model.User;
 import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handles enroll form.
  *
  * @since 1.0.0
  */
-public final class EnrollForm implements Form {
+public final class EnrollForm {
     /**
      * Course JSP page file name.
      */
@@ -53,8 +53,8 @@ public final class EnrollForm implements Form {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LogManager.getLogger(
-        EnrollForm.class.getName()
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+        EnrollForm.class
     );
 
     /**
@@ -92,7 +92,13 @@ public final class EnrollForm implements Form {
         this.handling = handling;
     }
 
-    @Override
+    /**
+     * Checks all data user inputs in web forms.
+     *
+     * @param request HTTP request
+     * @return Response containing a path to the same page in case
+     *  of invalidated data or path to further page if validation is successful
+     */
     public Response validate(final HttpServletRequest request) {
         final HttpSession session = request.getSession(false);
         final String path;

@@ -23,9 +23,16 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.form.LoginForm;
+import com.devproserv.courses.form.EnrollForm;
+import com.devproserv.courses.form.LoginValidation;
+import com.devproserv.courses.form.Validation;
 import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.UserRoles;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Treats data from login web form.
@@ -34,28 +41,51 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class Login implements Command {
     /**
-     * Login form.
+     * Logger.
      */
-    private LoginForm form;
-
-    /**
-     * Default constructor.
-     */
-    public Login() {
-        this(new LoginForm());
-    }
-
-    /**
-     * Primary constructor.
-     *
-     * @param form Login form instance
-     */
-    public Login(final LoginForm form) {
-        this.form = form;
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(Login.class);
 
     @Override
     public Response response(final HttpServletRequest request) {
-        return this.form.validate(request);
+        final String login          = request.getParameter("login");
+        final String password       = request.getParameter("password");
+        final Validation validation = new LoginValidation(login, password);
+        final Response response;
+        if (validation.validated()) {
+            LOGGER.debug("Login '{}' and password are valid.", login);
+            response = validPath(request, login, password);
+        } else {
+            response = invalidPath(validation, login);
+        }
+        return response;
+    }
+
+    /**
+     * Handles invalid path.
+     * @param validation Validation
+     * @param login Login
+     * @return Response
+     */
+    private static Response invalidPath(
+        final Validation validation, final String login
+    ) {
+        LOGGER.info("Invalid credentials for login {}", login);
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", validation.errorMessage());
+        return new Response(EnrollForm.LOGIN_PAGE, payload);
+    }
+
+    /**
+     * Handles valid path.
+     * @param request HTTP Request
+     * @param login Login
+     * @param password Password
+     * @return Path
+     */
+    private static Response validPath(
+        final HttpServletRequest request, final String login,
+        final String password
+    ) {
+        return new UserRoles(login, password).build().path(request);
     }
 }

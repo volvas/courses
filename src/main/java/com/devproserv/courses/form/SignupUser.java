@@ -24,6 +24,7 @@
 
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.command.SignUp;
 import com.devproserv.courses.jooq.enums.UsersRole;
 import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
@@ -91,7 +92,7 @@ public final class SignupUser {
      * @param dbase Database
      * @param pars Sign up parameters
      */
-    SignupUser(final Db dbase, final SignupParams pars) {
+    public SignupUser(final Db dbase, final SignupParams pars) {
         this.dbase    = dbase;
         this.login    = pars.getLogin();
         this.password = pars.getPassword();
@@ -110,12 +111,12 @@ public final class SignupUser {
         final Map<String, Object> payload = new HashMap<>();
         if (this.loginExists()) {
             payload.put(attribute, "User already exists!");
-            path = SignUpForm.SIGNUP_PAGE;
+            path = SignUp.SIGNUP_PAGE;
         } else if (this.insertUser()) {
             path = EnrollForm.LOGIN_PAGE;
         } else {
             payload.put(attribute, "User has not been created. Try again.");
-            path = SignUpForm.SIGNUP_PAGE;
+            path = SignUp.SIGNUP_PAGE;
         }
         return new Response(path, payload);
     }

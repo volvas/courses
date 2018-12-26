@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @since 1.0.0
  */
-class SignupParams {
+public class SignupParams {
     /**
      * HTTP request.
      */
@@ -66,7 +66,7 @@ class SignupParams {
      * Constructor.
      * @param request HTTP request
      */
-    SignupParams(final HttpServletRequest request) {
+    public SignupParams(final HttpServletRequest request) {
         this.request = request;
     }
 
@@ -114,7 +114,7 @@ class SignupParams {
      * Extracts parameters from the HTTP request.
      * @return This instance
      */
-    SignupParams extract() {
+    public SignupParams extract() {
         this.login    = this.request.getParameter("login");
         this.password = this.request.getParameter("password");
         this.fname    = this.request.getParameter("firstname");
