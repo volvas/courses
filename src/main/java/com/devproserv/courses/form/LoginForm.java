@@ -84,6 +84,6 @@ public final class LoginForm implements Form {
         final HttpServletRequest request, final String login,
         final String password
     ) {
-        return new UserRoles(login, password).path(request);
+        return new UserRoles(login, password).build().path(request);
     }
 }

@@ -115,15 +115,24 @@ public class UserRoles {
         this.login    = login;
         this.password = password;
         this.roles    = new EnumMap<>(UserRole.class);
+    }
+
+    /**
+     * Builder.
+     * @return This instance
+     */
+    public UserRoles build() {
         this.roles.put(
-            UserRole.STUD,  () -> new Student(dbase, login, password)
+            UserRole.STUD,
+            () -> new Student(this.dbase, this.login, this.password)
         );
         this.roles.put(
-            UserRole.LECT,  () -> new Lecturer(login, password)
+            UserRole.LECT,  () -> new Lecturer(this.login, this.password)
         );
         this.roles.put(
-            UserRole.ADMIN, () -> new Admin(login, password)
+            UserRole.ADMIN, () -> new Admin(this.login, this.password)
         );
+        return this;
     }
 
     /**
