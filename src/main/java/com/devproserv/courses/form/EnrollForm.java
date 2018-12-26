@@ -26,7 +26,9 @@ package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.User;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -91,7 +93,7 @@ public final class EnrollForm implements Form {
     }
 
     @Override
-    public String validate(final HttpServletRequest request) {
+    public Response validate(final HttpServletRequest request) {
         final HttpSession session = request.getSession(false);
         final String path;
         if (session == null) {
@@ -112,7 +114,7 @@ public final class EnrollForm implements Form {
                 }
             }
         }
-        return path;
+        return new Response(path, Collections.emptyMap());
     }
 
     /**

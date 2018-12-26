@@ -29,9 +29,11 @@ import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
 import com.devproserv.courses.jooq.tables.records.UsersRecord;
 import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.Response;
 import java.sql.Connection;
 import java.sql.SQLException;
-import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -99,25 +101,23 @@ public final class SignupUser {
     }
 
     /**
-     * Provides path after creating new user.
-     * @param request HTTP request
-     * @return Path
+     * Provides response on creating new user.
+     * @return Response
      */
-    public String path(final HttpServletRequest request) {
+    public Response response() {
         final String attribute = "message";
         final String path;
+        final Map<String, Object> payload = new HashMap<>();
         if (this.loginExists()) {
-            request.setAttribute(attribute, "User already exists!");
+            payload.put(attribute, "User already exists!");
             path = SignUpForm.SIGNUP_PAGE;
         } else if (this.insertUser()) {
             path = EnrollForm.LOGIN_PAGE;
         } else {
-            request.setAttribute(
-                attribute, "User has not been created. Try again."
-            );
+            payload.put(attribute, "User has not been created. Try again.");
             path = SignUpForm.SIGNUP_PAGE;
         }
-        return path;
+        return new Response(path, payload);
     }
 
     /**

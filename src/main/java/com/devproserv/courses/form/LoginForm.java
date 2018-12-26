@@ -24,7 +24,10 @@
 
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.UserRoles;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,34 +46,33 @@ public final class LoginForm implements Form {
     );
 
     @Override
-    public String validate(final HttpServletRequest request) {
+    public Response validate(final HttpServletRequest request) {
         final String login          = request.getParameter("login");
         final String password       = request.getParameter("password");
         final Validation validation = new LoginValidation(login, password);
-        final String path;
+        final Response response;
         if (validation.validated()) {
             LOGGER.debug("Login '{}' and password are valid.", login);
-            path = validPath(request, login, password);
+            response = validPath(request, login, password);
         } else {
-            path = invalidPath(validation, request, login);
+            response = invalidPath(validation, login);
         }
-        return path;
+        return response;
     }
 
     /**
      * Handles invalid path.
      * @param validation Validation
-     * @param request HTTP Request
      * @param login Login
-     * @return Path
+     * @return Response
      */
-    private static String invalidPath(
-        final Validation validation,
-        final HttpServletRequest request, final String login
+    private static Response invalidPath(
+        final Validation validation, final String login
     ) {
         LOGGER.info("Invalid credentials for login {}", login);
-        request.setAttribute("message", validation.errorMessage());
-        return EnrollForm.LOGIN_PAGE;
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", validation.errorMessage());
+        return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
 
     /**
@@ -80,7 +82,7 @@ public final class LoginForm implements Form {
      * @param password Password
      * @return Path
      */
-    private static String validPath(
+    private static Response validPath(
         final HttpServletRequest request, final String login,
         final String password
     ) {

@@ -24,6 +24,7 @@
 
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.model.Response;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -36,8 +37,8 @@ public interface Form {
      * Checks all data user inputs in web forms.
      *
      * @param request HTTP request
-     * @return Path to the same page containing the form in case
+     * @return Response containing a path to the same page in case
      *  of invalidated data or path to further page if validation is successful
      */
-    String validate(HttpServletRequest request);
+    Response validate(HttpServletRequest request);
 }

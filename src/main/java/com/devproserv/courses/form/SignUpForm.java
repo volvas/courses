@@ -24,6 +24,9 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.Response;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,37 +70,38 @@ public final class SignUpForm implements Form {
     }
 
     @Override
-    public String validate(final HttpServletRequest request) {
+    public Response validate(final HttpServletRequest request) {
         final SignupParams pars = new SignupParams(request).extract();
         final Validation validation = new SignUpValidation(pars);
         return validation.validated()
             ? this.validPath(request)
-            : this.invalidPath(validation, request);
+            : invalidPath(validation, request);
     }
 
     /**
      * Handles invalid path.
      * @param validation Validation
      * @param request HTTP Request
-     * @return Path
+     * @return Response
      */
-    private static String invalidPath(
+    private static Response invalidPath(
         final Validation validation, final HttpServletRequest request
     ) {
         final String login = request.getParameter("login");
         LOGGER.info("Invalid credentials for potential login {}", login);
-        request.setAttribute("message", validation.errorMessage());
-        return SignUpForm.SIGNUP_PAGE;
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", validation.errorMessage());
+        return new Response(SignUpForm.SIGNUP_PAGE, payload);
     }
 
     /**
      * Handles valid path.
      * @param request HTTP Request
-     * @return Path
+     * @return Response
      */
-    private String validPath(final HttpServletRequest request) {
+    private Response validPath(final HttpServletRequest request) {
         final SignupParams pars = new SignupParams(request).extract();
-        return new SignupUser(this.dbase, pars).path(request);
+        return new SignupUser(this.dbase, pars).response();
     }
 
 }

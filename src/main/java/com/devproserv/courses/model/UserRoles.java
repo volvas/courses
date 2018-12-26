@@ -139,15 +139,14 @@ public class UserRoles {
      * Defines the path.
      *
      * @param request HTTP request
-     * @return Path
+     * @return Response
      */
-    public String path(final HttpServletRequest request) {
+    public Response path(final HttpServletRequest request) {
         final User user = this.user();
         final Response response = user.response();
-        response.getPayload().forEach(request::setAttribute);
         final HttpSession session = request.getSession();
         session.setAttribute(session.getId(), user);
-        return response.getPath();
+        return response;
     }
 
     /**
