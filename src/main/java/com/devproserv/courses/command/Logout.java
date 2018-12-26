@@ -23,9 +23,10 @@
  */
 package com.devproserv.courses.command;
 
+import com.devproserv.courses.model.Response;
 import com.devproserv.courses.servlet.JspFilter;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,10 +43,9 @@ public final class Logout implements Command {
         .getLogger(Commands.class);
 
     @Override
-    public String path(final HttpServletRequest request) {
-        final HttpSession session = request.getSession();
-        session.invalidate();
+    public Response response(final HttpServletRequest request) {
+        request.getSession().invalidate();
         LOGGER.info("User logged out.");
-        return JspFilter.HOME_PAGE;
+        return new Response(JspFilter.HOME_PAGE, Collections.emptyMap());
     }
 }

@@ -51,9 +51,9 @@ class CommandsTest {
     private HttpServletRequest request;
 
     /**
-     * Application context.
+     * Commands.
      */
-    private Commands context;
+    private Commands commands;
 
     /**
      * Setup.
@@ -61,19 +61,19 @@ class CommandsTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.context = new Commands();
+        this.commands = new Commands().build();
     }
 
     /**
      * Test.
      */
     @Test
-    void testGetPathOk() {
+    void responseOkWhenNormalCommand() {
         Mockito.when(this.request.getParameter(CommandsTest.COMMAND))
             .thenReturn("login");
-        final String path = this.context.path(this.request);
+        final String path = this.commands.path(this.request);
         Assertions.assertEquals(
-            "Not login page.", EnrollForm.LOGIN_PAGE, path
+            EnrollForm.LOGIN_PAGE, path, "Should be login page."
         );
     }
 
@@ -81,12 +81,23 @@ class CommandsTest {
      * Test.
      */
     @Test
-    void testGetPathWrongCommand() {
+    void responseWithNotFoundPageWhenNullParameter() {
+        final String path = this.commands.path(this.request);
+        Assertions.assertEquals(
+            NotFound.NOT_FOUND_PAGE, path, "Should be not found page"
+        );
+    }
+
+    /**
+     * Test.
+     */
+    @Test
+    void responseWithNotFoundPageWhenWrongParameter() {
         Mockito.when(this.request.getParameter(CommandsTest.COMMAND))
             .thenReturn("invalid command");
-        final String path = this.context.path(this.request);
+        final String path = this.commands.path(this.request);
         Assertions.assertEquals(
-            "Not notfound page", NotFound.NOT_FOUND_PAGE, path
+            NotFound.NOT_FOUND_PAGE, path, "Should be not found page."
         );
     }
 }

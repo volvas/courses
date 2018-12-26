@@ -24,6 +24,7 @@
 
 package com.devproserv.courses.command;
 
+import com.devproserv.courses.model.Response;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,10 +61,10 @@ class NotFoundTest {
 
     @Test
     void testExecuteCommandOk() {
-        final String path = this.nfound.path(this.request);
+        final Response response = this.nfound.response(this.request);
         Assertions.assertEquals(
             String.format("Should be equal to %s", NotFound.NOT_FOUND_PAGE),
-            NotFound.NOT_FOUND_PAGE, path
+            NotFound.NOT_FOUND_PAGE, response.getPath()
         );
     }
 }

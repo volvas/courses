@@ -25,7 +25,7 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
-import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.Response;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,7 +64,9 @@ class LoginTest {
      */
     @Test
     void testPathOk() {
-        final String path = this.login.path(this.request);
-        Assertions.assertEquals(EnrollForm.LOGIN_PAGE, path, "Should be null");
+        final Response response = this.login.response(this.request);
+        Assertions.assertEquals(
+            EnrollForm.LOGIN_PAGE, response.getPath(), "Should be null"
+        );
     }
 }

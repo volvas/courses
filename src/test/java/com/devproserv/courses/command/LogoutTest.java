@@ -24,6 +24,7 @@
 
 package com.devproserv.courses.command;
 
+import com.devproserv.courses.model.Response;
 import com.devproserv.courses.servlet.JspFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -73,10 +74,10 @@ class LogoutTest {
      */
     @Test
     void testExecuteCommandOk() {
-        final String path = this.logout.path(this.request);
+        final Response response = this.logout.response(this.request);
         Assertions.assertEquals(
             String.format("Should be equal to %s", JspFilter.HOME_PAGE),
-            JspFilter.HOME_PAGE, path
+            JspFilter.HOME_PAGE, response.getPath()
         );
     }
 }

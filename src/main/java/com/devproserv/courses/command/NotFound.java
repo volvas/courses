@@ -23,7 +23,11 @@
  */
 package com.devproserv.courses.command;
 
+import com.devproserv.courses.model.Response;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a non-existing command.
@@ -36,8 +40,16 @@ public final class NotFound implements Command {
      */
     public static final String NOT_FOUND_PAGE = "/404.html";
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+        Commands.class
+    );
+
     @Override
-    public String path(final HttpServletRequest request) {
-        return NotFound.NOT_FOUND_PAGE;
+    public Response response(final HttpServletRequest request) {
+        LOGGER.warn("Invalid command given!");
+        return new Response(NotFound.NOT_FOUND_PAGE, Collections.emptyMap());
     }
 }

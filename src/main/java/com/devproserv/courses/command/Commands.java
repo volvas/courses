@@ -24,12 +24,12 @@
 
 package com.devproserv.courses.command;
 
+import com.devproserv.courses.model.Response;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Defines application commands.
@@ -63,13 +63,6 @@ public class Commands {
     private static final String COMMAND_UNROLL = "unsubscribe";
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(
-        Commands.class
-    );
-
-    /**
      * Commands.
      */
     private final Map<String, Supplier<Command>> map = new HashMap<>();
@@ -89,17 +82,28 @@ public class Commands {
 
     /**
      * Delivers a path of a page defined by given request.
+     * In addition uploads the given request with payload be presented
+     * on web page later.
      *
      * @param request HTTP request
-     * @return String with a path defined by parameter "command" in request
+     * @return String with a path
      */
     public String path(final HttpServletRequest request) {
+        final Response response = this.command(request).response(request);
+        response.getPayload().forEach(request::setAttribute);
+        return response.getPath();
+    }
+
+    /**
+     * Instantiates a command by HTTP request parameter.
+     * @param request HTTP request
+     * @return Command instance
+     */
+    private Command command(final HttpServletRequest request) {
         final String par = request.getParameter("command");
-        Command command = this.map.get(par).get();
-        if (command == null) {
-            LOGGER.warn("Invalid command given!");
-            command = new NotFound();
-        }
-        return command.path(request);
+        final Optional<Supplier<Command>> cmds = Optional.ofNullable(
+            this.map.get(par)
+        );
+        return cmds.map(Supplier::get).orElse(new NotFound());
     }
 }

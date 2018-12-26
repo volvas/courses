@@ -24,6 +24,8 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.SignUpForm;
+import com.devproserv.courses.model.Response;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -41,7 +43,7 @@ public final class SignUp implements Command {
     /**
      * Constructor.
      */
-    public SignUp() {
+    SignUp() {
         this(new SignUpForm());
     }
 
@@ -55,7 +57,9 @@ public final class SignUp implements Command {
     }
 
     @Override
-    public String path(final HttpServletRequest request) {
-        return this.form.validate(request);
+    public Response response(final HttpServletRequest request) {
+        return new Response(
+            this.form.validate(request), Collections.emptyMap()
+        );
     }
 }
