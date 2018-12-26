@@ -144,10 +144,10 @@ public class UserRoles {
     public String path(final HttpServletRequest request) {
         final User user = this.user();
         final Response response = user.response();
-        response.payload().forEach(request::setAttribute);
+        response.getPayload().forEach(request::setAttribute);
         final HttpSession session = request.getSession();
         session.setAttribute(session.getId(), user);
-        return response.path();
+        return response.getPath();
     }
 
     /**

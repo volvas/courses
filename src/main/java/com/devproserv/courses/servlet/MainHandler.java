@@ -61,7 +61,7 @@ public final class MainHandler extends HttpServlet {
     protected void doPost(
         final HttpServletRequest request, final HttpServletResponse response
     ) throws ServletException, IOException {
-        final String path = this.commands.getPath(request);
+        final String path = this.commands.path(request);
         final RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         final String encoding = "UTF-8";
         request.setCharacterEncoding(encoding);

@@ -57,7 +57,7 @@ public class Response {
      * Getter.
      * @return Path
      */
-    public String path() {
+    public String getPath() {
         return this.path;
     }
 
@@ -65,7 +65,7 @@ public class Response {
      * Getter.
      * @return Payload
      */
-    public Map<String, Object> payload() {
+    public Map<String, Object> getPayload() {
         return this.payload;
     }
 }

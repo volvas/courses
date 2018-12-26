@@ -71,7 +71,7 @@ class CommandsTest {
     void testGetPathOk() {
         Mockito.when(this.request.getParameter(CommandsTest.COMMAND))
             .thenReturn("login");
-        final String path = this.context.getPath(this.request);
+        final String path = this.context.path(this.request);
         Assertions.assertEquals(
             "Not login page.", EnrollForm.LOGIN_PAGE, path
         );
@@ -84,7 +84,7 @@ class CommandsTest {
     void testGetPathWrongCommand() {
         Mockito.when(this.request.getParameter(CommandsTest.COMMAND))
             .thenReturn("invalid command");
-        final String path = this.context.getPath(this.request);
+        final String path = this.context.path(this.request);
         Assertions.assertEquals(
             "Not notfound page", NotFound.NOT_FOUND_PAGE, path
         );

@@ -90,7 +90,7 @@ class MainHandlerTest {
      */
     @Test
     void testDoPostOk() throws IOException, ServletException {
-        Mockito.when(this.context.getPath(this.request))
+        Mockito.when(this.context.path(this.request))
             .thenReturn(EnrollForm.STUDENT_PAGE);
         Mockito.when(this.request.getRequestDispatcher(EnrollForm.STUDENT_PAGE))
             .thenReturn(this.dispatcher);

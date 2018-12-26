@@ -93,7 +93,7 @@ public class Commands {
      * @param request HTTP request
      * @return String with a path defined by parameter "command" in request
      */
-    public String getPath(final HttpServletRequest request) {
+    public String path(final HttpServletRequest request) {
         final String par = request.getParameter("command");
         Command command = this.map.get(par).get();
         if (command == null) {
