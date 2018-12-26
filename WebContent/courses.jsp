@@ -67,7 +67,7 @@
 
             <div class="row">
               <div class="col-xs-6 col-md-12">
-                <h3>Subscribed courses</h3>
+                <h3>Enrolled courses</h3>
               </div>
               <div class="col-xs-6 col-md-12">
                 <table class="table table-hover">
@@ -96,12 +96,12 @@
               <div class="row">
                 <div class="form-group col-xs-4 col-md-3 col-md-offset-3">
                   <input type="text" class="form-control" name="courseunsubscrid"
-                    placeholder="Type course ID to unsubscribe">
+                    placeholder="Type course ID to unroll">
                 </div>
                 
                 <div class="form-group col-xs-3 col-lg-2">
                   <button type="submit" class="btn btn-primary col-md-12"
-                    name="command" value="unsubscribe">Submit</button>
+                    name="command" value="unroll">Submit</button>
                 </div>
               </div>
             </form>
@@ -142,7 +142,7 @@
                 
                 <div class="form-group col-md-2">
                   <button type="submit" class="btn btn-primary col-md-12"
-                    name="command" value="subscribe">Submit</button>
+                    name="command" value="enroll">Submit</button>
                 </div>
               </div>
             </form>

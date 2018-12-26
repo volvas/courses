@@ -55,12 +55,12 @@ public class Commands {
     /**
      * Enroll command name.
      */
-    private static final String COMMAND_SUBSCRIBE = "subscribe";
+    private static final String COMMAND_ENROLL = "enroll";
 
     /**
      * Unroll command name.
      */
-    private static final String COMMAND_UNROLL = "unsubscribe";
+    private static final String COMMAND_UNROLL = "unroll";
 
     /**
      * Commands.
@@ -72,11 +72,11 @@ public class Commands {
      * @return This instance
      */
     public Commands build() {
-        this.map.put(Commands.COMMAND_SIGNUP,    SignUp::new);
-        this.map.put(Commands.COMMAND_LOGIN,     Login::new);
-        this.map.put(Commands.COMMAND_LOGOUT,    Logout::new);
-        this.map.put(Commands.COMMAND_SUBSCRIBE, Enroll::new);
-        this.map.put(Commands.COMMAND_UNROLL,    Unroll::new);
+        this.map.put(Commands.COMMAND_SIGNUP, SignUp::new);
+        this.map.put(Commands.COMMAND_LOGIN,  Login::new);
+        this.map.put(Commands.COMMAND_LOGOUT, Logout::new);
+        this.map.put(Commands.COMMAND_ENROLL, Enroll::new);
+        this.map.put(Commands.COMMAND_UNROLL, Unroll::new);
         return this;
     }
 
