@@ -22,25 +22,23 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.form;
+package com.devproserv.courses.validation;
 
-import com.devproserv.courses.validation.VldResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Contains tests to check functionality of {@link NumberValidation} class.
+ * Contains tests to check functionality of {@link VldNumber} class.
  *
  * @since 1.0.0
  */
-class NumberValidationTest {
+class VldNumberTest {
     /**
      * Test.
      */
     @Test
-    void testValidatedOk() {
-        final Validation validation = new NumberValidation("32");
-        final VldResult result = validation.validate();
+    void testValidateOk() {
+        final VldResult result = new VldNumber("32").validate();
         Assertions.assertAll(
             () -> Assertions.assertTrue(result.valid()),
             () -> Assertions.assertFalse(result.reason().isPresent())
@@ -52,8 +50,7 @@ class NumberValidationTest {
      */
     @Test
     void testValidatedNull() {
-        final Validation validation = new NumberValidation(null);
-        final VldResult result = validation.validate();
+        final VldResult result = new VldNumber(null).validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
@@ -68,8 +65,7 @@ class NumberValidationTest {
      */
     @Test
     void testValidatedEmpty() {
-        final Validation validation = new NumberValidation("");
-        final VldResult result = validation.validate();
+        final VldResult result = new VldNumber("").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
@@ -84,8 +80,7 @@ class NumberValidationTest {
      */
     @Test
     void testValidatedNotNumber() {
-        final Validation validation = new NumberValidation("3dh2");
-        final VldResult result = validation.validate();
+        final VldResult result = new VldNumber("3dh2").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(

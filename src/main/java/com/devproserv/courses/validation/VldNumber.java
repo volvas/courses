@@ -25,10 +25,8 @@
 package com.devproserv.courses.validation;
 
 import com.devproserv.courses.validation.rules.VldRuleContainsDigits;
-import com.devproserv.courses.validation.rules.VldRuleContainsLetters;
 import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
 import com.devproserv.courses.validation.rules.VldRuleNotNull;
-import com.devproserv.courses.validation.rules.VldRuleStartLetter;
 
 /**
  * Combines rules to validate field "username".

@@ -28,6 +28,7 @@ import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.User;
+import com.devproserv.courses.validation.VldNumber;
 import com.devproserv.courses.validation.VldResult;
 import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
@@ -110,11 +111,10 @@ public final class EnrollForm {
             if (this.user == null) {
                 path = EnrollForm.LOGIN_PAGE;
             } else {
-                final String par = request.getParameter(
+                final String param = request.getParameter(
                     this.handling.courseIdParameter()
                 );
-                final Validation validation = new NumberValidation(par);
-                final VldResult result = validation.validate();
+                final VldResult result = new VldNumber(param).validate();
                 if (result.valid()) {
                     path = this.validPath(request);
                 } else {
@@ -140,7 +140,7 @@ public final class EnrollForm {
         );
         request.setAttribute(
             this.handling.errorMessageParameter(),
-            result.reason().get()
+            result.reason().orElse("")
         );
         this.user.prepareJspData(request);
         return EnrollForm.STUDENT_PAGE;

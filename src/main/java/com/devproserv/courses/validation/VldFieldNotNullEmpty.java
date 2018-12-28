@@ -24,10 +24,8 @@
 
 package com.devproserv.courses.validation;
 
-import com.devproserv.courses.validation.rules.VldRuleContainsLetters;
 import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
 import com.devproserv.courses.validation.rules.VldRuleNotNull;
-import com.devproserv.courses.validation.rules.VldRuleStartLetter;
 
 /**
  * Combines rules to validate field on null and empty status.
@@ -61,12 +59,13 @@ public class VldFieldNotNullEmpty {
      * @return Validation result
      */
     public VldResult validate() {
-        return new VldRuleNotNull(String.format("%s should not be null!", name))
-            .and(
-                new VldRuleNotEmpty(
-                    String.format("%s should not be empty!", name)
-                )
+        return new VldRuleNotNull(
+            String.format("%s should not be null!", this.name)
+        ).and(
+            new VldRuleNotEmpty(
+                String.format("%s should not be empty!", this.name)
             )
-            .apply(this.field);
+        )
+        .apply(this.field);
     }
 }

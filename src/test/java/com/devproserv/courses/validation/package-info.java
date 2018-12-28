@@ -21,32 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
-
-import com.devproserv.courses.validation.VldNumber;
-import com.devproserv.courses.validation.VldResult;
 
 /**
- * Number validation.
- *
- * @since 1.0.0
+ * Tests for validation classes.
  */
-public final class NumberValidation implements Validation {
-    /**
-     * Number.
-     */
-    private final String number;
-
-    /**
-     * Constructor.
-     * @param number Number
-     */
-    NumberValidation(final String number) {
-        this.number = number;
-    }
-
-    @Override
-    public VldResult validate() {
-        return new VldNumber(this.number).validate();
-    }
-}
+package com.devproserv.courses.validation;

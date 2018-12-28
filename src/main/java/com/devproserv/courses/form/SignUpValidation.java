@@ -27,8 +27,6 @@ import com.devproserv.courses.validation.VldFieldNotNullEmpty;
 import com.devproserv.courses.validation.VldPassword;
 import com.devproserv.courses.validation.VldResult;
 import com.devproserv.courses.validation.VldUsername;
-import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
-import com.devproserv.courses.validation.rules.VldRuleNotNull;
 
 /**
  * Sign up validation.
