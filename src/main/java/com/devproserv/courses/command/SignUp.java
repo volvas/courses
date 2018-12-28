@@ -23,13 +23,15 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.form.SignUpValidation;
 import com.devproserv.courses.form.SignupParams;
 import com.devproserv.courses.form.SignupUser;
-import com.devproserv.courses.form.Validation;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
+import com.devproserv.courses.validation.VldFieldNotNullEmpty;
+import com.devproserv.courses.validation.VldPassword;
+import com.devproserv.courses.validation.VldUsername;
 import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultAggr;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -76,28 +78,37 @@ public final class SignUp implements Command {
 
     @Override
     public Response response(final HttpServletRequest request) {
-        final SignupParams pars = new SignupParams(request).extract();
-        final Validation validation = new SignUpValidation(pars);
-        final VldResult result = validation.validate();
+        final String login    = request.getParameter("login");
+        final String password = request.getParameter("password");
+        final String fname    = request.getParameter("firstname");
+        final String lname    = request.getParameter("lastname");
+        final String faculty  = request.getParameter("faculty");
+        final VldResult result = new VldResultAggr()
+            .join(new VldUsername(login).validate())
+            .join(new VldPassword(password).validate())
+            .join(new VldFieldNotNullEmpty(fname, "First name").validate())
+            .join(new VldFieldNotNullEmpty(lname, "Last name").validate())
+            .join(new VldFieldNotNullEmpty(faculty, "Faculty").validate())
+            .aggregate();
         final Response response;
         if (result.valid()) {
             response = this.validPath(request);
         } else {
-            response = invalidPath(result, request);
+            response = invalidPath(result, login);
         }
         return response;
     }
 
     /**
      * Handles invalid path.
+     *
      * @param result Validation result
-     * @param request HTTP Request
+     * @param login Login name
      * @return Response
      */
     private static Response invalidPath(
-        final VldResult result, final HttpServletRequest request
+        final VldResult result, final String login
     ) {
-        final String login = request.getParameter("login");
         LOGGER.info("Invalid credentials for potential login {}", login);
         final Map<String, Object> payload = new HashMap<>();
         payload.put("message", result.reason().orElse(""));
@@ -106,6 +117,7 @@ public final class SignUp implements Command {
 
     /**
      * Handles valid path.
+     *
      * @param request HTTP Request
      * @return Response
      */

@@ -22,30 +22,36 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.form;
+package com.devproserv.courses.validation;
 
 import com.devproserv.courses.validation.results.VldResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Contains unit-tests to check functionality of {@link LoginValidation} class.
+ * Contains unit-tests to check functionality of {@link VldUsername} class.
  *
  * @since 1.0.0
  */
-class LoginValidationTest {
+class VldUsernameTest {
     /**
      * Message to start with letter.
      */
-    private static final String MSG =
+    private static final String START =
         "Username shouldn't start with digit or non letter!";
+
+    /**
+     * Message to contain only letters and digits.
+     */
+    private static final String CONTAIN =
+        "Username should contain only letters and digits!";
 
     /**
      * Test.
      */
     @Test
-    void testValidatedOkLoginEndsDigit() {
-        final VldResult res = new LoginValidation("user4", "rtvhcs").validate();
+    void okWhenUsernameNormal() {
+        final VldResult res = new VldUsername("user4").validate();
         Assertions.assertAll(
             () -> Assertions.assertTrue(res.valid()),
             () -> Assertions.assertFalse(res.reason().isPresent())
@@ -56,8 +62,8 @@ class LoginValidationTest {
      * Test.
      */
     @Test
-    void testValidatedNull() {
-        final VldResult res = new LoginValidation(null, null).validate();
+    void invalidWhenUsernameNull() {
+        final VldResult res = new VldUsername(null).validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
@@ -71,8 +77,8 @@ class LoginValidationTest {
      * Test.
      */
     @Test
-    void testValidatedEmpty() {
-        final VldResult res = new LoginValidation("", "kgfsdhg").validate();
+    void invalidWhenUsernameEmpty() {
+        final VldResult res = new VldUsername("").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
@@ -86,12 +92,12 @@ class LoginValidationTest {
      * Test.
      */
     @Test
-    void testValidatedLoginBeginsDigit() {
-        final VldResult res = new LoginValidation("25user", "mgbgt").validate();
+    void invalidWhenUsernameStartsWithDigit() {
+        final VldResult res = new VldUsername("25user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
+                VldUsernameTest.START,
                 res.reason().orElse("")
             )
         );
@@ -101,12 +107,12 @@ class LoginValidationTest {
      * Test.
      */
     @Test
-    void testValidatedLoginBeginsNotLetter() {
-        final VldResult res = new LoginValidation("#user", "nvcko5").validate();
+    void invalidWhenUsernameStartsWithSpecialCharacter() {
+        final VldResult res = new VldUsername("#user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
+                VldUsernameTest.START,
                 res.reason().orElse("")
             )
         );
@@ -116,12 +122,12 @@ class LoginValidationTest {
      * Test.
      */
     @Test
-    void testValidatedLoginContainsSpaceOne() {
-        final VldResult res = new LoginValidation(" user", "dt4h$g").validate();
+    void invalidWhenUsernameStartsWithSpace() {
+        final VldResult res = new VldUsername(" user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
+                VldUsernameTest.START,
                 res.reason().orElse("")
             )
         );
@@ -131,12 +137,12 @@ class LoginValidationTest {
      * Test.
      */
     @Test
-    void testValidatedLoginContainsSpaceTwo() {
-        final VldResult res = new LoginValidation("user name", "bg").validate();
+    void invalidWhenUsernameStartsWithUnderscore() {
+        final VldResult res = new VldUsername("_user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                "Username should contain only letters and digits!",
+                VldUsernameTest.START,
                 res.reason().orElse("")
             )
         );
@@ -146,12 +152,27 @@ class LoginValidationTest {
      * Test.
      */
     @Test
-    void testValidatedLoginStartsWithUnderscore() {
-        final VldResult res = new LoginValidation("_user", "a$6f").validate();
+    void invalidWhenUsernameContainsSpace() {
+        final VldResult res = new VldUsername("user name").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
+                VldUsernameTest.CONTAIN,
+                res.reason().orElse("")
+            )
+        );
+    }
+
+    /**
+     * Test.
+     */
+    @Test
+    void invalidWhenUsernameContainsSpecialCharacter() {
+        final VldResult res = new VldUsername("user%name").validate();
+        Assertions.assertAll(
+            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertEquals(
+                VldUsernameTest.CONTAIN,
                 res.reason().orElse("")
             )
         );

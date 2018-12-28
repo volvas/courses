@@ -24,11 +24,12 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
-import com.devproserv.courses.form.LoginValidation;
-import com.devproserv.courses.form.Validation;
 import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.UserRoles;
+import com.devproserv.courses.validation.VldPassword;
+import com.devproserv.courses.validation.VldUsername;
 import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultAggr;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -48,10 +49,12 @@ public final class Login implements Command {
 
     @Override
     public Response response(final HttpServletRequest request) {
-        final String login          = request.getParameter("login");
-        final String password       = request.getParameter("password");
-        final Validation validation = new LoginValidation(login, password);
-        final VldResult result = validation.validate();
+        final String login     = request.getParameter("login");
+        final String password  = request.getParameter("password");
+        final VldResult result = new VldResultAggr()
+            .join(new VldUsername(login).validate())
+            .join(new VldPassword(password).validate())
+            .aggregate();
         final Response response;
         if (result.valid()) {
             response = validPath(request, login, password);
