@@ -75,11 +75,9 @@ class JspFilterTest {
     @Test
     void testDoFilter() throws IOException {
         Mockito.when(this.request.getContextPath()).thenReturn("/courses");
-        Mockito.doNothing().when(this.response)
-            .sendRedirect(Mockito.anyString());
+        Mockito.doNothing().when(this.response).sendRedirect(Mockito.anyString());
         final JspFilter filter = new JspFilter();
         filter.doFilter(this.request, this.response, this.chain);
-        Mockito.verify(this.response, Mockito.atLeastOnce())
-            .sendRedirect(Mockito.anyString());
+        Mockito.verify(this.response, Mockito.atLeastOnce()).sendRedirect(Mockito.anyString());
     }
 }

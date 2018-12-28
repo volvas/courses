@@ -65,8 +65,6 @@ class LoginTest {
     @Test
     void testPathOk() {
         final Response response = this.login.response(this.request);
-        Assertions.assertEquals(
-            EnrollForm.LOGIN_PAGE, response.getPath(), "Should be null"
-        );
+        Assertions.assertEquals(EnrollForm.LOGIN_PAGE, response.getPath(), "Should be null");
     }
 }

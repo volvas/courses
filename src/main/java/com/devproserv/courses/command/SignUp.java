@@ -106,9 +106,7 @@ public final class SignUp implements Command {
      * @param login Login name
      * @return Response
      */
-    private static Response invalidPath(
-        final VldResult result, final String login
-    ) {
+    private static Response invalidPath(final VldResult result, final String login) {
         LOGGER.info("Invalid credentials for potential login {}", login);
         final Map<String, Object> payload = new HashMap<>();
         payload.put("message", result.reason().orElse(""));

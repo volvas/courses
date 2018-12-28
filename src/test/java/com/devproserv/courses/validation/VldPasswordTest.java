@@ -55,8 +55,7 @@ class VldPasswordTest {
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                "Username and password should not be null!",
-                res.reason().orElse("")
+                "Username and password should not be null!", res.reason().orElse("")
             )
         );
     }
@@ -70,8 +69,7 @@ class VldPasswordTest {
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                "Username and password should not be empty!",
-                res.reason().orElse("")
+                "Username and password should not be empty!", res.reason().orElse("")
             )
         );
     }

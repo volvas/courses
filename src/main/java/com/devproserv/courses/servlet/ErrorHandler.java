@@ -63,9 +63,7 @@ public final class ErrorHandler extends HttpServlet {
         final Throwable throwable = (Throwable) request.getAttribute(
             "javax.servlet.error.exception"
         );
-        final Integer status = (Integer) request.getAttribute(
-            "javax.servlet.error.status_code"
-        );
+        final Integer status = (Integer) request.getAttribute("javax.servlet.error.status_code");
         final String page;
         if (throwable == null) {
             if (status == nfound) {
@@ -76,9 +74,7 @@ public final class ErrorHandler extends HttpServlet {
         } else {
             page = ErrorHandler.EXCEPTION_PAGE;
         }
-        final RequestDispatcher dispatcher = request.getRequestDispatcher(
-            page
-        );
+        final RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
 }

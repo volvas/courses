@@ -37,14 +37,12 @@ class VldUsernameTest {
     /**
      * Message to start with letter.
      */
-    private static final String START =
-        "Username shouldn't start with digit or non letter!";
+    private static final String START = "Username shouldn't start with digit or non letter!";
 
     /**
      * Message to contain only letters and digits.
      */
-    private static final String CONTAIN =
-        "Username should contain only letters and digits!";
+    private static final String CONTAIN = "Username should contain only letters and digits!";
 
     /**
      * Test.
@@ -67,8 +65,7 @@ class VldUsernameTest {
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                "Username and password should not be null!",
-                res.reason().orElse("")
+                "Username and password should not be null!", res.reason().orElse("")
             )
         );
     }
@@ -82,8 +79,7 @@ class VldUsernameTest {
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
-                "Username and password should not be empty!",
-                res.reason().orElse("")
+                "Username and password should not be empty!", res.reason().orElse("")
             )
         );
     }
@@ -96,10 +92,7 @@ class VldUsernameTest {
         final VldResult res = new VldUsername("25user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
-            () -> Assertions.assertEquals(
-                VldUsernameTest.START,
-                res.reason().orElse("")
-            )
+            () -> Assertions.assertEquals(VldUsernameTest.START, res.reason().orElse(""))
         );
     }
 
@@ -111,10 +104,7 @@ class VldUsernameTest {
         final VldResult res = new VldUsername("#user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
-            () -> Assertions.assertEquals(
-                VldUsernameTest.START,
-                res.reason().orElse("")
-            )
+            () -> Assertions.assertEquals(VldUsernameTest.START, res.reason().orElse(""))
         );
     }
 
@@ -126,10 +116,7 @@ class VldUsernameTest {
         final VldResult res = new VldUsername(" user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
-            () -> Assertions.assertEquals(
-                VldUsernameTest.START,
-                res.reason().orElse("")
-            )
+            () -> Assertions.assertEquals(VldUsernameTest.START, res.reason().orElse(""))
         );
     }
 
@@ -141,10 +128,7 @@ class VldUsernameTest {
         final VldResult res = new VldUsername("_user").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
-            () -> Assertions.assertEquals(
-                VldUsernameTest.START,
-                res.reason().orElse("")
-            )
+            () -> Assertions.assertEquals(VldUsernameTest.START, res.reason().orElse(""))
         );
     }
 
@@ -156,10 +140,7 @@ class VldUsernameTest {
         final VldResult res = new VldUsername("user name").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
-            () -> Assertions.assertEquals(
-                VldUsernameTest.CONTAIN,
-                res.reason().orElse("")
-            )
+            () -> Assertions.assertEquals(VldUsernameTest.CONTAIN, res.reason().orElse(""))
         );
     }
 
@@ -171,10 +152,7 @@ class VldUsernameTest {
         final VldResult res = new VldUsername("user%name").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
-            () -> Assertions.assertEquals(
-                VldUsernameTest.CONTAIN,
-                res.reason().orElse("")
-            )
+            () -> Assertions.assertEquals(VldUsernameTest.CONTAIN, res.reason().orElse(""))
         );
     }
 }

@@ -62,10 +62,7 @@ abstract class CourseHandling {
      * @param request HTTP request
      * @return Path
      */
-    public String path(
-        final Course course, final User user,
-        final HttpServletRequest request
-    ) {
+    public String path(final Course course, final User user, final HttpServletRequest request) {
         this.changeEntry(course, user);
         user.prepareJspData(request);
         return EnrollForm.STUDENT_PAGE;

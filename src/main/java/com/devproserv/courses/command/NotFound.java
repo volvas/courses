@@ -43,9 +43,7 @@ public final class NotFound implements Command {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(
-        Commands.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
 
     @Override
     public Response response(final HttpServletRequest request) {

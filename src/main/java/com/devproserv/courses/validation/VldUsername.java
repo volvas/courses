@@ -56,21 +56,9 @@ public class VldUsername {
      */
     public VldResult validate() {
         return new VldRuleNotNull("Username and password should not be null!")
-            .and(
-                new VldRuleNotEmpty(
-                    "Username and password should not be empty!"
-                )
-            )
-            .and(
-                new VldRuleStartLetter(
-                    "Username shouldn't start with digit or non letter!"
-                )
-            )
-            .and(
-                new VldRuleContainsLetters(
-                    "Username should contain only letters and digits!"
-                )
-            )
+            .and(new VldRuleNotEmpty("Username and password should not be empty!"))
+            .and(new VldRuleStartLetter("Username shouldn't start with digit or non letter!"))
+            .and(new VldRuleContainsLetters("Username should contain only letters and digits!"))
             .apply(this.field);
     }
 }

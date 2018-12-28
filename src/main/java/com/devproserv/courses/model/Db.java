@@ -61,10 +61,7 @@ public class Db {
                 final InitialContext ctx = new InitialContext();
                 this.source = (DataSource) ctx.lookup(Db.DB_URL);
             } catch (final NamingException exc) {
-                LOGGER.error(
-                    "Source with path '{}' not found! Error: {}",
-                    Db.DB_URL, exc
-                );
+                LOGGER.error("Source with path '{}' not found! Error: {}", Db.DB_URL, exc);
             }
         }
         return this.source;

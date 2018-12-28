@@ -52,9 +52,7 @@ public final class SignupUser {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(
-        SignupUser.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(SignupUser.class);
 
     /**
      * Database.
@@ -155,16 +153,13 @@ public final class SignupUser {
         ) {
             final Result<UsersRecord> res = ctx.insertInto(
                 Users.USERS, Users.USERS.FIRSTNAME, Users.USERS.LASTNAME,
-                Users.USERS.LOGIN, Users.USERS.PASSWORD,
-                Users.USERS.ROLE
+                Users.USERS.LOGIN, Users.USERS.PASSWORD, Users.USERS.ROLE
             ).values(
-                this.fname, this.lname, this.login, this.password,
-                UsersRole.STUD
+                this.fname, this.lname, this.login, this.password, UsersRole.STUD
             ).returning(Users.USERS.USER_ID).fetch();
             final int id = res.get(0).getValue(Users.USERS.USER_ID);
             final int inserted = ctx.insertInto(
-                Students.STUDENTS, Students.STUDENTS.STUD_ID,
-                Students.STUDENTS.FACULTY
+                Students.STUDENTS, Students.STUDENTS.STUD_ID, Students.STUDENTS.FACULTY
             ).values(id, this.faculty).execute();
             success = inserted != 0;
         } catch (final SQLException ex) {

@@ -84,12 +84,10 @@ class ErrorHandlerTest {
     @Test
     void testForServerError() throws Exception {
         final Throwable exception = new IllegalStateException();
-        Mockito.when(
-            this.request.getAttribute("javax.servlet.error.exception")
-        ).thenReturn(exception);
-        Mockito.when(
-            this.request.getRequestDispatcher(ErrorHandler.EXCEPTION_PAGE)
-        ).thenReturn(this.dispatcher);
+        Mockito.when(this.request.getAttribute("javax.servlet.error.exception"))
+            .thenReturn(exception);
+        Mockito.when(this.request.getRequestDispatcher(ErrorHandler.EXCEPTION_PAGE))
+            .thenReturn(this.dispatcher);
         this.handler.doGet(this.request, this.response);
         Mockito.verify(this.dispatcher, Mockito.atLeastOnce())
             .forward(this.request, this.response);
@@ -102,12 +100,10 @@ class ErrorHandlerTest {
     @Test
     void testForNotFoundPageError() throws Exception {
         final int notfound = 404;
-        Mockito.when(
-            this.request.getAttribute(ErrorHandlerTest.STATUS_CODE)
-        ).thenReturn(notfound);
-        Mockito.when(
-            this.request.getRequestDispatcher(NotFound.NOT_FOUND_PAGE)
-        ).thenReturn(this.dispatcher);
+        Mockito.when(this.request.getAttribute(ErrorHandlerTest.STATUS_CODE))
+            .thenReturn(notfound);
+        Mockito.when(this.request.getRequestDispatcher(NotFound.NOT_FOUND_PAGE))
+            .thenReturn(this.dispatcher);
         this.handler.doGet(this.request, this.response);
         Mockito.verify(this.dispatcher, Mockito.atLeastOnce())
             .forward(this.request, this.response);
@@ -120,12 +116,10 @@ class ErrorHandlerTest {
     @Test
     void testForOtherError() throws Exception {
         final int notallowed = 405;
-        Mockito.when(
-            this.request.getAttribute(ErrorHandlerTest.STATUS_CODE)
-        ).thenReturn(notallowed);
-        Mockito.when(
-            this.request.getRequestDispatcher(ErrorHandler.GENERIC_ERR_PAGE)
-        ).thenReturn(this.dispatcher);
+        Mockito.when(this.request.getAttribute(ErrorHandlerTest.STATUS_CODE))
+            .thenReturn(notallowed);
+        Mockito.when(this.request.getRequestDispatcher(ErrorHandler.GENERIC_ERR_PAGE))
+            .thenReturn(this.dispatcher);
         this.handler.doGet(this.request, this.response);
         Mockito.verify(this.dispatcher, Mockito.atLeastOnce())
             .forward(this.request, this.response);

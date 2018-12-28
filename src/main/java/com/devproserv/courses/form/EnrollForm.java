@@ -55,9 +55,7 @@ public final class EnrollForm {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(
-        EnrollForm.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnrollForm.class);
 
     /**
      * Application contextDatabase.
@@ -111,9 +109,7 @@ public final class EnrollForm {
             if (this.user == null) {
                 path = EnrollForm.LOGIN_PAGE;
             } else {
-                final String param = request.getParameter(
-                    this.handling.courseIdParameter()
-                );
+                final String param = request.getParameter(this.handling.courseIdParameter());
                 final VldResult result = new VldNumber(param).validate();
                 if (result.valid()) {
                     path = this.validPath(request);
@@ -132,16 +128,9 @@ public final class EnrollForm {
      * @param request HTTP request
      * @return Invalid path
      */
-    private String invalidPath(
-        final VldResult result, final HttpServletRequest request
-    ) {
-        LOGGER.info(
-            "Invalid credentials for login {}", this.user.getLogin()
-        );
-        request.setAttribute(
-            this.handling.errorMessageParameter(),
-            result.reason().orElse("")
-        );
+    private String invalidPath(final VldResult result, final HttpServletRequest request) {
+        LOGGER.info("Invalid credentials for login {}", this.user.getLogin());
+        request.setAttribute(this.handling.errorMessageParameter(), result.reason().orElse(""));
         this.user.prepareJspData(request);
         return EnrollForm.STUDENT_PAGE;
     }
@@ -153,9 +142,7 @@ public final class EnrollForm {
      * @return Valid path
      */
     private String validPath(final HttpServletRequest request) {
-        final String par = request.getParameter(
-            this.handling.courseIdParameter()
-        );
+        final String par = request.getParameter(this.handling.courseIdParameter());
         final int id = Integer.parseInt(par);
         final Course course = new Course(this.dbase);
         course.setId(id);

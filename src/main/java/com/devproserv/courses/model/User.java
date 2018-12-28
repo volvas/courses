@@ -93,10 +93,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param id ID
+     * @param newid ID
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(final int newid) {
+        this.id = newid;
     }
 
     /**
@@ -109,10 +109,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param login Login
+     * @param newlogin Login
      */
-    public void setLogin(final String login) {
-        this.login = login;
+    public void setLogin(final String newlogin) {
+        this.login = newlogin;
     }
 
     /**
@@ -125,10 +125,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param password Password
+     * @param newpass Password
      */
-    public void setPassword(final String password) {
-        this.password = password;
+    public void setPassword(final String newpass) {
+        this.password = newpass;
     }
 
     /**
@@ -141,10 +141,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param fname First name
+     * @param newfname First name
      */
-    public void setFirstName(final String fname) {
-        this.fname = fname;
+    public void setFirstName(final String newfname) {
+        this.fname = newfname;
     }
 
     /**
@@ -157,10 +157,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param lname Last name
+     * @param newlname Last name
      */
-    public void setLastName(final String lname) {
-        this.lname = lname;
+    public void setLastName(final String newlname) {
+        this.lname = newlname;
     }
 
     /**
@@ -173,10 +173,10 @@ public abstract class User {
 
     /**
      * Setter.
-     * @param path Path
+     * @param newpath Path
      */
-    public void setPath(final String path) {
-        this.path = path;
+    public void setPath(final String newpath) {
+        this.path = newpath;
     }
 
     /**

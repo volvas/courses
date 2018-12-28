@@ -43,7 +43,7 @@ public final class Admin extends User {
 
     @Override
     public void loadFields() {
-        System.getProperties();
+        // TODO
     }
 
     @Override

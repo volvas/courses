@@ -54,11 +54,7 @@ public class VldPassword {
      */
     public VldResult validate() {
         return new VldRuleNotNull("Username and password should not be null!")
-            .and(
-                new VldRuleNotEmpty(
-                    "Username and password should not be empty!"
-                )
-            )
+            .and(new VldRuleNotEmpty("Username and password should not be empty!"))
             .apply(this.field);
     }
 }

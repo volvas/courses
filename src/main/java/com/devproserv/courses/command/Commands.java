@@ -101,9 +101,7 @@ public class Commands {
      */
     private Command command(final HttpServletRequest request) {
         final String par = request.getParameter("command");
-        final Optional<Supplier<Command>> cmds = Optional.ofNullable(
-            this.map.get(par)
-        );
+        final Optional<Supplier<Command>> cmds = Optional.ofNullable(this.map.get(par));
         return cmds.map(Supplier::get).orElse(new NotFound());
     }
 }

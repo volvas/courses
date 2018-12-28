@@ -57,7 +57,7 @@ public final class Lecturer extends User {
 
     @Override
     public void loadFields() {
-        System.getProperties();
+        // TODO;
     }
 
     @Override

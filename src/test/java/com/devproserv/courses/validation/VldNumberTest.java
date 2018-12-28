@@ -54,10 +54,7 @@ class VldNumberTest {
         final VldResult result = new VldNumber(null).validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
-            () -> Assertions.assertEquals(
-                "Field should not be null!",
-                result.reason().orElse("")
-            )
+            () -> Assertions.assertEquals("Field should not be null!", result.reason().orElse(""))
         );
     }
 
@@ -69,10 +66,7 @@ class VldNumberTest {
         final VldResult result = new VldNumber("").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
-            () -> Assertions.assertEquals(
-                "Field should not be empty!",
-                result.reason().orElse("")
-            )
+            () -> Assertions.assertEquals("Field should not be empty!", result.reason().orElse(""))
         );
     }
 
@@ -85,8 +79,7 @@ class VldNumberTest {
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                "Field should contain only digits",
-                result.reason().orElse("")
+                "Field should contain only digits", result.reason().orElse("")
             )
         );
     }

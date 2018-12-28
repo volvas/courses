@@ -49,9 +49,7 @@ public class UserRoles {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(
-        UserRoles.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserRoles.class);
 
     /**
      * Database.
@@ -122,16 +120,9 @@ public class UserRoles {
      * @return This instance
      */
     public UserRoles build() {
-        this.roles.put(
-            UserRole.STUD,
-            () -> new Student(this.dbase, this.login, this.password)
-        );
-        this.roles.put(
-            UserRole.LECT,  () -> new Lecturer(this.login, this.password)
-        );
-        this.roles.put(
-            UserRole.ADMIN, () -> new Admin(this.login, this.password)
-        );
+        this.roles.put(UserRole.STUD, () -> new Student(this.dbase, this.login, this.password));
+        this.roles.put(UserRole.LECT, () -> new Lecturer(this.login, this.password));
+        this.roles.put(UserRole.ADMIN, () -> new Admin(this.login, this.password));
         return this;
     }
 
@@ -155,7 +146,7 @@ public class UserRoles {
      * @return User instance
      */
     private User user() {
-        final User user;
+        User user = new EmptyUser(this.login, this.password);
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
@@ -167,7 +158,6 @@ public class UserRoles {
             user = this.fetchUser(res);
         } catch (final SQLException ex) {
             LOGGER.error("Fetching user failed.", ex);
-            throw new IllegalArgumentException("Fetching user failed");
         }
         return user;
     }
@@ -181,9 +171,7 @@ public class UserRoles {
     private User fetchUser(final Result<Record> res) {
         final User user;
         if (res.isNotEmpty()) {
-            final UserRole role = UserRole.valueOf(
-                res.get(0).getValue(Users.USERS.ROLE).name()
-            );
+            final UserRole role = UserRole.valueOf(res.get(0).getValue(Users.USERS.ROLE).name());
             user = this.roles.get(role).get();
         } else {
             user = new EmptyUser(this.login, this.password);

@@ -60,9 +60,7 @@ public final class JspFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(
-        JspFilter.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(JspFilter.class);
 
     @Override
     public void init(final FilterConfig config) {
@@ -76,9 +74,7 @@ public final class JspFilter implements Filter {
     ) throws IOException {
         final HttpServletRequest hrequest = (HttpServletRequest) request;
         final HttpServletResponse hresponse = (HttpServletResponse) response;
-        hresponse.sendRedirect(
-            hrequest.getContextPath() + JspFilter.HOME_PAGE
-        );
+        hresponse.sendRedirect(hrequest.getContextPath() + JspFilter.HOME_PAGE);
     }
 
     @Override

@@ -39,8 +39,7 @@ class VldFieldNotNullEmptyTest {
      */
     @Test
     void okWhenFieldNormal() {
-        final VldResult res = new VldFieldNotNullEmpty("John", "First name")
-            .validate();
+        final VldResult res = new VldFieldNotNullEmpty("John", "First name").validate();
         Assertions.assertAll(
             () -> Assertions.assertTrue(res.valid()),
             () -> Assertions.assertFalse(res.reason().isPresent())
@@ -52,8 +51,7 @@ class VldFieldNotNullEmptyTest {
      */
     @Test
     void invalidWhenFieldNull() {
-        final VldResult res = new VldFieldNotNullEmpty(null, "Last name")
-            .validate();
+        final VldResult res = new VldFieldNotNullEmpty(null, "Last name").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(
@@ -68,8 +66,7 @@ class VldFieldNotNullEmptyTest {
      */
     @Test
     void invalidWhenFieldEmpty() {
-        final VldResult res = new VldFieldNotNullEmpty("", "Faculty")
-            .validate();
+        final VldResult res = new VldFieldNotNullEmpty("", "Faculty").validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(res.valid()),
             () -> Assertions.assertEquals(

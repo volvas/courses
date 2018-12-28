@@ -60,13 +60,8 @@ public class VldFieldNotNullEmpty {
      * @return Validation result
      */
     public VldResult validate() {
-        return new VldRuleNotNull(
-            String.format("%s should not be null!", this.name)
-        ).and(
-            new VldRuleNotEmpty(
-                String.format("%s should not be empty!", this.name)
-            )
-        )
-        .apply(this.field);
+        return new VldRuleNotNull(String.format("%s should not be null!", this.name))
+            .and(new VldRuleNotEmpty(String.format("%s should not be empty!", this.name)))
+            .apply(this.field);
     }
 }

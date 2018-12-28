@@ -27,11 +27,11 @@ package com.devproserv.courses.model;
 import com.devproserv.courses.jooq.tables.StudentCourses;
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents the entity of Course. Maps the table 'courses' in the database.
@@ -43,9 +43,7 @@ public class Course {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LogManager.getLogger(
-        Course.class.getName()
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(Course.class);
 
     /**
      * Database.
@@ -91,12 +89,7 @@ public class Course {
                 StudentCourses.STUDENT_COURSES.COURSE_ID,
                 StudentCourses.STUDENT_COURSES.STUD_ID,
                 StudentCourses.STUDENT_COURSES.STATUS
-            )
-            .values(
-                this.getId(),
-                user.getId(),
-                "STARTED"
-            ).execute();
+            ).values(this.getId(), user.getId(), "STARTED").execute();
         } catch (final SQLException exc) {
             LOGGER.error("User not inserted!", exc);
         }
@@ -133,10 +126,10 @@ public class Course {
 
     /**
      * Setter.
-     * @param id ID
+     * @param newid ID
      */
-    public void setId(final int id) {
-        this.id = id;
+    public void setId(final int newid) {
+        this.id = newid;
     }
 
     /**
@@ -149,10 +142,10 @@ public class Course {
 
     /**
      * Setter.
-     * @param name Name
+     * @param newname Name
      */
-    public void setName(final String name) {
-        this.name = name;
+    public void setName(final String newname) {
+        this.name = newname;
     }
 
     /**
@@ -165,9 +158,9 @@ public class Course {
 
     /**
      * Setter.
-     * @param description Description
+     * @param descr Description
      */
-    public void setDescription(final String description) {
-        this.description = description;
+    public void setDescription(final String descr) {
+        this.description = descr;
     }
 }
