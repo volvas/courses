@@ -29,17 +29,16 @@ import java.util.function.Function;
 /**
  * Represents a peace of validating process.
  *
- * @param <P> Type of the input parameter
  * @since 1.0.0
  */
 @FunctionalInterface
-public interface VldRule<P> extends Function<P, VldResult> {
+public interface VldRule extends Function<String, VldResult> {
     /**
      * Unites two statements by conjunction.
      * @param other Other instance
      * @return Combined instance
      */
-    default VldRule<P> and(VldRule<P> other) {
+    default VldRule and(VldRule other) {
         return param -> {
             final VldResult first = this.apply(param);
             final VldResult res;

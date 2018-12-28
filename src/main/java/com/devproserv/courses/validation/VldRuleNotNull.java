@@ -26,11 +26,10 @@ package com.devproserv.courses.validation;
 
 /**
  * Checks if value is null.
- * @param <P> Type
  *
  * @since 1.0.0
  */
-public final class VldRuleNotNull<P> implements VldRule<P> {
+public final class VldRuleNotNull implements VldRule {
     /**
      * Message.
      */
@@ -45,7 +44,7 @@ public final class VldRuleNotNull<P> implements VldRule<P> {
     }
 
     @Override
-    public VldResult apply(final P param) {
+    public VldResult apply(final String param) {
         final VldResult result;
         if (param == null) {
             result = new VldResultInvalid(this.message);

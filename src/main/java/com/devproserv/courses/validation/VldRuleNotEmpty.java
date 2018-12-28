@@ -29,7 +29,7 @@ package com.devproserv.courses.validation;
  *
  * @since 1.0.0
  */
-public final class VldRuleNotEmpty implements VldRule<String> {
+public final class VldRuleNotEmpty implements VldRule {
     /**
      * Message.
      */

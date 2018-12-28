@@ -96,7 +96,7 @@ public final class SignUpValidation implements Validation {
         final String notnull = "Username and password should not be null!";
         final String notempty = "Username and password should not be empty!";
         final VldResult result;
-        final VldResult resone = new VldRuleNotNull<String>(notnull)
+        final VldResult resone = new VldRuleNotNull(notnull)
             .and(new VldRuleNotEmpty(notempty))
             .and(
             new VldRuleStartLetter(
@@ -107,18 +107,18 @@ public final class SignUpValidation implements Validation {
                 "Username should contain only letters and digits!"
             )
         ).apply(this.login);
-        final VldResult restwo = new VldRuleNotNull<String>(notnull)
+        final VldResult restwo = new VldRuleNotNull(notnull)
             .and(new VldRuleNotEmpty(notempty))
             .apply(this.password);
-        final VldResult resthree = new VldRuleNotNull<String>(
+        final VldResult resthree = new VldRuleNotNull(
             "First name should not be null!"
         ).and(new VldRuleNotEmpty("First name should not be empty!"))
             .apply(this.fname);
-        final VldResult resfour = new VldRuleNotNull<String>(
+        final VldResult resfour = new VldRuleNotNull(
             "Last name should not be null!"
         ).and(new VldRuleNotEmpty("Last name should not be empty!"))
             .apply(this.lname);
-        final VldResult resfive = new VldRuleNotNull<String>(
+        final VldResult resfive = new VldRuleNotNull(
             "Faculty should not be null!"
         ).and(new VldRuleNotEmpty("Faculty should not be empty!"))
             .apply(this.faculty);

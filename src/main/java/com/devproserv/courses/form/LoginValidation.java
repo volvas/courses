@@ -59,7 +59,7 @@ public final class LoginValidation implements Validation {
     public VldResult validate() {
         final String notnull = "Username and password should not be null!";
         final String notempty = "Username and password should not be empty!";
-        final VldResult resone = new VldRuleNotNull<String>(notnull)
+        final VldResult resone = new VldRuleNotNull(notnull)
             .and(new VldRuleNotEmpty(notempty))
             .and(
                 new VldRuleStartLetter(
@@ -72,7 +72,7 @@ public final class LoginValidation implements Validation {
                 )
             )
             .apply(this.login);
-        final VldResult restwo = new VldRuleNotNull<String>(notnull)
+        final VldResult restwo = new VldRuleNotNull(notnull)
             .and(new VldRuleNotEmpty(notempty))
             .apply(this.password);
         final VldResult result;

@@ -49,7 +49,7 @@ public final class NumberValidation implements Validation {
 
     @Override
     public VldResult validate() {
-        return new VldRuleNotNull<String>("Field should not be null!")
+        return new VldRuleNotNull("Field should not be null!")
             .and(new VldRuleNotEmpty("Field should not be empty!"))
             .and(new VldRuleContainsDigits("Field should contain only digits"))
             .apply(this.number);
