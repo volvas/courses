@@ -22,14 +22,18 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
+package com.devproserv.courses.validation.rules;
+
+import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.VldResultInvalid;
+import com.devproserv.courses.validation.VldResultValid;
 
 /**
- * Checks if string starts with letter.
+ * Checks if string is empty.
  *
  * @since 1.0.0
  */
-public final class VldRuleStartLetter implements VldRule {
+public final class VldRuleNotEmpty implements VldRule {
     /**
      * Message.
      */
@@ -39,14 +43,14 @@ public final class VldRuleStartLetter implements VldRule {
      * Primary constructor.
      * @param message Message
      */
-    public VldRuleStartLetter(final String message) {
+    public VldRuleNotEmpty(final String message) {
         this.message = message;
     }
 
     @Override
     public VldResult apply(final String param) {
         final VldResult result;
-        if (param.matches("^[^a-zA-Z]+.*")) {
+        if (param.isEmpty()) {
             result = new VldResultInvalid(this.message);
         } else {
             result = new VldResultValid();

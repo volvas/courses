@@ -23,11 +23,12 @@
  */
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.validation.VldFieldNotNullEmpty;
+import com.devproserv.courses.validation.VldPassword;
 import com.devproserv.courses.validation.VldResult;
-import com.devproserv.courses.validation.VldRuleContainsLetters;
-import com.devproserv.courses.validation.VldRuleNotEmpty;
-import com.devproserv.courses.validation.VldRuleNotNull;
-import com.devproserv.courses.validation.VldRuleStartLetter;
+import com.devproserv.courses.validation.VldUsername;
+import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
+import com.devproserv.courses.validation.rules.VldRuleNotNull;
 
 /**
  * Sign up validation.
@@ -93,35 +94,18 @@ public final class SignUpValidation implements Validation {
 
     @Override
     public VldResult validate() {
-        final String notnull = "Username and password should not be null!";
-        final String notempty = "Username and password should not be empty!";
+        final VldResult resone = new VldUsername(this.login).validate();
+        final VldResult restwo = new VldPassword(this.password).validate();
+        final VldResult resthree = new VldFieldNotNullEmpty(
+            this.fname, "First name"
+        ).validate();
+        final VldResult resfour = new VldFieldNotNullEmpty(
+            this.lname, "Last name"
+        ).validate();
+        final VldResult resfive = new VldFieldNotNullEmpty(
+            this.faculty, "Faculty"
+        ).validate();
         final VldResult result;
-        final VldResult resone = new VldRuleNotNull(notnull)
-            .and(new VldRuleNotEmpty(notempty))
-            .and(
-            new VldRuleStartLetter(
-                "Username shouldn't start with digit or non letter!"
-            )
-        ).and(
-            new VldRuleContainsLetters(
-                "Username should contain only letters and digits!"
-            )
-        ).apply(this.login);
-        final VldResult restwo = new VldRuleNotNull(notnull)
-            .and(new VldRuleNotEmpty(notempty))
-            .apply(this.password);
-        final VldResult resthree = new VldRuleNotNull(
-            "First name should not be null!"
-        ).and(new VldRuleNotEmpty("First name should not be empty!"))
-            .apply(this.fname);
-        final VldResult resfour = new VldRuleNotNull(
-            "Last name should not be null!"
-        ).and(new VldRuleNotEmpty("Last name should not be empty!"))
-            .apply(this.lname);
-        final VldResult resfive = new VldRuleNotNull(
-            "Faculty should not be null!"
-        ).and(new VldRuleNotEmpty("Faculty should not be empty!"))
-            .apply(this.faculty);
         if (!resone.valid()) {
             result = resone;
         } else if (!restwo.valid()) {

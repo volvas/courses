@@ -24,33 +24,52 @@
 
 package com.devproserv.courses.validation;
 
+import com.devproserv.courses.validation.rules.VldRuleContainsLetters;
+import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
+import com.devproserv.courses.validation.rules.VldRuleNotNull;
+import com.devproserv.courses.validation.rules.VldRuleStartLetter;
+
 /**
- * Checks if string is empty.
+ * Combines rules to validate field "username".
  *
  * @since 1.0.0
  */
-public final class VldRuleNotEmpty implements VldRule {
+public class VldUsername {
     /**
-     * Message.
+     * Field.
      */
-    private final String message;
+    private final String field;
 
     /**
-     * Primary constructor.
-     * @param message Message
+     * Constructor.
+     * @param field Field to check
      */
-    public VldRuleNotEmpty(final String message) {
-        this.message = message;
+    public VldUsername(final String field) {
+        this.field = field;
     }
 
-    @Override
-    public VldResult apply(final String param) {
-        final VldResult result;
-        if (param.isEmpty()) {
-            result = new VldResultInvalid(this.message);
-        } else {
-            result = new VldResultValid();
-        }
-        return result;
+    /**
+     * Validates the field.
+     *
+     * @return Validation result
+     */
+    public VldResult validate() {
+        return new VldRuleNotNull("Username and password should not be null!")
+            .and(
+                new VldRuleNotEmpty(
+                    "Username and password should not be empty!"
+                )
+            )
+            .and(
+                new VldRuleStartLetter(
+                    "Username shouldn't start with digit or non letter!"
+                )
+            )
+            .and(
+                new VldRuleContainsLetters(
+                    "Username should contain only letters and digits!"
+                )
+            )
+            .apply(this.field);
     }
 }

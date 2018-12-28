@@ -24,30 +24,40 @@
 
 package com.devproserv.courses.validation;
 
-import java.util.function.Function;
+import com.devproserv.courses.validation.rules.VldRuleContainsDigits;
+import com.devproserv.courses.validation.rules.VldRuleContainsLetters;
+import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
+import com.devproserv.courses.validation.rules.VldRuleNotNull;
+import com.devproserv.courses.validation.rules.VldRuleStartLetter;
 
 /**
- * Represents a peace of validating process.
+ * Combines rules to validate field "username".
  *
  * @since 1.0.0
  */
-@FunctionalInterface
-public interface VldRule extends Function<String, VldResult> {
+public class VldNumber {
     /**
-     * Unites two statements by conjunction.
-     * @param other Other instance
-     * @return Combined instance
+     * Field.
      */
-    default VldRule and(VldRule other) {
-        return param -> {
-            final VldResult first = this.apply(param);
-            final VldResult res;
-            if (first.valid()) {
-                res = other.apply(param);
-            } else {
-                res = first;
-            }
-            return res;
-        };
+    private final String field;
+
+    /**
+     * Constructor.
+     * @param field Field to check
+     */
+    public VldNumber(final String field) {
+        this.field = field;
+    }
+
+    /**
+     * Validates the field.
+     *
+     * @return Validation result
+     */
+    public VldResult validate() {
+        return new VldRuleNotNull("Field should not be null!")
+            .and(new VldRuleNotEmpty("Field should not be empty!"))
+            .and(new VldRuleContainsDigits("Field should contain only digits"))
+            .apply(this.field);
     }
 }

@@ -21,51 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
-import com.devproserv.courses.validation.VldPassword;
+package com.devproserv.courses.validation.rules;
+
 import com.devproserv.courses.validation.VldResult;
-import com.devproserv.courses.validation.VldUsername;
+import com.devproserv.courses.validation.VldResultInvalid;
+import com.devproserv.courses.validation.VldResultValid;
 
 /**
- * Validation of the login form.
+ * Checks if string starts with letter.
  *
  * @since 1.0.0
  */
-public final class LoginValidation implements Validation {
+public final class VldRuleStartLetter implements VldRule {
     /**
-     * Login.
+     * Message.
      */
-    private final String login;
+    private final String message;
 
     /**
-     * Password.
+     * Primary constructor.
+     * @param message Message
      */
-    private final String password;
-
-    /**
-     * Constructor.
-     * @param login Login
-     * @param password Password
-     */
-    public LoginValidation(final String login, final String password) {
-        this.login = login;
-        this.password = password;
+    public VldRuleStartLetter(final String message) {
+        this.message = message;
     }
 
     @Override
-    public VldResult validate() {
-        final VldResult resone = new VldUsername(this.login).validate();
-        final VldResult restwo = new VldPassword(this.password).validate();
+    public VldResult apply(final String param) {
         final VldResult result;
-        if (resone.valid()) {
-            if (restwo.valid()) {
-                result = resone;
-            } else {
-                result = restwo;
-            }
+        if (param.matches("^[^a-zA-Z]+.*")) {
+            result = new VldResultInvalid(this.message);
         } else {
-            result = resone;
+            result = new VldResultValid();
         }
         return result;
     }

@@ -21,52 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
-import com.devproserv.courses.validation.VldPassword;
+package com.devproserv.courses.validation.rules;
+
 import com.devproserv.courses.validation.VldResult;
-import com.devproserv.courses.validation.VldUsername;
+import java.util.function.Function;
 
 /**
- * Validation of the login form.
+ * Represents a peace of validating process.
  *
  * @since 1.0.0
  */
-public final class LoginValidation implements Validation {
+@FunctionalInterface
+public interface VldRule extends Function<String, VldResult> {
     /**
-     * Login.
+     * Unites two statements by conjunction.
+     * @param other Other instance
+     * @return Combined instance
      */
-    private final String login;
-
-    /**
-     * Password.
-     */
-    private final String password;
-
-    /**
-     * Constructor.
-     * @param login Login
-     * @param password Password
-     */
-    public LoginValidation(final String login, final String password) {
-        this.login = login;
-        this.password = password;
-    }
-
-    @Override
-    public VldResult validate() {
-        final VldResult resone = new VldUsername(this.login).validate();
-        final VldResult restwo = new VldPassword(this.password).validate();
-        final VldResult result;
-        if (resone.valid()) {
-            if (restwo.valid()) {
-                result = resone;
+    default VldRule and(VldRule other) {
+        return param -> {
+            final VldResult first = this.apply(param);
+            final VldResult res;
+            if (first.valid()) {
+                res = other.apply(param);
             } else {
-                result = restwo;
+                res = first;
             }
-        } else {
-            result = resone;
-        }
-        return result;
+            return res;
+        };
     }
 }

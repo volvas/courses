@@ -54,7 +54,6 @@ public final class Login implements Command {
         final VldResult result = validation.validate();
         final Response response;
         if (result.valid()) {
-            LOGGER.debug("Login '{}' and password are valid.", login);
             response = validPath(request, login, password);
         } else {
             response = invalidPath(result, login);
@@ -73,7 +72,7 @@ public final class Login implements Command {
     ) {
         LOGGER.info("Invalid credentials for login {}", login);
         final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", result.reason().get());
+        payload.put("message", result.reason().orElse(""));
         return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
 
@@ -88,6 +87,7 @@ public final class Login implements Command {
         final HttpServletRequest request, final String login,
         final String password
     ) {
+        LOGGER.debug("Login '{}' and password are valid.", login);
         return new UserRoles(login, password).build().path(request);
     }
 }

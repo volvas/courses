@@ -22,14 +22,18 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
+package com.devproserv.courses.validation.rules;
+
+import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.VldResultInvalid;
+import com.devproserv.courses.validation.VldResultValid;
 
 /**
- * Checks if string contains only digits.
+ * Checks if string contains only letters and digits.
  *
  * @since 1.0.0
  */
-public final class VldRuleContainsDigits implements VldRule {
+public final class VldRuleContainsLetters implements VldRule {
     /**
      * Message.
      */
@@ -39,14 +43,14 @@ public final class VldRuleContainsDigits implements VldRule {
      * Primary constructor.
      * @param message Message
      */
-    public VldRuleContainsDigits(final String message) {
+    public VldRuleContainsLetters(final String message) {
         this.message = message;
     }
 
     @Override
     public VldResult apply(final String param) {
         final VldResult result;
-        if (param.matches(".*\\D+.*")) {
+        if (param.matches(".*\\W+.*")) {
             result = new VldResultInvalid(this.message);
         } else {
             result = new VldResultValid();

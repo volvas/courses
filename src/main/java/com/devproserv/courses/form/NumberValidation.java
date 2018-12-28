@@ -23,10 +23,8 @@
  */
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.validation.VldNumber;
 import com.devproserv.courses.validation.VldResult;
-import com.devproserv.courses.validation.VldRuleContainsDigits;
-import com.devproserv.courses.validation.VldRuleNotEmpty;
-import com.devproserv.courses.validation.VldRuleNotNull;
 
 /**
  * Number validation.
@@ -49,9 +47,6 @@ public final class NumberValidation implements Validation {
 
     @Override
     public VldResult validate() {
-        return new VldRuleNotNull("Field should not be null!")
-            .and(new VldRuleNotEmpty("Field should not be empty!"))
-            .and(new VldRuleContainsDigits("Field should contain only digits"))
-            .apply(this.number);
+        return new VldNumber(this.number).validate();
     }
 }

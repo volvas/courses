@@ -22,35 +22,9 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
-
 /**
- * Checks if string contains only letters and digits.
+ * Validation rules.
  *
  * @since 1.0.0
  */
-public final class VldRuleContainsLetters implements VldRule {
-    /**
-     * Message.
-     */
-    private final String message;
-
-    /**
-     * Primary constructor.
-     * @param message Message
-     */
-    public VldRuleContainsLetters(final String message) {
-        this.message = message;
-    }
-
-    @Override
-    public VldResult apply(final String param) {
-        final VldResult result;
-        if (param.matches(".*\\W+.*")) {
-            result = new VldResultInvalid(this.message);
-        } else {
-            result = new VldResultValid();
-        }
-        return result;
-    }
-}
+package com.devproserv.courses.validation.rules;

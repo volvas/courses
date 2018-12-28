@@ -21,52 +21,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
-import com.devproserv.courses.validation.VldPassword;
-import com.devproserv.courses.validation.VldResult;
-import com.devproserv.courses.validation.VldUsername;
+package com.devproserv.courses.validation;
+
+import com.devproserv.courses.validation.rules.VldRuleContainsLetters;
+import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
+import com.devproserv.courses.validation.rules.VldRuleNotNull;
+import com.devproserv.courses.validation.rules.VldRuleStartLetter;
 
 /**
- * Validation of the login form.
+ * Combines rules to validate field on null and empty status.
  *
  * @since 1.0.0
  */
-public final class LoginValidation implements Validation {
+public class VldFieldNotNullEmpty {
     /**
-     * Login.
+     * Field.
      */
-    private final String login;
+    private final String field;
 
     /**
-     * Password.
+     * Name of the field.
      */
-    private final String password;
+    private final String name;
 
     /**
      * Constructor.
-     * @param login Login
-     * @param password Password
+     * @param field Field to check
+     * @param name Name of the field
      */
-    public LoginValidation(final String login, final String password) {
-        this.login = login;
-        this.password = password;
+    public VldFieldNotNullEmpty(final String field, final String name) {
+        this.field = field;
+        this.name = name;
     }
 
-    @Override
+    /**
+     * Validates the field.
+     *
+     * @return Validation result
+     */
     public VldResult validate() {
-        final VldResult resone = new VldUsername(this.login).validate();
-        final VldResult restwo = new VldPassword(this.password).validate();
-        final VldResult result;
-        if (resone.valid()) {
-            if (restwo.valid()) {
-                result = resone;
-            } else {
-                result = restwo;
-            }
-        } else {
-            result = resone;
-        }
-        return result;
+        return new VldRuleNotNull(String.format("%s should not be null!", name))
+            .and(
+                new VldRuleNotEmpty(
+                    String.format("%s should not be empty!", name)
+                )
+            )
+            .apply(this.field);
     }
 }

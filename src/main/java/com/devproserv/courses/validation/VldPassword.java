@@ -24,33 +24,40 @@
 
 package com.devproserv.courses.validation;
 
+import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
+import com.devproserv.courses.validation.rules.VldRuleNotNull;
+
 /**
- * Checks if value is null.
+ * Combines rules to validate field "password".
  *
  * @since 1.0.0
  */
-public final class VldRuleNotNull implements VldRule {
+public class VldPassword {
     /**
-     * Message.
+     * Field.
      */
-    private final String message;
+    private final String field;
 
     /**
-     * Primary constructor.
-     * @param message Message
+     * Constructor.
+     * @param field Field to check
      */
-    public VldRuleNotNull(final String message) {
-        this.message = message;
+    public VldPassword(final String field) {
+        this.field = field;
     }
 
-    @Override
-    public VldResult apply(final String param) {
-        final VldResult result;
-        if (param == null) {
-            result = new VldResultInvalid(this.message);
-        } else {
-            result = new VldResultValid();
-        }
-        return result;
+    /**
+     * Validates the field.
+     *
+     * @return Validation result
+     */
+    public VldResult validate() {
+        return new VldRuleNotNull("Username and password should not be null!")
+            .and(
+                new VldRuleNotEmpty(
+                    "Username and password should not be empty!"
+                )
+            )
+            .apply(this.field);
     }
 }
