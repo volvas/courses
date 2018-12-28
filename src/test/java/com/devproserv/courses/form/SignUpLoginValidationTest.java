@@ -29,15 +29,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Contains unit-tests to check functionality of {@link LoginValidation} class.
+ * Contains unit-tests to check functionality of {@link SignUpValidation} class.
+ *  The parameters "login" and "password" are checked.
  *
  * @since 1.0.0
  */
-class LoginValidationTest {
+final class SignUpLoginValidationTest {
     /**
      * Message to start with letter.
      */
-    private static final String MSG =
+    private static final String MSG_START =
         "Username shouldn't start with digit or non letter!";
 
     /**
@@ -45,10 +46,13 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedOkLoginEndsDigit() {
-        final VldResult res = new LoginValidation("user4", "rtvhcs").validate();
+        final Validation validation = new SignUpValidation(
+            "user4", "ewrgas", "John", "Doe", "Mathematics"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertTrue(res.valid()),
-            () -> Assertions.assertFalse(res.reason().isPresent())
+            () -> Assertions.assertTrue(result.valid()),
+            () -> Assertions.assertFalse(result.reason().isPresent())
         );
     }
 
@@ -57,12 +61,15 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedNull() {
-        final VldResult res = new LoginValidation(null, null).validate();
+        final Validation validation = new SignUpValidation(
+            null, null, "Peter", "Jackson", "Physics"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
                 "Username and password should not be null!",
-                res.reason().orElse("")
+                result.reason().orElse("")
             )
         );
     }
@@ -72,12 +79,15 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedEmpty() {
-        final VldResult res = new LoginValidation("", "kgfsdhg").validate();
+        final Validation validation = new SignUpValidation(
+            "", "5fyfs", "Arnold", "Schwarzenegger", "Bodybuilding"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
                 "Username and password should not be empty!",
-                res.reason().orElse("")
+                result.reason().orElse("")
             )
         );
     }
@@ -87,12 +97,15 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedLoginBeginsDigit() {
-        final VldResult res = new LoginValidation("25user", "mgbgt").validate();
+        final Validation validation = new SignUpValidation(
+            "25user", "hfd4te", "Stanley ", "Kubrick", "Cinematography"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
-                res.reason().orElse("")
+                SignUpLoginValidationTest.MSG_START,
+                result.reason().orElse("")
             )
         );
     }
@@ -102,12 +115,15 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedLoginBeginsNotLetter() {
-        final VldResult res = new LoginValidation("#user", "nvcko5").validate();
+        final Validation validation = new SignUpValidation(
+            "#user", "knm6s%", "Bruce", "Willis", "Die hard"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
-                res.reason().orElse("")
+                SignUpLoginValidationTest.MSG_START,
+                result.reason().orElse("")
             )
         );
     }
@@ -117,12 +133,15 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedLoginContainsSpaceOne() {
-        final VldResult res = new LoginValidation(" user", "dt4h$g").validate();
+        final Validation validation = new SignUpValidation(
+            " user", "bhg*dg", "Brad", "Pitt", "Button"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
-                res.reason().orElse("")
+                SignUpLoginValidationTest.MSG_START,
+                result.reason().orElse("")
             )
         );
     }
@@ -132,12 +151,15 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedLoginContainsSpaceTwo() {
-        final VldResult res = new LoginValidation("user name", "bg").validate();
+        final Validation validation = new SignUpValidation(
+            "user name", "kbetrs", "Anne", "Hathaway", "Interstellar"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
                 "Username should contain only letters and digits!",
-                res.reason().orElse("")
+                result.reason().orElse("")
             )
         );
     }
@@ -147,12 +169,15 @@ class LoginValidationTest {
      */
     @Test
     void testValidatedLoginStartsWithUnderscore() {
-        final VldResult res = new LoginValidation("_user", "a$6f").validate();
+        final Validation validation = new SignUpValidation(
+            "_user", "kb$#rd", "Leonardo", "Dicaprio", "Inception"
+        );
+        final VldResult result = validation.validate();
         Assertions.assertAll(
-            () -> Assertions.assertFalse(res.valid()),
+            () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                LoginValidationTest.MSG,
-                res.reason().orElse("")
+                SignUpLoginValidationTest.MSG_START,
+                result.reason().orElse("")
             )
         );
     }

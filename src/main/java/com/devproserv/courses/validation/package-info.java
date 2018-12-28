@@ -21,20 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
-
-import com.devproserv.courses.validation.VldResult;
 
 /**
- * Validates data user inputs in web forms.
+ * Classes validating HTTP request parameters.
  *
  * @since 1.0.0
  */
-public interface Validation {
-    /**
-     * Checks if data is valid.
-     *
-     * @return Validation result
-     */
-    VldResult validate();
-}
+package com.devproserv.courses.validation;

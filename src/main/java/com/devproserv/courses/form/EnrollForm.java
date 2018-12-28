@@ -28,6 +28,7 @@ import com.devproserv.courses.model.Course;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.User;
+import com.devproserv.courses.validation.VldResult;
 import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -113,10 +114,11 @@ public final class EnrollForm {
                     this.handling.courseIdParameter()
                 );
                 final Validation validation = new NumberValidation(par);
-                if (validation.validated()) {
+                final VldResult result = validation.validate();
+                if (result.valid()) {
                     path = this.validPath(request);
                 } else {
-                    path = this.invalidPath(validation, request);
+                    path = this.invalidPath(result, request);
                 }
             }
         }
@@ -126,19 +128,19 @@ public final class EnrollForm {
     /**
      * Forms an error message in case of invalid path.
      *
-     * @param validation Validation
+     * @param result Validation result
      * @param request HTTP request
      * @return Invalid path
      */
     private String invalidPath(
-        final Validation validation, final HttpServletRequest request
+        final VldResult result, final HttpServletRequest request
     ) {
         LOGGER.info(
             "Invalid credentials for login {}", this.user.getLogin()
         );
         request.setAttribute(
             this.handling.errorMessageParameter(),
-            validation.errorMessage()
+            result.reason().get()
         );
         this.user.prepareJspData(request);
         return EnrollForm.STUDENT_PAGE;

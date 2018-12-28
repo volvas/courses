@@ -71,6 +71,19 @@ public class SignupParams {
     }
 
     /**
+     * Extracts parameters from the HTTP request.
+     * @return This instance
+     */
+    public SignupParams extract() {
+        this.login    = this.request.getParameter("login");
+        this.password = this.request.getParameter("password");
+        this.fname    = this.request.getParameter("firstname");
+        this.lname    = this.request.getParameter("lastname");
+        this.faculty  = this.request.getParameter("faculty");
+        return this;
+    }
+
+    /**
      * Getter.
      * @return Login
      */
@@ -108,18 +121,5 @@ public class SignupParams {
      */
     String getFaculty() {
         return this.faculty;
-    }
-
-    /**
-     * Extracts parameters from the HTTP request.
-     * @return This instance
-     */
-    public SignupParams extract() {
-        this.login    = this.request.getParameter("login");
-        this.password = this.request.getParameter("password");
-        this.fname    = this.request.getParameter("firstname");
-        this.lname    = this.request.getParameter("lastname");
-        this.faculty  = this.request.getParameter("faculty");
-        return this;
     }
 }

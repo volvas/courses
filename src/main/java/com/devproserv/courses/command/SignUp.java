@@ -29,6 +29,7 @@ import com.devproserv.courses.form.SignupUser;
 import com.devproserv.courses.form.Validation;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
+import com.devproserv.courses.validation.VldResult;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -77,24 +78,29 @@ public final class SignUp implements Command {
     public Response response(final HttpServletRequest request) {
         final SignupParams pars = new SignupParams(request).extract();
         final Validation validation = new SignUpValidation(pars);
-        return validation.validated()
-            ? this.validPath(request)
-            : invalidPath(validation, request);
+        final VldResult result = validation.validate();
+        final Response response;
+        if (result.valid()) {
+            response = this.validPath(request);
+        } else {
+            response = invalidPath(result, request);
+        }
+        return response;
     }
 
     /**
      * Handles invalid path.
-     * @param validation Validation
+     * @param result Validation result
      * @param request HTTP Request
      * @return Response
      */
     private static Response invalidPath(
-            final Validation validation, final HttpServletRequest request
+        final VldResult result, final HttpServletRequest request
     ) {
         final String login = request.getParameter("login");
         LOGGER.info("Invalid credentials for potential login {}", login);
         final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", validation.errorMessage());
+        payload.put("message", result.reason().get());
         return new Response(SignUp.SIGNUP_PAGE, payload);
     }
 

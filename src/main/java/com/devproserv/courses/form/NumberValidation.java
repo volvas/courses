@@ -23,6 +23,11 @@
  */
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.VldRuleContainsDigits;
+import com.devproserv.courses.validation.VldRuleNotEmpty;
+import com.devproserv.courses.validation.VldRuleNotNull;
+
 /**
  * Number validation.
  *
@@ -35,11 +40,6 @@ public final class NumberValidation implements Validation {
     private final String number;
 
     /**
-     * Message.
-     */
-    private String message;
-
-    /**
      * Constructor.
      * @param number Number
      */
@@ -48,21 +48,10 @@ public final class NumberValidation implements Validation {
     }
 
     @Override
-    public boolean validated() {
-        boolean result = true;
-        this.message = "ok";
-        if (this.number == null || this.number.isEmpty()) {
-            this.message = "Field should not be empty!";
-            result = false;
-        } else if (this.number.matches(".*\\D+.*")) {
-            this.message = "Field should contain only digits";
-            result = false;
-        }
-        return result;
-    }
-
-    @Override
-    public String errorMessage() {
-        return this.message;
+    public VldResult validate() {
+        return new VldRuleNotNull<String>("Field should not be null!")
+            .and(new VldRuleNotEmpty("Field should not be empty!"))
+            .and(new VldRuleContainsDigits("Field should contain only digits"))
+            .apply(this.number);
     }
 }

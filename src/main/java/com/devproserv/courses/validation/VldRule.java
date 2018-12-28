@@ -21,20 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
-import com.devproserv.courses.validation.VldResult;
+package com.devproserv.courses.validation;
+
+import java.util.function.Function;
 
 /**
- * Validates data user inputs in web forms.
+ * Represents a peace of validating process.
  *
+ * @param <P> Type of the input parameter
  * @since 1.0.0
  */
-public interface Validation {
+@FunctionalInterface
+public interface VldRule<P> extends Function<P, VldResult> {
     /**
-     * Checks if data is valid.
-     *
-     * @return Validation result
+     * Unites two statements by conjunction.
+     * @param other Other instance
+     * @return Combined instance
      */
-    VldResult validate();
+    default VldRule<P> and(VldRule<P> other) {
+        return param -> {
+            final VldResult first = this.apply(param);
+            final VldResult res;
+            if (first.valid()) {
+                res = other.apply(param);
+            } else {
+                res = first;
+            }
+            return res;
+        };
+    }
 }

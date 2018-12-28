@@ -23,6 +23,12 @@
  */
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.VldRuleContainsLetters;
+import com.devproserv.courses.validation.VldRuleNotEmpty;
+import com.devproserv.courses.validation.VldRuleNotNull;
+import com.devproserv.courses.validation.VldRuleStartLetter;
+
 /**
  * Sign up validation.
  *
@@ -53,11 +59,6 @@ public final class SignUpValidation implements Validation {
      * Faculty.
      */
     private final String faculty;
-
-    /**
-     * Validation message.
-     */
-    private String message;
 
     /**
      * Constructor.
@@ -91,36 +92,49 @@ public final class SignUpValidation implements Validation {
     }
 
     @Override
-    public boolean validated() {
-        boolean result = true;
-        this.message = "ok";
-        if (this.login == null || this.password == null) {
-            this.message = "Username and password should not be null!";
-            result = false;
-        } else if (this.login.isEmpty() || this.password.isEmpty()) {
-            this.message = "Username and password should not be empty!";
-            result = false;
-        } else if (this.login.matches("^[^a-zA-Z]+.*")) {
-            this.message = "Username shouldn't start with digit or non letter!";
-            result = false;
-        } else if (this.login.matches(".*\\W+.*")) {
-            this.message = "Username should contain only letters and digits!";
-            result = false;
-        } else if (this.fname == null || this.fname.isEmpty()) {
-            this.message = "First name should not be empty!";
-            result = false;
-        } else if (this.lname == null || this.lname.isEmpty()) {
-            this.message = "Last name should not be empty!";
-            result = false;
-        } else if (this.faculty == null || this.faculty.isEmpty()) {
-            this.message = "Faculty should not be empty!";
-            result = false;
+    public VldResult validate() {
+        final String notnull = "Username and password should not be null!";
+        final String notempty = "Username and password should not be empty!";
+        final VldResult result;
+        final VldResult resone = new VldRuleNotNull<String>(notnull)
+            .and(new VldRuleNotEmpty(notempty))
+            .and(
+            new VldRuleStartLetter(
+                "Username shouldn't start with digit or non letter!"
+            )
+        ).and(
+            new VldRuleContainsLetters(
+                "Username should contain only letters and digits!"
+            )
+        ).apply(this.login);
+        final VldResult restwo = new VldRuleNotNull<String>(notnull)
+            .and(new VldRuleNotEmpty(notempty))
+            .apply(this.password);
+        final VldResult resthree = new VldRuleNotNull<String>(
+            "First name should not be null!"
+        ).and(new VldRuleNotEmpty("First name should not be empty!"))
+            .apply(this.fname);
+        final VldResult resfour = new VldRuleNotNull<String>(
+            "Last name should not be null!"
+        ).and(new VldRuleNotEmpty("Last name should not be empty!"))
+            .apply(this.lname);
+        final VldResult resfive = new VldRuleNotNull<String>(
+            "Faculty should not be null!"
+        ).and(new VldRuleNotEmpty("Faculty should not be empty!"))
+            .apply(this.faculty);
+        if (!resone.valid()) {
+            result = resone;
+        } else if (!restwo.valid()) {
+            result = restwo;
+        } else if (!resthree.valid()) {
+            result = resthree;
+        } else if (!resfour.valid()) {
+            result = resfour;
+        } else if (!resfive.valid()) {
+            result = resfive;
+        } else {
+            result = resone;
         }
         return result;
-    }
-
-    @Override
-    public String errorMessage() {
-        return this.message;
     }
 }

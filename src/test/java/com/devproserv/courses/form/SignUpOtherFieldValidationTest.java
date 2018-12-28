@@ -29,35 +29,25 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Contains tests to check functionality of {@link NumberValidation} class.
+ * Contains unit-tests to check functionality of {@link SignUpValidation} class.
+ * The parameters "first name" and "last name" and "faculty" are checked.
  *
  * @since 1.0.0
  */
-class NumberValidationTest {
+final class SignUpOtherFieldValidationTest {
     /**
      * Test.
      */
     @Test
-    void testValidatedOk() {
-        final Validation validation = new NumberValidation("32");
-        final VldResult result = validation.validate();
-        Assertions.assertAll(
-            () -> Assertions.assertTrue(result.valid()),
-            () -> Assertions.assertFalse(result.reason().isPresent())
+    void testValidatedFirstNameNull() {
+        final Validation validation = new SignUpValidation(
+            "rusty", "vlkdn*gd", null, "Rodgers", "Design"
         );
-    }
-
-    /**
-     * Test.
-     */
-    @Test
-    void testValidatedNull() {
-        final Validation validation = new NumberValidation(null);
         final VldResult result = validation.validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                "Field should not be null!",
+                "First name should not be null!",
                 result.reason().orElse("")
             )
         );
@@ -67,13 +57,15 @@ class NumberValidationTest {
      * Test.
      */
     @Test
-    void testValidatedEmpty() {
-        final Validation validation = new NumberValidation("");
+    void testValidatedFirstNameEmpty() {
+        final Validation validation = new SignUpValidation(
+            "bruise", "oibm%d", "", "Friedman", "Computer Science"
+        );
         final VldResult result = validation.validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                "Field should not be empty!",
+                "First name should not be empty!",
                 result.reason().orElse("")
             )
         );
@@ -83,13 +75,69 @@ class NumberValidationTest {
      * Test.
      */
     @Test
-    void testValidatedNotNumber() {
-        final Validation validation = new NumberValidation("3dh2");
+    void testValidatedLastNameNull() {
+        final Validation validation = new SignUpValidation(
+            "dubbed", "wbcb$d", "Jadyn", null, "Electronic Systems"
+        );
         final VldResult result = validation.validate();
         Assertions.assertAll(
             () -> Assertions.assertFalse(result.valid()),
             () -> Assertions.assertEquals(
-                "Field should contain only digits",
+                "Last name should not be null!",
+                result.reason().orElse("")
+            )
+        );
+    }
+
+    /**
+     * Test.
+     */
+    @Test
+    void testValidatedLastNameEmpty() {
+        final Validation validation = new SignUpValidation(
+            "sandworm", "lamv%d", "Kenzie", "", "Engineering"
+        );
+        final VldResult result = validation.validate();
+        Assertions.assertAll(
+            () -> Assertions.assertFalse(result.valid()),
+            () -> Assertions.assertEquals(
+                "Last name should not be empty!",
+                result.reason().orElse("")
+            )
+        );
+    }
+
+    /**
+     * Test.
+     */
+    @Test
+    void testValidatedFacultyNull() {
+        final Validation validation = new SignUpValidation(
+            "slinky", "klvln&d", "Sebastian", "Beasley", null
+        );
+        final VldResult result = validation.validate();
+        Assertions.assertAll(
+            () -> Assertions.assertFalse(result.valid()),
+            () -> Assertions.assertEquals(
+                "Faculty should not be null!",
+                result.reason().orElse("")
+            )
+        );
+    }
+
+    /**
+     * Test.
+     */
+    @Test
+    void testValidatedFacultyEmpty() {
+        final Validation validation = new SignUpValidation(
+            "petal", "nvmx^kdf", "Marlene", "Lam", ""
+        );
+        final VldResult result = validation.validate();
+        Assertions.assertAll(
+            () -> Assertions.assertFalse(result.valid()),
+            () -> Assertions.assertEquals(
+                "Faculty should not be empty!",
                 result.reason().orElse("")
             )
         );

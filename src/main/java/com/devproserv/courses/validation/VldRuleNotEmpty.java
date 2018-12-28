@@ -21,20 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
-import com.devproserv.courses.validation.VldResult;
+package com.devproserv.courses.validation;
 
 /**
- * Validates data user inputs in web forms.
+ * Checks if string is empty.
  *
  * @since 1.0.0
  */
-public interface Validation {
+public final class VldRuleNotEmpty implements VldRule<String> {
     /**
-     * Checks if data is valid.
-     *
-     * @return Validation result
+     * Message.
      */
-    VldResult validate();
+    private final String message;
+
+    /**
+     * Primary constructor.
+     * @param message Message
+     */
+    public VldRuleNotEmpty(final String message) {
+        this.message = message;
+    }
+
+    @Override
+    public VldResult apply(final String param) {
+        final VldResult result;
+        if (param.isEmpty()) {
+            result = new VldResultInvalid(this.message);
+        } else {
+            result = new VldResultValid();
+        }
+        return result;
+    }
 }

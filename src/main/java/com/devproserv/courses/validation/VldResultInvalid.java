@@ -21,20 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.devproserv.courses.form;
 
-import com.devproserv.courses.validation.VldResult;
+package com.devproserv.courses.validation;
+
+import java.util.Optional;
 
 /**
- * Validates data user inputs in web forms.
+ * Negative validation result implementation.
  *
  * @since 1.0.0
  */
-public interface Validation {
+public final class VldResultInvalid implements VldResult {
     /**
-     * Checks if data is valid.
-     *
-     * @return Validation result
+     * Reason of the invalid result.
      */
-    VldResult validate();
+    private final String message;
+
+    /**
+     * Constructor.
+     * @param message Reason of the invalid result
+     */
+    public VldResultInvalid(final String message) {
+        this.message = message;
+    }
+
+    @Override
+    public boolean valid() {
+        return false;
+    }
+
+    @Override
+    public Optional<String> reason() {
+        return Optional.of(this.message);
+    }
 }

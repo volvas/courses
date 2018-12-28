@@ -28,6 +28,7 @@ import com.devproserv.courses.form.LoginValidation;
 import com.devproserv.courses.form.Validation;
 import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.UserRoles;
+import com.devproserv.courses.validation.VldResult;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -50,28 +51,29 @@ public final class Login implements Command {
         final String login          = request.getParameter("login");
         final String password       = request.getParameter("password");
         final Validation validation = new LoginValidation(login, password);
+        final VldResult result = validation.validate();
         final Response response;
-        if (validation.validated()) {
+        if (result.valid()) {
             LOGGER.debug("Login '{}' and password are valid.", login);
             response = validPath(request, login, password);
         } else {
-            response = invalidPath(validation, login);
+            response = invalidPath(result, login);
         }
         return response;
     }
 
     /**
      * Handles invalid path.
-     * @param validation Validation
+     * @param result Validation result
      * @param login Login
      * @return Response
      */
     private static Response invalidPath(
-        final Validation validation, final String login
+        final VldResult result, final String login
     ) {
         LOGGER.info("Invalid credentials for login {}", login);
         final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", validation.errorMessage());
+        payload.put("message", result.reason().get());
         return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
 

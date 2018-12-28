@@ -23,6 +23,12 @@
  */
 package com.devproserv.courses.form;
 
+import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.VldRuleContainsLetters;
+import com.devproserv.courses.validation.VldRuleNotEmpty;
+import com.devproserv.courses.validation.VldRuleNotNull;
+import com.devproserv.courses.validation.VldRuleStartLetter;
+
 /**
  * Validation of the login form.
  *
@@ -40,11 +46,6 @@ public final class LoginValidation implements Validation {
     private final String password;
 
     /**
-     * Message.
-     */
-    private String message;
-
-    /**
      * Constructor.
      * @param login Login
      * @param password Password
@@ -55,27 +56,35 @@ public final class LoginValidation implements Validation {
     }
 
     @Override
-    public boolean validated() {
-        boolean result = true;
-        this.message = "ok";
-        if (this.login == null || this.password == null) {
-            this.message = "Username and password should not be null!";
-            result = false;
-        } else if (this.login.isEmpty() || this.password.isEmpty()) {
-            this.message = "Username and password should not be empty!";
-            result = false;
-        } else if (this.login.matches("^[^a-zA-Z]+.*")) {
-            this.message = "Username shouldn't start with digit or non letter!";
-            result = false;
-        } else if (this.login.matches(".*\\W+.*")) {
-            this.message = "Username should contain only letters and digits!";
-            result = false;
+    public VldResult validate() {
+        final String notnull = "Username and password should not be null!";
+        final String notempty = "Username and password should not be empty!";
+        final VldResult resone = new VldRuleNotNull<String>(notnull)
+            .and(new VldRuleNotEmpty(notempty))
+            .and(
+                new VldRuleStartLetter(
+                    "Username shouldn't start with digit or non letter!"
+                )
+            )
+            .and(
+                new VldRuleContainsLetters(
+                    "Username should contain only letters and digits!"
+                )
+            )
+            .apply(this.login);
+        final VldResult restwo = new VldRuleNotNull<String>(notnull)
+            .and(new VldRuleNotEmpty(notempty))
+            .apply(this.password);
+        final VldResult result;
+        if (resone.valid()) {
+            if (restwo.valid()) {
+                result = resone;
+            } else {
+                result = restwo;
+            }
+        } else {
+            result = resone;
         }
         return result;
-    }
-
-    @Override
-    public String errorMessage() {
-        return this.message;
     }
 }
