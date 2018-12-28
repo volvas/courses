@@ -29,7 +29,7 @@ import com.devproserv.courses.form.SignupUser;
 import com.devproserv.courses.form.Validation;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.results.VldResult;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -100,7 +100,7 @@ public final class SignUp implements Command {
         final String login = request.getParameter("login");
         LOGGER.info("Invalid credentials for potential login {}", login);
         final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", result.reason().get());
+        payload.put("message", result.reason().orElse(""));
         return new Response(SignUp.SIGNUP_PAGE, payload);
     }
 

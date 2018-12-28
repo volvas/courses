@@ -28,7 +28,7 @@ import com.devproserv.courses.form.LoginValidation;
 import com.devproserv.courses.form.Validation;
 import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.UserRoles;
-import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.results.VldResult;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;

@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.validation.rules;
 
-import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.results.VldResult;
 import java.util.function.Function;
 
 /**

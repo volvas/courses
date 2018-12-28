@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
+package com.devproserv.courses.validation.results;
 
 import java.util.Optional;
 

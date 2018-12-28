@@ -25,8 +25,9 @@ package com.devproserv.courses.form;
 
 import com.devproserv.courses.validation.VldFieldNotNullEmpty;
 import com.devproserv.courses.validation.VldPassword;
-import com.devproserv.courses.validation.VldResult;
 import com.devproserv.courses.validation.VldUsername;
+import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultAggr;
 
 /**
  * Sign up validation.
@@ -92,31 +93,12 @@ public final class SignUpValidation implements Validation {
 
     @Override
     public VldResult validate() {
-        final VldResult resone = new VldUsername(this.login).validate();
-        final VldResult restwo = new VldPassword(this.password).validate();
-        final VldResult resthree = new VldFieldNotNullEmpty(
-            this.fname, "First name"
-        ).validate();
-        final VldResult resfour = new VldFieldNotNullEmpty(
-            this.lname, "Last name"
-        ).validate();
-        final VldResult resfive = new VldFieldNotNullEmpty(
-            this.faculty, "Faculty"
-        ).validate();
-        final VldResult result;
-        if (!resone.valid()) {
-            result = resone;
-        } else if (!restwo.valid()) {
-            result = restwo;
-        } else if (!resthree.valid()) {
-            result = resthree;
-        } else if (!resfour.valid()) {
-            result = resfour;
-        } else if (!resfive.valid()) {
-            result = resfive;
-        } else {
-            result = resone;
-        }
-        return result;
+        return new VldResultAggr()
+            .join(new VldUsername(this.login).validate())
+            .join(new VldPassword(this.password).validate())
+            .join(new VldFieldNotNullEmpty(this.fname, "First name").validate())
+            .join(new VldFieldNotNullEmpty(this.lname, "Last name").validate())
+            .join(new VldFieldNotNullEmpty(this.faculty, "Faculty").validate())
+            .aggregate();
     }
 }

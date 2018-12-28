@@ -22,43 +22,9 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
-
-import com.devproserv.courses.validation.results.VldResult;
-import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
-import com.devproserv.courses.validation.rules.VldRuleNotNull;
-
 /**
- * Combines rules to validate field "password".
+ * Various validation result implementations.
  *
  * @since 1.0.0
  */
-public class VldPassword {
-    /**
-     * Field.
-     */
-    private final String field;
-
-    /**
-     * Constructor.
-     * @param field Field to check
-     */
-    public VldPassword(final String field) {
-        this.field = field;
-    }
-
-    /**
-     * Validates the field.
-     *
-     * @return Validation result
-     */
-    public VldResult validate() {
-        return new VldRuleNotNull("Username and password should not be null!")
-            .and(
-                new VldRuleNotEmpty(
-                    "Username and password should not be empty!"
-                )
-            )
-            .apply(this.field);
-    }
-}
+package com.devproserv.courses.validation.results;

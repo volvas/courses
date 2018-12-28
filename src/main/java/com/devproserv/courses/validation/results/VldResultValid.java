@@ -22,36 +22,23 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
+package com.devproserv.courses.validation.results;
 
 import java.util.Optional;
 
 /**
- * Negative validation result implementation.
+ * Positive validation result implementation.
  *
  * @since 1.0.0
  */
-public final class VldResultInvalid implements VldResult {
-    /**
-     * Reason of the invalid result.
-     */
-    private final String message;
-
-    /**
-     * Constructor.
-     * @param message Reason of the invalid result
-     */
-    public VldResultInvalid(final String message) {
-        this.message = message;
-    }
-
+public final class VldResultValid implements VldResult {
     @Override
     public boolean valid() {
-        return false;
+        return true;
     }
 
     @Override
     public Optional<String> reason() {
-        return Optional.of(this.message);
+        return Optional.empty();
     }
 }

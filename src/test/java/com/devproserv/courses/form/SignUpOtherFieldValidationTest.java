@@ -24,7 +24,7 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.validation.VldResult;
+import com.devproserv.courses.validation.results.VldResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

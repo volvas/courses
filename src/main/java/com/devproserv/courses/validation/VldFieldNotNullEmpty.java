@@ -24,6 +24,7 @@
 
 package com.devproserv.courses.validation;
 
+import com.devproserv.courses.validation.results.VldResult;
 import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
 import com.devproserv.courses.validation.rules.VldRuleNotNull;
 

@@ -24,9 +24,9 @@
 
 package com.devproserv.courses.validation.rules;
 
-import com.devproserv.courses.validation.VldResult;
-import com.devproserv.courses.validation.VldResultInvalid;
-import com.devproserv.courses.validation.VldResultValid;
+import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultInvalid;
+import com.devproserv.courses.validation.results.VldResultValid;
 
 /**
  * Checks if string is empty.

@@ -24,8 +24,9 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.validation.VldPassword;
-import com.devproserv.courses.validation.VldResult;
 import com.devproserv.courses.validation.VldUsername;
+import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultAggr;
 
 /**
  * Validation of the login form.
@@ -55,18 +56,9 @@ public final class LoginValidation implements Validation {
 
     @Override
     public VldResult validate() {
-        final VldResult resone = new VldUsername(this.login).validate();
-        final VldResult restwo = new VldPassword(this.password).validate();
-        final VldResult result;
-        if (resone.valid()) {
-            if (restwo.valid()) {
-                result = resone;
-            } else {
-                result = restwo;
-            }
-        } else {
-            result = resone;
-        }
-        return result;
+        return new VldResultAggr()
+            .join(new VldUsername(this.login).validate())
+            .join(new VldPassword(this.password).validate())
+            .aggregate();
     }
 }

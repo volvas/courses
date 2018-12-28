@@ -22,43 +22,36 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
+package com.devproserv.courses.validation.results;
 
-import com.devproserv.courses.validation.results.VldResult;
-import com.devproserv.courses.validation.rules.VldRuleNotEmpty;
-import com.devproserv.courses.validation.rules.VldRuleNotNull;
+import java.util.Optional;
 
 /**
- * Combines rules to validate field "password".
+ * Negative validation result implementation.
  *
  * @since 1.0.0
  */
-public class VldPassword {
+public final class VldResultInvalid implements VldResult {
     /**
-     * Field.
+     * Reason of the invalid result.
      */
-    private final String field;
+    private final String message;
 
     /**
      * Constructor.
-     * @param field Field to check
+     * @param message Reason of the invalid result
      */
-    public VldPassword(final String field) {
-        this.field = field;
+    public VldResultInvalid(final String message) {
+        this.message = message;
     }
 
-    /**
-     * Validates the field.
-     *
-     * @return Validation result
-     */
-    public VldResult validate() {
-        return new VldRuleNotNull("Username and password should not be null!")
-            .and(
-                new VldRuleNotEmpty(
-                    "Username and password should not be empty!"
-                )
-            )
-            .apply(this.field);
+    @Override
+    public boolean valid() {
+        return false;
+    }
+
+    @Override
+    public Optional<String> reason() {
+        return Optional.of(this.message);
     }
 }

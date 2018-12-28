@@ -22,23 +22,43 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.validation;
+package com.devproserv.courses.validation.results;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Positive validation result implementation.
+ * Aggregates several validation result in one object.
  *
  * @since 1.0.0
  */
-public final class VldResultValid implements VldResult {
-    @Override
-    public boolean valid() {
-        return true;
+public class VldResultAggr {
+    /**
+     * Stores intermediate results.
+     */
+    private final List<VldResult> results = new ArrayList<>(8);
+
+    /**
+     * Add the given result to storage.
+     *
+     * @param result Validation result
+     * @return This instance
+     */
+    public VldResultAggr join(final VldResult result) {
+        this.results.add(result);
+        return this;
     }
 
-    @Override
-    public Optional<String> reason() {
-        return Optional.empty();
+    /**
+     * Returns final result. If someone is not valid, it'll be sent
+     *  as a result. So first join most important results.
+     *
+     * @return Final validation result
+     */
+    public VldResult aggregate() {
+        return this.results.stream()
+            .filter(result -> !result.valid())
+            .findFirst()
+            .orElse(new VldResultValid());
     }
 }
