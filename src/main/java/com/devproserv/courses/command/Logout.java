@@ -1,26 +1,50 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Vladimir
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.devproserv.courses.command;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.devproserv.courses.model.Response;
+import com.devproserv.courses.servlet.JspFilter;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import static com.devproserv.courses.config.MainConfig.HOME_PAGE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * {@code Logout} handles logging out for the existing user
+ * Handles logging out for the existing user.
  *
+ * @since 0.5.0
  */
-public class Logout implements Command {
-
-    private static final Logger logger = LogManager.getLogger(Logout.class.getName());
+public final class Logout implements Command {
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
 
     @Override
-    public String path(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.invalidate();
-        logger.info("User logged out.");
-        return HOME_PAGE;
+    public Response response(final HttpServletRequest request) {
+        request.getSession().invalidate();
+        LOGGER.info("User logged out.");
+        return new Response(JspFilter.HOME_PAGE, Collections.emptyMap());
     }
 }

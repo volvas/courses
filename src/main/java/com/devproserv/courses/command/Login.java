@@ -1,119 +1,92 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Vladimir
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.devproserv.courses.command;
 
-import java.util.List;
-
+import com.devproserv.courses.form.EnrollForm;
+import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.UserRoles;
+import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultAggr;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.devproserv.courses.util.Validation;
-import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.User;
-import com.devproserv.courses.dao.UserDao;
-import com.devproserv.courses.dao.CourseDao;
-
-import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
-import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
-import static com.devproserv.courses.config.MainConfig.LECTURER_PAGE;
 /**
- * {@code Login} handles access for the existing user. After user input valid
- * credentials he/she gets the own page
- * 
- * @author vovas11
- * @see UserDao
- * @see CourseDao
- * 
+ * Treats data from login web form.
+ *
+ * @since 0.5.0
  */
-public class Login implements Command {
-    
-    /** Injection of the main app manager */
-    private AppContext appContext;
-
-
-    public Login(AppContext appContext) {
-        this.appContext = appContext;
-    }
-    
+public final class Login implements Command {
     /**
-     * Validates user name and password, checks if credentials exist in database
-     *
-     * @param request HTTP request
-     * @return own page to client if credentials are valid or the same page
+     * Logger.
      */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Login.class);
+
     @Override
-    public String path(HttpServletRequest request) {
-
-        /* gets parameters from the HTTP request */
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-
-        /* checks if login and password are valid */
-        String validResponse = Validation.checkCredentials(login, password);
-
-        if (!validResponse.equals("ok")) {
-            request.setAttribute("message", validResponse);
-            return LOGIN_PAGE;
+    public Response response(final HttpServletRequest request) {
+        final String login     = request.getParameter("login");
+        final String password  = request.getParameter("password");
+        final VldResult result = new VldResultAggr()
+            .checkUsername(login)
+            .checkPassword(password)
+            .aggregate();
+        final Response response;
+        if (result.valid()) {
+            response = validPath(request, login, password);
+        } else {
+            response = invalidPath(result, login);
         }
-
-        UserDao userDao = appContext.getUserDao();
-        /* checks if the user with entered credentials exists in the database */
-        if (!userDao.userExists(login, password)) {
-            validResponse = "Wrong username or password! Try again!";
-            request.setAttribute("message", validResponse);
-            return LOGIN_PAGE;
-        }
-        
-        /* gets a link to instance of User class and gets all data for the user */
-        User user = userDao.getUser(login, password);
-        /* gets the link to the current session or creates new one and attaches the user to the session */
-        HttpSession session = request.getSession(); // TODO add login.jsp filter to check validated session
-        session.setAttribute(session.getId(), user);
-        
-        /* Define a page where the user will be redirected according to user role */
-        String path = LOGIN_PAGE;
-        switch (user.getRole()) {
-        case STUD:
-            prepareStudentPage(request, user);
-            path = STUDENT_PAGE;
-            break;
-        case LECT:
-            prepareLecturerPage(request, user);
-            path = LECTURER_PAGE;
-            break;
-        case ADMIN:
-            request.setAttribute("message", "This account is not accessible!");
-            path = LOGIN_PAGE;
-            break;
-        }
-        return path;
+        return response;
     }
 
     /**
-     * Prepares data to be displayed on the own student's page and attaches the data
-     * to HTTP request. Then JSP servlet will handle this request.
-     * 
-     * @param request HTTP request
-     * @param user user
+     * Handles invalid path.
+     * @param result Validation result
+     * @param login Login
+     * @return Response
      */
-    private void prepareStudentPage(HttpServletRequest request, User user) {
-        CourseDao courses = appContext.getCourseDao();
-        /* prepares the data for the JSP page */
-        request.setAttribute("student", user);
-        /* gets subscribed courses and available courses */
-        List<Course> subscribedCourses = courses.getSubscribedCourses(user);
-        request.setAttribute("subscrcourses", subscribedCourses);
-        List<Course> availableCourses = courses.getAvailableCourses(user);
-        request.setAttribute("courses", availableCourses);
+    private static Response invalidPath(final VldResult result, final String login) {
+        LOGGER.info("Invalid credentials for login {}", login);
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", result.reason().orElse(""));
+        return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
-    
+
     /**
-     * Prepares data to be displayed on the own lecturer's page and attaches the data
-     * to HTTP request. Then JSP servlet will handle this request.
-     * 
-     * @param request HTTP request
-     * @param user user
+     * Handles valid path.
+     * @param request HTTP Request
+     * @param login Login
+     * @param password Password
+     * @return Path
      */
-    private void prepareLecturerPage(HttpServletRequest request, User user) {
-        // TODO
+    private static Response validPath(
+        final HttpServletRequest request, final String login,
+        final String password
+    ) {
+        LOGGER.debug("Login '{}' and password are valid.", login);
+        return new UserRoles(login, password).build().response(request);
     }
 }

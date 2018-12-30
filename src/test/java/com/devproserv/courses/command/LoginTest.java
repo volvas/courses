@@ -1,126 +1,70 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Vladimir
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.controller.AppContext;
-import com.devproserv.courses.dao.CourseDao;
-import com.devproserv.courses.dao.UserDao;
-import com.devproserv.courses.model.User;
-import com.devproserv.courses.model.User.Role;
-import org.junit.Before;
-import org.junit.Test;
+import com.devproserv.courses.form.EnrollForm;
+import com.devproserv.courses.model.Response;
+import javax.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
-
-import static com.devproserv.courses.config.MainConfig.LECTURER_PAGE;
-import static com.devproserv.courses.config.MainConfig.LOGIN_PAGE;
-import static com.devproserv.courses.config.MainConfig.STUDENT_PAGE;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-
 /**
- * Contains unit-tests to check functionality of {@link Login} class
- * 
+ * Contains unit-tests to check functionality of {@link Login} class.
+ *
+ * @since 0.5.0
  */
-public class LoginTest {
-    @Mock
-    private AppContext appContext;
+class LoginTest {
+    /**
+     * HTTP request.
+     */
     @Mock
     private HttpServletRequest request;
-    @Mock
-    private HttpSession session;
-    @Mock
-    private UserDao userDao;
-    @Mock
-    private CourseDao courseDao;
-    @Mock
-    private User user;
 
+    /**
+     * Login.
+     */
     private Login login;
 
-
-    @Before
-    public void setUp() {
+    /**
+     * Prepare data.
+     */
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.initMocks(this);
-        login = new Login(appContext);
-
-        when(request.getParameter("login")).thenReturn("Login");
-        when(request.getParameter("password")).thenReturn("Password");
-        when(request.getSession()).thenReturn(session);
-        doNothing().when(request).setAttribute(anyString(), anyString());
-
-        doNothing().when(session).setAttribute(anyString(), any());
-
-        when(appContext.getUserDao()).thenReturn(userDao);
-        when(appContext.getCourseDao()).thenReturn(courseDao);
-
-        when(userDao.getUser("Login", "Password")).thenReturn(user);
-
-        when(courseDao.getSubscribedCourses(user)).thenReturn(Collections.emptyList());
-        when(courseDao.getAvailableCourses(user)).thenReturn(Collections.emptyList());
+        this.login = new Login();
     }
-    
-    @Test
-    public void testExecuteCommandOkStudent() {
-        when(userDao.userExists("Login", "Password")).thenReturn(true);
 
-        when(user.getRole()).thenReturn(Role.STUD);
-        
-        String page = login.path(request);
-        assertEquals("Should be equal to " + STUDENT_PAGE, STUDENT_PAGE, page);
-    }
-    
+    /**
+     * Checks correct path.
+     */
     @Test
-    public void testExecuteCommandOkLecturer() {
-        when(userDao.userExists("Login", "Password")).thenReturn(true);
-
-        when(user.getRole()).thenReturn(Role.LECT);
-        
-        String page = login.path(request);
-        assertEquals("Should be equal to " + LECTURER_PAGE, LECTURER_PAGE, page);
-    }
-    
-    @Test
-    public void testExecuteCommandOkAdmin() {
-        when(userDao.userExists("Login", "Password")).thenReturn(true);
-
-        when(user.getRole()).thenReturn(Role.ADMIN);
-        
-        String page = login.path(request);
-        assertEquals("Should be equal to " + LOGIN_PAGE, LOGIN_PAGE, page);
-    }
-    
-    @Test
-    public void testExecuteCommandInvalidLogin() {
-        when(request.getParameter("login")).thenReturn("contains space");
-        when(request.getParameter("password")).thenReturn("Password");
-        
-        String page = login.path(request);
-        assertEquals("Should be equal to " + LOGIN_PAGE, LOGIN_PAGE, page);
-    }
-    
-    @Test
-    public void testExecuteCommandInvalidPassword() {
-        when(request.getParameter("login")).thenReturn("Login");
-        when(request.getParameter("password")).thenReturn("");
-        
-        String page = login.path(request);
-        assertEquals("Should be equal to " + LOGIN_PAGE, LOGIN_PAGE, page);
-    }
-    
-    @Test
-    public void testExecuteCommandUserDoesNotExist() {
-        when(request.getParameter("login")).thenReturn("Login");
-        when(request.getParameter("password")).thenReturn("Password");
-
-        when(userDao.userExists("Login", "Password")).thenReturn(false);
-        
-        String page = login.path(request);
-        assertEquals("Should be equal to " + LOGIN_PAGE, LOGIN_PAGE, page);
+    void testPathOk() {
+        final Response response = this.login.response(this.request);
+        Assertions.assertEquals(EnrollForm.LOGIN_PAGE, response.getPath(), "Should be null");
     }
 }

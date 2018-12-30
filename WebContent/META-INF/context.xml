@@ -27,9 +27,9 @@
 
     validationQuery="SELECT 1"
 
-    validationInterval="60000"
-    minEvictableIdleTimeMillis="60000"
-    timeBetweenEvictionRunsMillis="60000"
+    validationInterval="3600000"
+    minEvictableIdleTimeMillis="3600000"
+    timeBetweenEvictionRunsMillis="3600000"
 
     removeAbandoned="true"
     removeAbandonedTimeout="60"
