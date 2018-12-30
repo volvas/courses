@@ -26,8 +26,6 @@ package com.devproserv.courses.command;
 import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.UserRoles;
-import com.devproserv.courses.validation.VldPassword;
-import com.devproserv.courses.validation.VldUsername;
 import com.devproserv.courses.validation.results.VldResult;
 import com.devproserv.courses.validation.results.VldResultAggr;
 import java.util.HashMap;
@@ -52,8 +50,8 @@ public final class Login implements Command {
         final String login     = request.getParameter("login");
         final String password  = request.getParameter("password");
         final VldResult result = new VldResultAggr()
-            .join(new VldUsername(login).validate())
-            .join(new VldPassword(password).validate())
+            .checkUsername(login)
+            .checkPassword(password)
             .aggregate();
         final Response response;
         if (result.valid()) {

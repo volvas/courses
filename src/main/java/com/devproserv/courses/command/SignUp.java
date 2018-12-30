@@ -27,9 +27,6 @@ import com.devproserv.courses.form.SignupParams;
 import com.devproserv.courses.form.SignupUser;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.validation.VldFieldNotNullEmpty;
-import com.devproserv.courses.validation.VldPassword;
-import com.devproserv.courses.validation.VldUsername;
 import com.devproserv.courses.validation.results.VldResult;
 import com.devproserv.courses.validation.results.VldResultAggr;
 import java.util.HashMap;
@@ -84,11 +81,11 @@ public final class SignUp implements Command {
         final String lname    = request.getParameter("lastname");
         final String faculty  = request.getParameter("faculty");
         final VldResult result = new VldResultAggr()
-            .join(new VldUsername(login).validate())
-            .join(new VldPassword(password).validate())
-            .join(new VldFieldNotNullEmpty(fname, "First name").validate())
-            .join(new VldFieldNotNullEmpty(lname, "Last name").validate())
-            .join(new VldFieldNotNullEmpty(faculty, "Faculty").validate())
+            .checkUsername(login)
+            .checkPassword(password)
+            .checkFieldNotNullEmpty(fname, "First name")
+            .checkFieldNotNullEmpty(lname, "Last name")
+            .checkFieldNotNullEmpty(faculty, "Faculty")
             .aggregate();
         final Response response;
         if (result.valid()) {

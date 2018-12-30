@@ -24,6 +24,9 @@
 
 package com.devproserv.courses.validation.results;
 
+import com.devproserv.courses.validation.VldFieldNotNullEmpty;
+import com.devproserv.courses.validation.VldPassword;
+import com.devproserv.courses.validation.VldUsername;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +42,36 @@ public class VldResultAggr {
     private final List<VldResult> results = new ArrayList<>(8);
 
     /**
-     * Add the given result to storage.
+     * Validates username.
      *
-     * @param result Validation result
+     * @param username Username
      * @return This instance
      */
-    public VldResultAggr join(final VldResult result) {
-        this.results.add(result);
+    public VldResultAggr checkUsername(final String username) {
+        this.results.add(new VldUsername(username).validate());
+        return this;
+    }
+
+    /**
+     * Validates password.
+     *
+     * @param password Password
+     * @return This instance
+     */
+    public VldResultAggr checkPassword(final String password) {
+        this.results.add(new VldPassword(password).validate());
+        return this;
+    }
+
+    /**
+     * Validates field to ensure non null and non empty content.
+     *
+     * @param field Field
+     * @param name Name of the field
+     * @return This instance
+     */
+    public VldResultAggr checkFieldNotNullEmpty(final String field, final String name) {
+        this.results.add(new VldFieldNotNullEmpty(field, name).validate());
         return this;
     }
 
