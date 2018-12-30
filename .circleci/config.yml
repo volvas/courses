@@ -22,14 +22,14 @@ jobs:
           command: |
             scp -P $SSH_PORT $CIRCLE_WORKING_DIRECTORY/target/courses.war $SSH_USER@$SSH_HOST:/home/vova
 
-workflows:
-  version: 2
-
-  build_only_master:
-    jobs:
-      - build:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^\d+\.\d+\.\d+$/
+#workflows:
+#  version: 2
+#
+#  build_only_master:
+#    jobs:
+#      - build:
+#          filters:
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only: /^\d+\.\d+\.\d+$/
