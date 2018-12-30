@@ -64,7 +64,7 @@ public class UserRoles {
     /**
      * Password.
      */
-    private final String password;
+    private final String pass;
 
     /**
      * Enum Roles.
@@ -89,16 +89,16 @@ public class UserRoles {
     /**
      * Roles.
      */
-    private final Map<UserRole, Supplier<User>> roles;
+    private final Map<UserRole, Supplier<Nest>> roles;
 
     /**
      * Constructor.
      *
      * @param login Login
-     * @param password Password
+     * @param pass Password
      */
-    public UserRoles(final String login, final String password) {
-        this(new Db(), login, password);
+    public UserRoles(final String login, final String pass) {
+        this(new Db(), login, pass);
     }
 
     /**
@@ -106,13 +106,13 @@ public class UserRoles {
      *
      * @param dbase Database
      * @param login Login
-     * @param password Password
+     * @param pass Password
      */
-    UserRoles(final Db dbase, final String login, final String password) {
-        this.dbase    = dbase;
-        this.login    = login;
-        this.password = password;
-        this.roles    = new EnumMap<>(UserRole.class);
+    UserRoles(final Db dbase, final String login, final String pass) {
+        this.dbase = dbase;
+        this.login = login;
+        this.pass  = pass;
+        this.roles = new EnumMap<>(UserRole.class);
     }
 
     /**
@@ -120,9 +120,9 @@ public class UserRoles {
      * @return This instance
      */
     public UserRoles build() {
-        this.roles.put(UserRole.STUD, () -> new Student(this.dbase, this.login, this.password));
-        this.roles.put(UserRole.LECT, () -> new Lecturer(this.login, this.password));
-        this.roles.put(UserRole.ADMIN, () -> new Admin(this.login, this.password));
+        this.roles.put(UserRole.STUD, () -> new NestStudents(this.dbase, this.login, this.pass));
+        this.roles.put(UserRole.LECT, NestLecturers::new);
+        this.roles.put(UserRole.ADMIN, NestAdmins::new);
         return this;
     }
 
@@ -132,8 +132,8 @@ public class UserRoles {
      * @param request HTTP request
      * @return Response
      */
-    public Response path(final HttpServletRequest request) {
-        final User user = this.user();
+    public Response response(final HttpServletRequest request) {
+        final User user = this.makeUser();
         final Response response = user.response();
         final HttpSession session = request.getSession();
         session.setAttribute(session.getId(), user);
@@ -145,15 +145,15 @@ public class UserRoles {
      *
      * @return User instance
      */
-    private User user() {
-        User user = new EmptyUser(this.login, this.password);
+    private User makeUser() {
+        User user = new EmptyUser(this.login, this.pass);
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
             final Result<Record> res = ctx.select().from(Users.USERS)
                 .where(
                     Users.USERS.LOGIN.eq(this.login)
-                    .and(Users.USERS.PASSWORD.eq(this.password))
+                    .and(Users.USERS.PASSWORD.eq(this.pass))
                 ).fetch();
             user = this.fetchUser(res);
         } catch (final SQLException ex) {
@@ -172,9 +172,10 @@ public class UserRoles {
         final User user;
         if (res.isNotEmpty()) {
             final UserRole role = UserRole.valueOf(res.get(0).getValue(Users.USERS.ROLE).name());
-            user = this.roles.get(role).get();
+            final Nest nest = this.roles.get(role).get();
+            user = nest.makeUser();
         } else {
-            user = new EmptyUser(this.login, this.password);
+            user = new EmptyUser(this.login, this.pass);
         }
         return user;
     }

@@ -27,7 +27,6 @@ package com.devproserv.courses.model;
 import com.devproserv.courses.form.EnrollForm;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Empty user.
@@ -40,18 +39,8 @@ public final class EmptyUser extends User {
      * @param login Login
      * @param password Password
      */
-    public EmptyUser(final String login, final String password) {
-        super(login, password);
-    }
-
-    @Override
-    public void loadFields() {
-        // TODO
-    }
-
-    @Override
-    public void prepareJspData(final HttpServletRequest request) {
-        // TODO
+    EmptyUser(final String login, final String password) {
+        super(0, login, password, null, null);
     }
 
     @Override

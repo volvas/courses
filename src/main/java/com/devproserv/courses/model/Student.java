@@ -27,7 +27,6 @@ package com.devproserv.courses.model;
 import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.jooq.tables.Courses;
 import com.devproserv.courses.jooq.tables.StudentCourses;
-import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -36,10 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.Record4;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -65,23 +62,13 @@ public final class Student extends User {
     /**
      * Faculty field.
      */
-    private String faculty;
-
-    /**
-     * Constructor.
-     *
-     * @param dbase Database
-     * @param login Login
-     * @param password Password
-     */
-    public Student(final Db dbase, final String login, final String password) {
-        this(dbase, login, password, null, null, null);
-    }
+    private final String faculty;
 
     /**
      * Primary constructor.
      *
      * @param dbase Database
+     * @param id ID
      * @param login Login
      * @param password Password
      * @param fname First name
@@ -89,59 +76,20 @@ public final class Student extends User {
      * @param faculty Faculty
      */
     public Student(
-        final Db dbase, final String login, final String password,
+        final Db dbase, final int id, final String login, final String password,
         final String fname, final String lname, final String faculty
     ) {
-        super(login, password);
+        super(id, login, password, fname, lname);
         this.dbase = dbase;
-        setFirstName(fname);
-        setLastName(lname);
         this.faculty = faculty;
     }
 
     @Override
-    public void loadFields() {
-        try (Connection con = this.dbase.dataSource().getConnection();
-            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            final Result<Record4<Integer, String, String, String>> res = ctx
-                .select(
-                    Users.USERS.USER_ID, Users.USERS.FIRSTNAME,
-                    Users.USERS.LASTNAME, Students.STUDENTS.FACULTY
-                )
-                .from(Users.USERS)
-                .join(Students.STUDENTS)
-                .on(Users.USERS.USER_ID.eq(Students.STUDENTS.STUD_ID))
-                .where(Users.USERS.LOGIN.eq(this.getLogin()))
-                .fetch();
-            res.forEach(
-                r -> {
-                    this.setId(r.value1());
-                    this.setFirstName(r.value2());
-                    this.setLastName(r.value3());
-                    this.setFaculty(r.value4());
-                });
-        } catch (final SQLException ex) {
-            LOGGER.error("Field loading failed!", ex);
-        }
-    }
-
-    @Override
-    public void prepareJspData(final HttpServletRequest request) {
-        request.setAttribute("student", this);
-        final List<Course> enrolled = this.getEnrolledCourses();
-        request.setAttribute("subscrcourses", enrolled);
-        final List<Course> available = this.getAvailableCourses();
-        request.setAttribute("courses", available);
-    }
-
-    @Override
     public Response response() {
-        this.loadFields();
         final Map<String, Object> payload = new HashMap<>();
         payload.put("student", this);
-        final List<Course> subscribed = this.getEnrolledCourses();
-        payload.put("subscrcourses", subscribed);
+        final List<Course> enrolled = this.getEnrolledCourses();
+        payload.put("subscrcourses", enrolled);
         final List<Course> available = this.getAvailableCourses();
         payload.put("courses", available);
         return new Response(EnrollForm.STUDENT_PAGE, payload);
@@ -153,14 +101,6 @@ public final class Student extends User {
      */
     public String getFaculty() {
         return this.faculty;
-    }
-
-    /**
-     * Setter.
-     * @param fac Faculty
-     */
-    private void setFaculty(final String fac) {
-        this.faculty = fac;
     }
 
     /**
@@ -187,7 +127,7 @@ public final class Student extends User {
                 )
                 .fetch();
             courses = res.stream()
-                .map(this::makeCourse)
+                .map(Student::makeCourse)
                 .collect(Collectors.toList());
         } catch (final SQLException ex) {
             LOGGER.error("Query for enrolled courses failed.", ex);
@@ -219,7 +159,7 @@ public final class Student extends User {
                 )
                 .fetch();
             courses = res.stream()
-                .map(this::makeCourse)
+                .map(Student::makeCourse)
                 .collect(Collectors.toList());
         } catch (final SQLException ex) {
             LOGGER.error("Query for available courses failed.", ex);
@@ -232,11 +172,11 @@ public final class Student extends User {
      * @param rec Record
      * @return Course
      */
-    private Course makeCourse(final Record rec) {
-        final Course course = new Course(this.dbase);
-        course.setId(rec.getValue(Courses.COURSES.COURSE_ID));
-        course.setName(rec.getValue(Courses.COURSES.NAME));
-        course.setDescription(rec.getValue(Courses.COURSES.DESCRIPTION));
-        return course;
+    private static Course makeCourse(final Record rec) {
+        return new Course(
+            rec.getValue(Courses.COURSES.COURSE_ID),
+            rec.getValue(Courses.COURSES.NAME),
+            rec.getValue(Courses.COURSES.DESCRIPTION)
+        );
     }
 }

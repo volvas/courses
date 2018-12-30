@@ -24,13 +24,14 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.User;
 import com.devproserv.courses.validation.VldNumber;
 import com.devproserv.courses.validation.results.VldResult;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -58,11 +59,6 @@ public final class EnrollForm {
     private static final Logger LOGGER = LoggerFactory.getLogger(EnrollForm.class);
 
     /**
-     * Application contextDatabase.
-     */
-    private final Db dbase;
-
-    /**
      * Course handler.
      */
     private final CourseHandling handling;
@@ -73,22 +69,11 @@ public final class EnrollForm {
     private User user;
 
     /**
-     * Constructor.
+     * Primary constructor.
      *
      * @param handling Course handler
      */
     public EnrollForm(final CourseHandling handling) {
-        this(new Db(), handling);
-    }
-
-    /**
-     * Primary constructor.
-     *
-     * @param dbase Database
-     * @param handling Course handler
-     */
-    public EnrollForm(final Db dbase, final CourseHandling handling) {
-        this.dbase = dbase;
         this.handling = handling;
     }
 
@@ -100,52 +85,66 @@ public final class EnrollForm {
      *  of invalidated data or path to further page if validation is successful
      */
     public Response validate(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-        final String path;
-        if (session == null) {
-            path = EnrollForm.LOGIN_PAGE;
+        final Optional<HttpSession> sessionopt = Optional.ofNullable(request.getSession(false));
+        return sessionopt.map(session -> this.userResponse(request, session))
+            .orElse(new Response(EnrollForm.LOGIN_PAGE, Collections.emptyMap()));
+    }
+
+    /**
+     * Creates response if session is live and user can be null.
+     *
+     * @param request HTTP request
+     * @param session HTTP session
+     * @return Response
+     */
+    private Response userResponse(final HttpServletRequest request, final HttpSession session) {
+        final Optional<User> useropt = Optional
+            .ofNullable((User) session.getAttribute(session.getId()));
+        return useropt.map(usr -> this.fullResponse(usr, request))
+            .orElse(new Response(EnrollForm.LOGIN_PAGE, Collections.emptyMap()));
+    }
+
+    /**
+     * Creates response taking into account live session and user.
+     *
+     * @param usr User
+     * @param request HTTP request
+     * @return Response
+     */
+    private Response fullResponse(final User usr, final HttpServletRequest request) {
+        this.user = usr;
+        final String param = request.getParameter(this.handling.courseIdParameter());
+        final VldResult vld = new VldNumber(param).validate();
+        final Response response;
+        if (vld.valid()) {
+            response = this.validPath(param);
         } else {
-            this.user = (User) session.getAttribute(session.getId());
-            if (this.user == null) {
-                path = EnrollForm.LOGIN_PAGE;
-            } else {
-                final String param = request.getParameter(this.handling.courseIdParameter());
-                final VldResult result = new VldNumber(param).validate();
-                if (result.valid()) {
-                    path = this.validPath(request);
-                } else {
-                    path = this.invalidPath(result, request);
-                }
-            }
+            response = this.invalidPath(vld);
         }
-        return new Response(path, Collections.emptyMap());
+        return response;
     }
 
     /**
      * Forms an error message in case of invalid path.
      *
      * @param result Validation result
-     * @param request HTTP request
-     * @return Invalid path
+     * @return Response
      */
-    private String invalidPath(final VldResult result, final HttpServletRequest request) {
+    private Response invalidPath(final VldResult result) {
         LOGGER.info("Invalid credentials for login {}", this.user.getLogin());
-        request.setAttribute(this.handling.errorMessageParameter(), result.reason().orElse(""));
-        this.user.prepareJspData(request);
-        return EnrollForm.STUDENT_PAGE;
+        final Response response = this.user.response();
+        final Map<String, Object> payload = new HashMap<>(response.getPayload());
+        payload.put(this.handling.errorMessageParameter(), result.reason().orElse(""));
+        return new Response(response.getPath(), payload);
     }
 
     /**
      * Creates a course.
      *
-     * @param request HTTP request
-     * @return Valid path
+     * @param param Number
+     * @return Response
      */
-    private String validPath(final HttpServletRequest request) {
-        final String par = request.getParameter(this.handling.courseIdParameter());
-        final int id = Integer.parseInt(par);
-        final Course course = new Course(this.dbase);
-        course.setId(id);
-        return this.handling.path(course, this.user, request);
+    private Response validPath(final String param) {
+        return this.handling.response(Integer.parseInt(param), this.user);
     }
 }

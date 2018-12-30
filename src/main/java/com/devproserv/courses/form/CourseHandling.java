@@ -24,9 +24,17 @@
 
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.model.Course;
+import com.devproserv.courses.jooq.tables.StudentCourses;
+import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.Response;
 import com.devproserv.courses.model.User;
-import javax.servlet.http.HttpServletRequest;
+import java.sql.Connection;
+import java.sql.SQLException;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Prepares request for further forwarding.
@@ -35,13 +43,34 @@ import javax.servlet.http.HttpServletRequest;
  */
 abstract class CourseHandling {
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseHandling.class);
+
+    /**
+     * Database.
+     */
+    private final Db dbase;
+
+    /**
+     * Primary constructor.
+     *
+     * @param dbase Database
+     */
+    CourseHandling(final Db dbase) {
+        this.dbase = dbase;
+    }
+
+    /**
      * Returns course ID parameter.
+     *
      * @return Course ID
      */
     public abstract String courseIdParameter();
 
     /**
      * Returns error message.
+     *
      * @return Error message
      */
     public abstract String errorMessageParameter();
@@ -49,22 +78,61 @@ abstract class CourseHandling {
     /**
      * Changes entry.
      *
-     * @param course Course instance
-     * @param user User instance
+     * @param courseid Course ID
+     * @param userid User ID
      */
-    public abstract void changeEntry(Course course, User user);
+    public abstract void changeEntry(int courseid, int userid);
 
     /**
-     * Returns a string containing the path.
+     * Returns response.
      *
-     * @param course Course instance
+     * @param courseid Course ID
      * @param user User instance
-     * @param request HTTP request
-     * @return Path
+     * @return Response
      */
-    public String path(final Course course, final User user, final HttpServletRequest request) {
-        this.changeEntry(course, user);
-        user.prepareJspData(request);
-        return EnrollForm.STUDENT_PAGE;
+    public Response response(final int courseid, final User user) {
+        this.changeEntry(courseid, user.getId());
+        return user.response();
+    }
+
+    /**
+     * Enrolls the given user to the given course.
+     *
+     * @param courseid Course ID
+     * @param userid User ID
+     */
+    void insertUserCourse(final int courseid, final int userid) {
+        try (Connection con = this.dbase.dataSource().getConnection();
+            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
+        ) {
+            ctx.insertInto(
+                StudentCourses.STUDENT_COURSES,
+                StudentCourses.STUDENT_COURSES.COURSE_ID,
+                StudentCourses.STUDENT_COURSES.STUD_ID,
+                StudentCourses.STUDENT_COURSES.STATUS
+            ).values(courseid, userid, "STARTED").execute();
+        } catch (final SQLException exc) {
+            LOGGER.error("User not inserted!", exc);
+        }
+    }
+
+    /**
+     * Unrolls the given user from the given course.
+     *
+     * @param courseid Course ID
+     * @param userid User ID
+     */
+    void deleteUserCourse(final int courseid, final int userid) {
+        try (Connection con = this.dbase.dataSource().getConnection();
+            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
+        ) {
+            ctx.deleteFrom(StudentCourses.STUDENT_COURSES)
+                .where(
+                    StudentCourses.STUDENT_COURSES.COURSE_ID.eq(courseid)
+                        .and(StudentCourses.STUDENT_COURSES.STUD_ID.eq(userid))
+                ).execute();
+        } catch (final SQLException exc) {
+            LOGGER.error("User not deleted!", exc);
+        }
     }
 }

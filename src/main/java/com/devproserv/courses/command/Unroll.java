@@ -25,6 +25,7 @@ package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.form.UnrollCourseHandling;
+import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,7 +44,7 @@ public final class Unroll implements Command {
      * Constructor.
      */
     Unroll() {
-        this(new EnrollForm(new UnrollCourseHandling()));
+        this(new EnrollForm(new UnrollCourseHandling(new Db())));
     }
 
     /**

@@ -24,10 +24,8 @@
 
 package com.devproserv.courses.model;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * Represent an entity of User.
+ * Represent an entity of User from authenticating point of view.
  *
  * @since 1.0.0
  */
@@ -58,30 +56,23 @@ public abstract class User {
     private String lname;
 
     /**
-     * Path.
-     */
-    private String path;
-
-    /**
      * Primary constructor.
+     *
+     * @param id ID
      * @param login Login
      * @param password Password
+     * @param fname First name
+     * @param lname Last name
      */
-    public User(final String login, final String password) {
+    public User(final int id, final String login, final String password,
+        final String fname, final String lname
+    ) {
+        this.id = id;
         this.login = login;
         this.password = password;
+        this.fname = fname;
+        this.lname = lname;
     }
-
-    /**
-     * Loads fields for the user.
-     */
-    public abstract void loadFields();
-
-    /**
-     * Loads data to request.
-     * @param request HTTP request
-     */
-    public abstract void prepareJspData(HttpServletRequest request);
 
     /**
      * Getter.
@@ -161,22 +152,6 @@ public abstract class User {
      */
     public void setLastName(final String newlname) {
         this.lname = newlname;
-    }
-
-    /**
-     * Getter.
-     * @return Path
-     */
-    public String getPath() {
-        return this.path;
-    }
-
-    /**
-     * Setter.
-     * @param newpath Path
-     */
-    public void setPath(final String newpath) {
-        this.path = newpath;
     }
 
     /**

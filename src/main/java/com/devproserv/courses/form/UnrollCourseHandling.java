@@ -23,8 +23,7 @@
  */
 package com.devproserv.courses.form;
 
-import com.devproserv.courses.model.Course;
-import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.Db;
 
 /**
  * Handles unrolling from courses.
@@ -32,6 +31,15 @@ import com.devproserv.courses.model.User;
  * @since 1.0.0
  */
 public final class UnrollCourseHandling extends CourseHandling {
+    /**
+     * Primary constructor.
+     *
+     * @param dbase Database
+     */
+    public UnrollCourseHandling(final Db dbase) {
+        super(dbase);
+    }
+
     @Override
     public String courseIdParameter() {
         return "courseunsubscrid";
@@ -43,7 +51,7 @@ public final class UnrollCourseHandling extends CourseHandling {
     }
 
     @Override
-    public void changeEntry(final Course course, final User user) {
-        course.deleteUserCourse(user);
+    public void changeEntry(final int courseid, final int userid) {
+        deleteUserCourse(courseid, userid);
     }
 }

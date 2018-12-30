@@ -24,7 +24,9 @@
 
 package com.devproserv.courses.model;
 
-import javax.servlet.http.HttpServletRequest;
+import com.devproserv.courses.form.EnrollForm;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents the entity of the Administrator.
@@ -33,26 +35,25 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class Admin extends User {
     /**
-     * Constructor.
+     * Primary constructor.
+     *
+     * @param id ID
      * @param login Login
      * @param password Password
+     * @param fname First name
+     * @param lname Last name
      */
-    public Admin(final String login, final String password) {
-        super(login, password);
-    }
-
-    @Override
-    public void loadFields() {
-        // TODO
-    }
-
-    @Override
-    public void prepareJspData(final HttpServletRequest request) {
-        request.setAttribute("message", "This account is not accessible!");
+    public Admin(final int id, final String login, final String password,
+        final String fname, final String lname
+    ) {
+        super(id, login, password, fname, lname);
     }
 
     @Override
     public Response response() {
-        return null;
+        final String message = "This account is not accessible!";
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", message);
+        return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
 }

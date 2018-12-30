@@ -25,6 +25,7 @@ package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollCourseHandling;
 import com.devproserv.courses.form.EnrollForm;
+import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,7 +44,7 @@ public final class Enroll implements Command {
      * Default constructor.
      */
     Enroll() {
-        this(new EnrollForm(new EnrollCourseHandling()));
+        this(new EnrollForm(new EnrollCourseHandling(new Db())));
     }
 
     /**

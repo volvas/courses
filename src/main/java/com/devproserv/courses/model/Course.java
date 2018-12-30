@@ -24,15 +24,6 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.jooq.tables.StudentCourses;
-import java.sql.Connection;
-import java.sql.SQLException;
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Represents the entity of Course. Maps the table 'courses' in the database.
  * Part of DAO design pattern.
@@ -41,79 +32,30 @@ import org.slf4j.LoggerFactory;
  */
 public class Course {
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Course.class);
-
-    /**
-     * Database.
-     */
-    private final Db dbase;
-
-    /**
      * ID.
      */
-    private int id;
+    private final int id;
 
     /**
      * Name.
      */
-    private String name;
+    private final String name;
 
     /**
      * Description.
      */
-    private String description;
+    private final String description;
 
     /**
-     * Constructor.
-     * @param dbase Database
+     * Primary constructor.
+     * @param id ID
+     * @param name Name
+     * @param description Description
      */
-    public Course(final Db dbase) {
-        this.dbase = dbase;
-    }
-
-    /**
-     * Executes request into the database (table 'student_courses') to insert
-     * the current user and course. In other words, the current user subscribes
-     * to the current course
-     *
-     * @param user Current user
-     */
-    public void insertUserCourse(final User user) {
-        try (Connection con = this.dbase.dataSource().getConnection();
-            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            ctx.insertInto(
-                StudentCourses.STUDENT_COURSES,
-                StudentCourses.STUDENT_COURSES.COURSE_ID,
-                StudentCourses.STUDENT_COURSES.STUD_ID,
-                StudentCourses.STUDENT_COURSES.STATUS
-            ).values(this.getId(), user.getId(), "STARTED").execute();
-        } catch (final SQLException exc) {
-            LOGGER.error("User not inserted!", exc);
-        }
-    }
-
-    /**
-     * Executes request into the database (table 'student_courses') to insert
-     * the current user and course. In other words, the current user subscribes
-     * to the current course
-     *
-     * @param user Current user
-     */
-    public void deleteUserCourse(final User user) {
-        try (Connection con = this.dbase.dataSource().getConnection();
-            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            ctx.deleteFrom(StudentCourses.STUDENT_COURSES)
-            .where(
-                StudentCourses.STUDENT_COURSES.COURSE_ID.eq(this.getId())
-                .and(StudentCourses.STUDENT_COURSES.STUD_ID.eq(user.getId()))
-            ).execute();
-        } catch (final SQLException exc) {
-            LOGGER.error("User not deleted!", exc);
-        }
+    public Course(final int id, final String name, final String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
     }
 
     /**
@@ -125,14 +67,6 @@ public class Course {
     }
 
     /**
-     * Setter.
-     * @param newid ID
-     */
-    public void setId(final int newid) {
-        this.id = newid;
-    }
-
-    /**
      * Getter.
      * @return Name
      */
@@ -141,26 +75,10 @@ public class Course {
     }
 
     /**
-     * Setter.
-     * @param newname Name
-     */
-    public void setName(final String newname) {
-        this.name = newname;
-    }
-
-    /**
      * Getter.
      * @return Description
      */
     public String getDescription() {
         return this.description;
-    }
-
-    /**
-     * Setter.
-     * @param descr Description
-     */
-    public void setDescription(final String descr) {
-        this.description = descr;
     }
 }

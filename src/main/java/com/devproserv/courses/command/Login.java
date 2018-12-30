@@ -89,6 +89,6 @@ public final class Login implements Command {
         final String password
     ) {
         LOGGER.debug("Login '{}' and password are valid.", login);
-        return new UserRoles(login, password).build().path(request);
+        return new UserRoles(login, password).build().response(request);
     }
 }

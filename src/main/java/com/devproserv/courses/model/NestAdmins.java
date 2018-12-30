@@ -24,52 +24,19 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.form.EnrollForm;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Represents the entity of the Lecturer.
- * Maps the table 'lecturers' in the database.
+ * Deals with admins.
  *
  * @since 1.0.0
  */
-public final class Lecturer extends User {
-    /**
-     * Degree.
-     */
-    private final String degree;
-
-    /**
-     * Primary constructor.
-     *
-     * @param id ID
-     * @param login Login
-     * @param password Password
-     * @param fname First name
-     * @param lname Last name
-     * @param degree Degree
-     */
-    public Lecturer(final int id, final String login, final String password,
-        final String fname, final String lname, final String degree
-    ) {
-        super(id, login, password, fname, lname);
-        this.degree = degree;
-    }
-
-    /**
-     * Getter.
-     * @return Degree
-     */
-    public String getDegree() {
-        return this.degree;
+public final class NestAdmins implements Nest {
+    @Override
+    public Response prepareResponse() {
+        return null;
     }
 
     @Override
-    public Response response() {
-        final String message = "This account is not accessible!";
-        final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", message);
-        return new Response(EnrollForm.LOGIN_PAGE, payload);
+    public User makeUser() {
+        return null;
     }
 }
