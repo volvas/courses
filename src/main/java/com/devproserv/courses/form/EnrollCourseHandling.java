@@ -51,7 +51,7 @@ public final class EnrollCourseHandling extends CourseHandling {
     }
 
     @Override
-    public void changeEntry(final int courseid, final int userid) {
-        insertUserCourse(courseid, userid);
+    public void changeEntry(final int courseid, final int studentid) {
+        insertUserCourse(courseid, studentid);
     }
 }

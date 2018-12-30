@@ -33,16 +33,7 @@ import java.util.Map;
  *
  * @since 1.0.0
  */
-public final class EmptyUser extends User {
-    /**
-     * Primary constructor.
-     * @param login Login
-     * @param password Password
-     */
-    EmptyUser(final String login, final String password) {
-        super(0, login, password, null, null);
-    }
-
+public final class EmptyUser implements Responsible {
     @Override
     public Response response() {
         final String message = "Wrong username or password! Try again!";

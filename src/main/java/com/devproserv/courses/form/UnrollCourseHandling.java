@@ -51,7 +51,7 @@ public final class UnrollCourseHandling extends CourseHandling {
     }
 
     @Override
-    public void changeEntry(final int courseid, final int userid) {
-        deleteUserCourse(courseid, userid);
+    public void changeEntry(final int courseid, final int studentid) {
+        deleteUserCourse(courseid, studentid);
     }
 }

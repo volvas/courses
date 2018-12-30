@@ -31,12 +31,7 @@ package com.devproserv.courses.model;
  */
 public final class NestAdmins implements Nest {
     @Override
-    public Response prepareResponse() {
-        return null;
-    }
-
-    @Override
-    public User makeUser() {
+    public Responsible makeUser() {
         return null;
     }
 }

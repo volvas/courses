@@ -25,13 +25,76 @@
 package com.devproserv.courses.model;
 
 /**
- * Deals with lecturers.
+ * User with first and last names.
  *
  * @since 1.0.0
  */
-public final class NestLecturers implements Nest {
-    @Override
-    public Responsible makeUser() {
-        return null;
+public final class FullNameUser {
+    /**
+     * User.
+     */
+    private final User user;
+
+    /**
+     * First name.
+     */
+    private final String fname;
+
+    /**
+     * Last name.
+     */
+    private final String lname;
+
+    /**
+     * Primary constructor.
+     *
+     * @param user User
+     * @param fname First name
+     * @param lname Last name
+     */
+    FullNameUser(final User user, final String fname, final String lname) {
+        this.user  = user;
+        this.fname = fname;
+        this.lname = lname;
+    }
+
+    /**
+     * Getter.
+     * @return ID
+     */
+    public int getId() {
+        return this.user.getId();
+    }
+
+    /**
+     * Getter.
+     * @return Login
+     */
+    public String getLogin() {
+        return this.user.getLogin();
+    }
+
+    /**
+     * Getter.
+     * @return Password
+     */
+    public String getPassword() {
+        return this.user.getPassword();
+    }
+
+    /**
+     * Getter.
+     * @return First name
+     */
+    String getFirstName() {
+        return this.fname;
+    }
+
+    /**
+     * Getter.
+     * @return Last name
+     */
+    String getLastName() {
+        return this.lname;
     }
 }

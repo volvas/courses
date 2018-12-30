@@ -33,20 +33,19 @@ import java.util.Map;
  *
  * @since 1.0.0
  */
-public final class Admin extends User {
+public final class Admin implements Responsible {
+    /**
+     * User.
+     */
+    private final User user;
+
     /**
      * Primary constructor.
      *
-     * @param id ID
-     * @param login Login
-     * @param password Password
-     * @param fname First name
-     * @param lname Last name
+     * @param user User instance
      */
-    public Admin(final int id, final String login, final String password,
-        final String fname, final String lname
-    ) {
-        super(id, login, password, fname, lname);
+    public Admin(final User user) {
+        this.user = user;
     }
 
     @Override
@@ -55,5 +54,13 @@ public final class Admin extends User {
         final Map<String, Object> payload = new HashMap<>();
         payload.put("message", message);
         return new Response(EnrollForm.LOGIN_PAGE, payload);
+    }
+
+    /**
+     * Getter.
+     * @return ID
+     */
+    public int getId() {
+        return this.user.getId();
     }
 }

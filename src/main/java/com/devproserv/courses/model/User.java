@@ -29,31 +29,21 @@ package com.devproserv.courses.model;
  *
  * @since 1.0.0
  */
-public abstract class User {
+public final class User {
     /**
      * ID.
      */
-    private int id;
+    private final int id;
 
     /**
      * Login.
      */
-    private String login;
+    private final String login;
 
     /**
      * Password.
      */
-    private String password;
-
-    /**
-     * First name.
-     */
-    private String fname;
-
-    /**
-     * Last name.
-     */
-    private String lname;
+    private final String password;
 
     /**
      * Primary constructor.
@@ -61,17 +51,11 @@ public abstract class User {
      * @param id ID
      * @param login Login
      * @param password Password
-     * @param fname First name
-     * @param lname Last name
      */
-    public User(final int id, final String login, final String password,
-        final String fname, final String lname
-    ) {
+    public User(final int id, final String login, final String password) {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.fname = fname;
-        this.lname = lname;
     }
 
     /**
@@ -83,27 +67,11 @@ public abstract class User {
     }
 
     /**
-     * Setter.
-     * @param newid ID
-     */
-    public void setId(final int newid) {
-        this.id = newid;
-    }
-
-    /**
      * Getter.
      * @return Login
      */
     public String getLogin() {
         return this.login;
-    }
-
-    /**
-     * Setter.
-     * @param newlogin Login
-     */
-    public void setLogin(final String newlogin) {
-        this.login = newlogin;
     }
 
     /**
@@ -113,51 +81,4 @@ public abstract class User {
     public String getPassword() {
         return this.password;
     }
-
-    /**
-     * Setter.
-     * @param newpass Password
-     */
-    public void setPassword(final String newpass) {
-        this.password = newpass;
-    }
-
-    /**
-     * Getter.
-     * @return First name
-     */
-    public String getFirstName() {
-        return this.fname;
-    }
-
-    /**
-     * Setter.
-     * @param newfname First name
-     */
-    public void setFirstName(final String newfname) {
-        this.fname = newfname;
-    }
-
-    /**
-     * Getter.
-     * @return Last name
-     */
-    public String getLastName() {
-        return this.lname;
-    }
-
-    /**
-     * Setter.
-     * @param newlname Last name
-     */
-    public void setLastName(final String newlname) {
-        this.lname = newlname;
-    }
-
-    /**
-     * Returns payload.
-     *
-     * @return Response
-     */
-    public abstract Response response();
 }

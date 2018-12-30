@@ -34,7 +34,12 @@ import java.util.Map;
  *
  * @since 1.0.0
  */
-public final class Lecturer extends User {
+public final class Lecturer implements Responsible {
+    /**
+     * User.
+     */
+    private final User user;
+
     /**
      * Degree.
      */
@@ -43,17 +48,11 @@ public final class Lecturer extends User {
     /**
      * Primary constructor.
      *
-     * @param id ID
-     * @param login Login
-     * @param password Password
-     * @param fname First name
-     * @param lname Last name
+     * @param user User
      * @param degree Degree
      */
-    public Lecturer(final int id, final String login, final String password,
-        final String fname, final String lname, final String degree
-    ) {
-        super(id, login, password, fname, lname);
+    public Lecturer(final User user, final String degree) {
+        this.user = user;
         this.degree = degree;
     }
 
@@ -71,5 +70,13 @@ public final class Lecturer extends User {
         final Map<String, Object> payload = new HashMap<>();
         payload.put("message", message);
         return new Response(EnrollForm.LOGIN_PAGE, payload);
+    }
+
+    /**
+     * Getter.
+     * @return ID
+     */
+    public int getId() {
+        return this.user.getId();
     }
 }

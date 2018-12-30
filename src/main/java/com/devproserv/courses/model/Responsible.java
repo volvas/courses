@@ -25,13 +25,15 @@
 package com.devproserv.courses.model;
 
 /**
- * Deals with lecturers.
+ * Gives implementing classes ability to return Response.
  *
  * @since 1.0.0
  */
-public final class NestLecturers implements Nest {
-    @Override
-    public Responsible makeUser() {
-        return null;
-    }
+public interface Responsible {
+    /**
+     * Fetches information from different entities in form of Response.
+     *
+     * @return Response instance
+     */
+    Response response();
 }

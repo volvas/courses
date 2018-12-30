@@ -31,16 +31,9 @@ package com.devproserv.courses.model;
  */
 public interface Nest {
     /**
-     * Loads data to request.
-     *
-     * @return Response
-     */
-    Response prepareResponse();
-
-    /**
      * Loads user from Db.
      *
      * @return User
      */
-    User makeUser();
+    Responsible makeUser();
 }

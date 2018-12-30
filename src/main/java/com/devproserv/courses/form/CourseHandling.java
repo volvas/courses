@@ -27,7 +27,7 @@ package com.devproserv.courses.form;
 import com.devproserv.courses.jooq.tables.StudentCourses;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.Student;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.jooq.DSLContext;
@@ -79,20 +79,20 @@ abstract class CourseHandling {
      * Changes entry.
      *
      * @param courseid Course ID
-     * @param userid User ID
+     * @param studentid Student ID
      */
-    public abstract void changeEntry(int courseid, int userid);
+    public abstract void changeEntry(int courseid, int studentid);
 
     /**
      * Returns response.
      *
      * @param courseid Course ID
-     * @param user User instance
+     * @param student Student
      * @return Response
      */
-    public Response response(final int courseid, final User user) {
-        this.changeEntry(courseid, user.getId());
-        return user.response();
+    public Response response(final int courseid, final Student student) {
+        this.changeEntry(courseid, student.getId());
+        return student.response();
     }
 
     /**

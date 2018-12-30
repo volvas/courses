@@ -25,7 +25,7 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.Student;
 import com.devproserv.courses.validation.VldNumber;
 import com.devproserv.courses.validation.results.VldResult;
 import java.util.Collections;
@@ -64,11 +64,6 @@ public final class EnrollForm {
     private final CourseHandling handling;
 
     /**
-     * User.
-     */
-    private User user;
-
-    /**
      * Primary constructor.
      *
      * @param handling Course handler
@@ -98,28 +93,27 @@ public final class EnrollForm {
      * @return Response
      */
     private Response userResponse(final HttpServletRequest request, final HttpSession session) {
-        final Optional<User> useropt = Optional
-            .ofNullable((User) session.getAttribute(session.getId()));
-        return useropt.map(usr -> this.fullResponse(usr, request))
+        final Optional<Student> studentopt = Optional
+            .ofNullable((Student) session.getAttribute(session.getId()));
+        return studentopt.map(student -> this.fullResponse(student, request))
             .orElse(new Response(EnrollForm.LOGIN_PAGE, Collections.emptyMap()));
     }
 
     /**
      * Creates response taking into account live session and user.
      *
-     * @param usr User
+     * @param student Student
      * @param request HTTP request
      * @return Response
      */
-    private Response fullResponse(final User usr, final HttpServletRequest request) {
-        this.user = usr;
+    private Response fullResponse(final Student student, final HttpServletRequest request) {
         final String param = request.getParameter(this.handling.courseIdParameter());
         final VldResult vld = new VldNumber(param).validate();
         final Response response;
         if (vld.valid()) {
-            response = this.validPath(param);
+            response = this.validPath(student, param);
         } else {
-            response = this.invalidPath(vld);
+            response = this.invalidPath(student, vld);
         }
         return response;
     }
@@ -127,12 +121,13 @@ public final class EnrollForm {
     /**
      * Forms an error message in case of invalid path.
      *
+     * @param student Student
      * @param result Validation result
      * @return Response
      */
-    private Response invalidPath(final VldResult result) {
-        LOGGER.info("Invalid credentials for login {}", this.user.getLogin());
-        final Response response = this.user.response();
+    private Response invalidPath(final Student student, final VldResult result) {
+        LOGGER.info("Invalid parameter for login {}", student.getLogin());
+        final Response response = student.response();
         final Map<String, Object> payload = new HashMap<>(response.getPayload());
         payload.put(this.handling.errorMessageParameter(), result.reason().orElse(""));
         return new Response(response.getPath(), payload);
@@ -141,10 +136,11 @@ public final class EnrollForm {
     /**
      * Creates a course.
      *
+     * @param student Student
      * @param param Number
      * @return Response
      */
-    private Response validPath(final String param) {
-        return this.handling.response(Integer.parseInt(param), this.user);
+    private Response validPath(final Student student, final String param) {
+        return this.handling.response(Integer.parseInt(param), student);
     }
 }

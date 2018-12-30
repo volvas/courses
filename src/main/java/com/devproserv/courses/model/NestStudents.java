@@ -76,13 +76,8 @@ public final class NestStudents implements Nest {
     }
 
     @Override
-    public Response prepareResponse() {
-        return null;
-    }
-
-    @Override
-    public User makeUser() {
-        User user = new EmptyUser(this.login, this.password);
+    public Responsible makeUser() {
+        Responsible user = new EmptyUser();
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
@@ -98,9 +93,11 @@ public final class NestStudents implements Nest {
                 .fetch();
             user = res.stream()
                 .map(
-                    r -> (User) new Student(
-                        this.dbase, r.value1(), this.login, this.password,
-                        r.value2(), r.value3(), r.value4()
+                    r -> (Responsible) new Student(
+                        this.dbase, new FullNameUser(
+                            new User(r.value1(), this.login, this.password),
+                            r.value2(), r.value3()
+                        ), r.value4()
                     )
                 )
                 .findFirst().orElse(user);

@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  *
  * @since 1.0.0
  */
-public final class Student extends User {
+public final class Student implements Responsible {
     /**
      * Logger.
      */
@@ -60,6 +60,11 @@ public final class Student extends User {
     private final Db dbase;
 
     /**
+     * User.
+     */
+    private final FullNameUser user;
+
+    /**
      * Faculty field.
      */
     private final String faculty;
@@ -68,19 +73,12 @@ public final class Student extends User {
      * Primary constructor.
      *
      * @param dbase Database
-     * @param id ID
-     * @param login Login
-     * @param password Password
-     * @param fname First name
-     * @param lname Last name
+     * @param user Full named User
      * @param faculty Faculty
      */
-    public Student(
-        final Db dbase, final int id, final String login, final String password,
-        final String fname, final String lname, final String faculty
-    ) {
-        super(id, login, password, fname, lname);
-        this.dbase = dbase;
+    public Student(final Db dbase, final FullNameUser user, final String faculty) {
+        this.dbase   = dbase;
+        this.user    = user;
         this.faculty = faculty;
     }
 
@@ -93,6 +91,46 @@ public final class Student extends User {
         final List<Course> available = this.getAvailableCourses();
         payload.put("courses", available);
         return new Response(EnrollForm.STUDENT_PAGE, payload);
+    }
+
+    /**
+     * Getter.
+     * @return ID
+     */
+    public int getId() {
+        return this.user.getId();
+    }
+
+    /**
+     * Getter.
+     * @return Login
+     */
+    public String getLogin() {
+        return this.user.getLogin();
+    }
+
+    /**
+     * Getter.
+     * @return Password
+     */
+    public String getPassword() {
+        return this.user.getPassword();
+    }
+
+    /**
+     * Getter.
+     * @return First name
+     */
+    public String getFirstName() {
+        return this.user.getFirstName();
+    }
+
+    /**
+     * Getter.
+     * @return Last name
+     */
+    public String getLastName() {
+        return this.user.getLastName();
     }
 
     /**
@@ -121,7 +159,7 @@ public final class Student extends User {
                         .from(StudentCourses.STUDENT_COURSES, Users.USERS)
                         .where(StudentCourses.STUDENT_COURSES.STUD_ID
                             .eq(Users.USERS.USER_ID)
-                            .and(Users.USERS.LOGIN.eq(getLogin()))
+                            .and(Users.USERS.LOGIN.eq(this.getLogin()))
                         )
                     )
                 )

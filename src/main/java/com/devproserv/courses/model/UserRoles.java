@@ -133,7 +133,7 @@ public class UserRoles {
      * @return Response
      */
     public Response response(final HttpServletRequest request) {
-        final User user = this.makeUser();
+        final Responsible user = this.makeUser();
         final Response response = user.response();
         final HttpSession session = request.getSession();
         session.setAttribute(session.getId(), user);
@@ -143,10 +143,10 @@ public class UserRoles {
     /**
      * Returns an user instance on base of login and password.
      *
-     * @return User instance
+     * @return UsResponsibleer instance
      */
-    private User makeUser() {
-        User user = new EmptyUser(this.login, this.pass);
+    private Responsible makeUser() {
+        Responsible user = new EmptyUser();
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
@@ -166,16 +166,16 @@ public class UserRoles {
      * Fetches user from the result set.
      *
      * @param res Result
-     * @return User instance
+     * @return Responsible instance
      */
-    private User fetchUser(final Result<Record> res) {
-        final User user;
+    private Responsible fetchUser(final Result<Record> res) {
+        final Responsible user;
         if (res.isNotEmpty()) {
             final UserRole role = UserRole.valueOf(res.get(0).getValue(Users.USERS.ROLE).name());
             final Nest nest = this.roles.get(role).get();
             user = nest.makeUser();
         } else {
-            user = new EmptyUser(this.login, this.pass);
+            user = new EmptyUser();
         }
         return user;
     }
