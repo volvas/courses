@@ -33,7 +33,7 @@ import com.devproserv.courses.validation.rules.VldRuleStartLetter;
 /**
  * Combines rules to validate field "username".
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public class VldUsername {
     /**

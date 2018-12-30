@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * Negative validation result implementation.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class VldResultInvalid implements VldResult {
     /**

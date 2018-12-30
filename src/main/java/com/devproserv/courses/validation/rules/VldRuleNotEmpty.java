@@ -31,7 +31,7 @@ import com.devproserv.courses.validation.results.VldResultValid;
 /**
  * Checks if string is empty.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class VldRuleNotEmpty implements VldRule {
     /**

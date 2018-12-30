@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * Creates a new user using data from the HTTP request.
  * And stores the data in the database
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class SignUp implements Command {
     /**

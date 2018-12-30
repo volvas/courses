@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Represents a command coming from web forms via HTTP request.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public interface Command {
     /**

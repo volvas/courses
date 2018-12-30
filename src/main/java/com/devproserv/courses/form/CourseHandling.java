@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Prepares request for further forwarding.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 abstract class CourseHandling {
     /**

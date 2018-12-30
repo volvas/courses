@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * Validation result.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public interface VldResult {
     /**

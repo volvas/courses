@@ -27,7 +27,7 @@ package com.devproserv.courses.model;
 /**
  * User with first and last names.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class FullNameUser {
     /**

@@ -32,7 +32,7 @@ import java.util.Map;
  * Represents the entity of the Lecturer.
  * Maps the table 'lecturers' in the database.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class Lecturer implements Responsible {
     /**

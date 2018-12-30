@@ -25,6 +25,6 @@
 /**
  * Contains all classes handling commands from user's html form.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 package com.devproserv.courses.command;

@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Aggregates several validation result in one object.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public class VldResultAggr {
     /**

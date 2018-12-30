@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Handles course number user inputs to unsubscribe from desired courses.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class Unroll implements Command {
     /**

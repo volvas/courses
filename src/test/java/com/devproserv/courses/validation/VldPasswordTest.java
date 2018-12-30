@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Contains unit-tests to check functionality of {@link VldPassword} class.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 class VldPasswordTest {
     /**

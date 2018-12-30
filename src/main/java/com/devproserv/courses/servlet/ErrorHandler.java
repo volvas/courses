@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet handles errors related to wrong requests and JVM's exceptions.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @WebServlet(urlPatterns = {"/error"}, name = "errorHandler")
 public final class ErrorHandler extends HttpServlet {

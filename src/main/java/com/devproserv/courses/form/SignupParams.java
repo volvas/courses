@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Extracts sign up form parameters from HTTP request.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public class SignupParams {
     /**

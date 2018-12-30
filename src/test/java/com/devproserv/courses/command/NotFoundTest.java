@@ -35,7 +35,7 @@ import org.mockito.MockitoAnnotations;
 /**
  * Contains unit-tests to check functionality of {@link NotFound} class.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 class NotFoundTest {
 

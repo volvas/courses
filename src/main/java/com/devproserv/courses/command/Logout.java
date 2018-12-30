@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Handles logging out for the existing user.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class Logout implements Command {
     /**

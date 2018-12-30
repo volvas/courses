@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Controls user in accordance to their role.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public class UserRoles {
     /**

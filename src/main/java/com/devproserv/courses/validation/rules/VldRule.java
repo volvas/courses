@@ -30,7 +30,7 @@ import java.util.function.Function;
 /**
  * Represents a peace of validating process.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @FunctionalInterface
 public interface VldRule extends Function<String, VldResult> {

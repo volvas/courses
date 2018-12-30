@@ -27,7 +27,7 @@ package com.devproserv.courses.model;
 /**
  * Deals with lecturers.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class NestLecturers implements Nest {
     @Override

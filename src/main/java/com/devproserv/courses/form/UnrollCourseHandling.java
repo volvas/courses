@@ -28,7 +28,7 @@ import com.devproserv.courses.model.Db;
 /**
  * Handles unrolling from courses.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class UnrollCourseHandling extends CourseHandling {
     /**

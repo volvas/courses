@@ -36,7 +36,7 @@ import org.mockito.MockitoAnnotations;
 /**
  * Contains unit-tests to check functionality of {@link Commands} class.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 class CommandsTest {
     /**

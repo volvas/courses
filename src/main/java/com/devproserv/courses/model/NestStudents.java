@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Deals with students.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class NestStudents implements Nest {
     /**

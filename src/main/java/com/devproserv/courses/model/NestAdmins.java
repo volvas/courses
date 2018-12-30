@@ -27,7 +27,7 @@ package com.devproserv.courses.model;
 /**
  * Deals with admins.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class NestAdmins implements Nest {
     @Override

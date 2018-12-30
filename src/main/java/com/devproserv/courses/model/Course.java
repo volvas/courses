@@ -28,7 +28,7 @@ package com.devproserv.courses.model;
  * Represents the entity of Course. Maps the table 'courses' in the database.
  * Part of DAO design pattern.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public class Course {
     /**

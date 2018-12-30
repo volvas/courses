@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * Handles all web forms in the application like registration
  * and login procedures, handling course and student lists.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @WebServlet(urlPatterns = {"/login", "/courses"}, name = "mainHandler")
 public final class MainHandler extends HttpServlet {

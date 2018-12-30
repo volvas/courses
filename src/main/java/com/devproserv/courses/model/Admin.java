@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * Represents the entity of the Administrator.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class Admin implements Responsible {
     /**

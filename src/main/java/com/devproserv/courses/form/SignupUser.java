@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Performs sign up process.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class SignupUser {
     /**

@@ -29,7 +29,7 @@ import java.io.Serializable;
 /**
  * Gives implementing classes ability to return Response.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public interface Responsible extends Serializable {
     /**

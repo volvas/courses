@@ -31,7 +31,7 @@ import com.devproserv.courses.validation.results.VldResultValid;
 /**
  * Checks if string starts with letter.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class VldRuleStartLetter implements VldRule {
     /**

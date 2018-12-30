@@ -28,7 +28,7 @@ import com.devproserv.courses.model.Db;
 /**
  * Handles enrolling to courses.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class EnrollCourseHandling extends CourseHandling {
     /**

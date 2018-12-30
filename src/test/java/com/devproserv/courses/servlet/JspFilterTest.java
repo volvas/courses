@@ -39,7 +39,7 @@ import org.mockito.MockitoAnnotations;
  * Due to the tested method is void, only call of other methods
  * inside this method is checked
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 class JspFilterTest {
     /**

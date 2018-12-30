@@ -25,6 +25,6 @@
 /**
  * Classes validating HTTP request parameters.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 package com.devproserv.courses.validation;

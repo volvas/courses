@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Represents a non-existing command.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class NotFound implements Command {
     /**

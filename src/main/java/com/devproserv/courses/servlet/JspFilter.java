@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * Filter forbids direct access to internal JSP. In case of direct typing
  * address in the browser the filter redirects to home page.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @WebFilter(urlPatterns = {EnrollForm.STUDENT_PAGE, JspFilter.LECTURER_PAGE},
     dispatcherTypes = {DispatcherType.REQUEST})
