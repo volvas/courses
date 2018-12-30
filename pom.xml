@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.devproserv.courses</groupId>
     <artifactId>courses</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.5.0</version>
     <packaging>war</packaging>
-    <name>coursesmaven</name>
+    <name>courses</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
