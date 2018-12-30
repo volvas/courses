@@ -31,14 +31,14 @@ _System of optional **courses**. There is a list of courses, each **course** is 
 
 Software
 ------------
-Web-Server: Apache Tomcat 8  
+Web-Server: Apache Tomcat 8.5  
 Database: MySQL Community Server 5.7  
-Build tool: Maven 4  
+Build tool: Maven  
 CI tool: Jenkins  
-IDE: Eclipse  
-Test tool: JUnit  
+IDE: Eclipse, Intellij IDEA  
+Test tool: JUnit 5 
   
-The project is developed in Eclipse and hosted on Github. A job in Jenkins detects changes in the code on Github and builds a new version of web package and deploys it on the server.
+The project is hosted on Github. A job in Jenkins detects changes in the code on Github and builds a new version of web package and deploys it on the server.
   
 Disclaimer
 ----------
