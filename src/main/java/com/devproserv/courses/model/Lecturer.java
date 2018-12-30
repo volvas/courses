@@ -36,6 +36,11 @@ import java.util.Map;
  */
 public final class Lecturer implements Responsible {
     /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = -8301718459800290455L;
+
+    /**
      * User.
      */
     private final User user;

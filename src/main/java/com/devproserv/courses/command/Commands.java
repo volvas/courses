@@ -25,6 +25,7 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.model.Response;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -36,7 +37,12 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @since 1.0.0
  */
-public class Commands {
+public class Commands implements Serializable {
+    /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = 246078364095573319L;
+
     /**
      * Login command name.
      */

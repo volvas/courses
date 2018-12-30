@@ -34,6 +34,11 @@ import java.util.Map;
  * @since 1.0.0
  */
 public final class EmptyUser implements Responsible {
+    /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = 8921816564030377429L;
+
     @Override
     public Response response() {
         final String message = "Wrong username or password! Try again!";

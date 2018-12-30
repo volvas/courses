@@ -45,7 +45,7 @@ public final class MainHandler extends HttpServlet {
     /**
      * Serial number.
      */
-    private static final long serialVersionUID = 901070610445666149L;
+    private static final long serialVersionUID = -1021229685792407270L;
 
     /**
      * Command manager.

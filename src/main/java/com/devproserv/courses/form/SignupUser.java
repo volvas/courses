@@ -94,8 +94,8 @@ public final class SignupUser {
         this.dbase    = dbase;
         this.login    = pars.getLogin();
         this.password = pars.getPassword();
-        this.fname    = pars.getFirstName();
-        this.lname    = pars.getLastName();
+        this.fname    = pars.getFName();
+        this.lname    = pars.getLName();
         this.faculty  = pars.getFaculty();
     }
 

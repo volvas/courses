@@ -24,12 +24,14 @@
 
 package com.devproserv.courses.model;
 
+import java.io.Serializable;
+
 /**
  * Gives implementing classes ability to return Response.
  *
  * @since 1.0.0
  */
-public interface Responsible {
+public interface Responsible extends Serializable {
     /**
      * Fetches information from different entities in form of Response.
      *

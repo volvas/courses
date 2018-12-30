@@ -35,6 +35,11 @@ import java.util.Map;
  */
 public final class Admin implements Responsible {
     /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = -4230707114847860096L;
+
+    /**
      * User.
      */
     private final User user;

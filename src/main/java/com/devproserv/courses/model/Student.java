@@ -50,6 +50,11 @@ import org.slf4j.LoggerFactory;
  */
 public final class Student implements Responsible {
     /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = -6689616212027148656L;
+
+    /**
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Student.class);

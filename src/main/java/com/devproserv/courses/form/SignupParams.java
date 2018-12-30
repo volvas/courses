@@ -103,7 +103,7 @@ public class SignupParams {
      * Getter.
      * @return First name
      */
-    String getFirstName() {
+    String getFName() {
         return this.fname;
     }
 
@@ -111,7 +111,7 @@ public class SignupParams {
      * Getter.
      * @return Last name
      */
-    String getLastName() {
+    String getLName() {
         return this.lname;
     }
 

@@ -69,8 +69,7 @@ public final class JspFilter implements Filter {
 
     @Override
     public void doFilter(
-        final ServletRequest request, final ServletResponse response,
-        final FilterChain chain
+        final ServletRequest request, final ServletResponse response, final FilterChain chain
     ) throws IOException {
         final HttpServletRequest hrequest = (HttpServletRequest) request;
         final HttpServletResponse hresponse = (HttpServletResponse) response;

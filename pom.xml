@@ -46,6 +46,16 @@
                     <license>file:${basedir}/LICENSE</license>
                     <excludes>
                         <exclude>checkstyle:/src/main/java/com/devproserv/courses/jooq/.*</exclude>
+                        <exclude>findbugs:~com.devproserv.courses.jooq.*</exclude>
+                        <exclude>findbugs:~com.devproserv.courses.servlet.JspFilter</exclude>
+                        <exclude>dependencies:org.apache.logging.log4j:log4j-core</exclude>
+                        <exclude>dependencies:org.apache.logging.log4j:log4j-slf4j-impl</exclude>
+                        <exclude>dependencies:org.apache.tomcat:tomcat-servlet-api</exclude>
+                        <exclude>dependencies:javax.servlet:jstl</exclude>
+                        <exclude>dependencies:mysql:mysql-connector-java</exclude>
+                        <exclude>dependencies:org.jooq:jooq</exclude>
+                        <exclude>dependencies:org.jooq:jooq-meta</exclude>
+                        <exclude>dependencies:org.jooq:jooq-codegen</exclude>
                     </excludes>
                 </configuration>
                 <executions>
