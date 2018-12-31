@@ -14,8 +14,8 @@ jobs:
           command: mvn clean package
 
   deploy:
-    machine:
-      enabled: true
+    docker:
+      - image: circleci/openjdk:8-jdk
 
     working_directory: ~/repo
 
