@@ -28,9 +28,9 @@ jobs:
           command: mvn package
 
       - persist_to_workspace:
-          root: workspace
+          root: target
           paths:
-            - target/courses.war
+            - courses.war
 
   deploy:
     machine:
@@ -44,7 +44,7 @@ jobs:
             - "de:20:51:fb:e5:c6:eb:62:56:9a:f0:f3:43:01:09:94"
 
       - attach_workspace:
-          at: workspace
+          at: target
 
       - run:
           name: Deploy to server
