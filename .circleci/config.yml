@@ -27,11 +27,10 @@ jobs:
           name: Build war file
           command: mvn package
 
-      - store_test_results:
-          path: target/surefire-reports
-
-      - store_artifacts:
-          path: target/courses.war
+      - persist_to_workspace:
+          root: artifacts
+          paths:
+            - target/courses.war
 
   deploy:
     machine:
@@ -47,7 +46,7 @@ jobs:
       - run:
           name: Deploy to server
           command: |
-            scp -P $SSH_PORT $CIRCLE_WORKING_DIRECTORY/target/courses.war $SSH_USER@$SSH_HOST:/home/$SSH_USER
+            scp -P $SSH_PORT $CIRCLE_WORKING_DIRECTORY/artifacts/target/courses.war $SSH_USER@$SSH_HOST:/home/$SSH_USER
 
 workflows:
   version: 2
