@@ -46,12 +46,11 @@ jobs:
       - attach_workspace:
           at: target
 
-      - run: ls -lah ~/repo/target/
-
       - run:
           name: Deploy to server
           command: |
             scp -P $SSH_PORT ~/repo/target/courses.war $SSH_USER@$SSH_HOST:/home/$SSH_USER
+            ssh -P $SSH_PORT $SSH_USER@$SSH_HOST "sudo cp courses.war /opt/tomcat/webapps"
 
 workflows:
   version: 2
