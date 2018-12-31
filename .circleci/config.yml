@@ -9,27 +9,31 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Build war file
+          command: mvn clean package
+
+  deploy:
+    machine:
+      enabled: true
+
+    working_directory: ~/repo
+
+    steps:
       - add_ssh_keys:
           fingerprints:
             - "de:20:51:fb:e5:c6:eb:62:56:9a:f0:f3:43:01:09:94"
 
       - run:
-          name: Build war file
-          command: mvn clean package
-
-      - deploy:
           name: Deploy to server
           command: |
             scp -P $SSH_PORT $CIRCLE_WORKING_DIRECTORY/target/courses.war $SSH_USER@$SSH_HOST:/home/$SSH_USER
 
-#workflows:
-#  version: 2
-#
-#  build_only_master:
-#    jobs:
-#      - build:
-#          filters:
-#            branches:
-#              ignore: /.*/
-#            tags:
-#              only: /^\d+\.\d+\.\d+$/
+workflows:
+  version: 2
+  main_flow:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
