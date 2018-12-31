@@ -11,7 +11,7 @@ jobs:
 
       - add_ssh_keys:
           fingerprints:
-            - "69:c9:8f:8d:69:8a:f3:20:ef:65:14:59:6a:0c:c5:f1"
+            - "de:20:51:fb:e5:c6:eb:62:56:9a:f0:f3:43:01:09:94"
 
       - run:
           name: Build war file
