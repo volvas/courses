@@ -28,9 +28,9 @@ jobs:
           command: mvn package
 
       - persist_to_workspace:
-          root: artifacts
+          root: target
           paths:
-            - target/courses.war
+            - courses.war
 
   deploy:
     machine:
@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Deploy to server
           command: |
-            scp -P $SSH_PORT $CIRCLE_WORKING_DIRECTORY/artifacts/target/courses.war $SSH_USER@$SSH_HOST:/home/$SSH_USER
+            scp -P $SSH_PORT $CIRCLE_WORKING_DIRECTORY/target/courses.war $SSH_USER@$SSH_HOST:/home/$SSH_USER
 
 workflows:
   version: 2
