@@ -9,13 +9,13 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Build war file
-          command: mvn clean package
-
       - add_ssh_keys:
           fingerprints:
             - "69:c9:8f:8d:69:8a:f3:20:ef:65:14:59:6a:0c:c5:f1"
+
+      - run:
+          name: Build war file
+          command: mvn clean package
 
       - deploy:
           name: Deploy to server
