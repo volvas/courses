@@ -46,6 +46,8 @@ jobs:
       - attach_workspace:
           at: target
 
+      - run: ls -lah ~/repo/target/
+
       - run:
           name: Deploy to server
           command: |
