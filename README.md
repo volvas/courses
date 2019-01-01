@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/volvas/courses.svg?style=svg)](https://circleci.com/gh/volvas/courses)
+
 Courses for students
 ====================
   
