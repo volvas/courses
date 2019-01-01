@@ -94,7 +94,7 @@ public final class NestStudents implements Nest {
             user = res.stream()
                 .map(
                     r -> (Responsible) new Student(
-                        this.dbase, new FullNameUser(
+                        new NestCourses(this.dbase), new FullNameUser(
                             new User(r.value1(), this.login, this.password),
                             r.value2(), r.value3()
                         ), r.value4()

@@ -25,23 +25,9 @@
 package com.devproserv.courses.model;
 
 import com.devproserv.courses.form.EnrollForm;
-import com.devproserv.courses.jooq.tables.Courses;
-import com.devproserv.courses.jooq.tables.StudentCourses;
-import com.devproserv.courses.jooq.tables.Users;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Represents a student entity.
@@ -55,14 +41,9 @@ public final class Student implements Responsible {
     private static final long serialVersionUID = -6689616212027148656L;
 
     /**
-     * Logger.
+     * Course persistence instance.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Student.class);
-
-    /**
-     * Database.
-     */
-    private final Db dbase;
+    private final NestCourses courses;
 
     /**
      * User.
@@ -77,12 +58,12 @@ public final class Student implements Responsible {
     /**
      * Primary constructor.
      *
-     * @param dbase Database
+     * @param courses Courses
      * @param user Full named User
      * @param faculty Faculty
      */
-    public Student(final Db dbase, final FullNameUser user, final String faculty) {
-        this.dbase   = dbase;
+    public Student(final NestCourses courses, final FullNameUser user, final String faculty) {
+        this.courses   = courses;
         this.user    = user;
         this.faculty = faculty;
     }
@@ -91,9 +72,9 @@ public final class Student implements Responsible {
     public Response response() {
         final Map<String, Object> payload = new HashMap<>();
         payload.put("student", this);
-        final List<Course> enrolled = this.getEnrolledCourses();
+        final List<Course> enrolled = this.courses.getEnrolledCourses(this.getLogin());
         payload.put("subscrcourses", enrolled);
-        final List<Course> available = this.getAvailableCourses();
+        final List<Course> available = this.courses.getAvailableCourses(this.getLogin());
         payload.put("courses", available);
         return new Response(EnrollForm.STUDENT_PAGE, payload);
     }
@@ -144,82 +125,5 @@ public final class Student implements Responsible {
      */
     public String getFaculty() {
         return this.faculty;
-    }
-
-    /**
-     * Fetches courses user has enrolled to.
-     *
-     * @return List of enrolled courses for the user
-     */
-    private List<Course> getEnrolledCourses() {
-        List<Course> courses = Collections.emptyList();
-        try (Connection con = this.dbase.dataSource().getConnection();
-            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            final Result<Record> res = ctx.select()
-                .from(Courses.COURSES)
-                .where(
-                    Courses.COURSES.COURSE_ID.in(
-                        DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
-                        .from(StudentCourses.STUDENT_COURSES, Users.USERS)
-                        .where(StudentCourses.STUDENT_COURSES.STUD_ID
-                            .eq(Users.USERS.USER_ID)
-                            .and(Users.USERS.LOGIN.eq(this.getLogin()))
-                        )
-                    )
-                )
-                .fetch();
-            courses = res.stream()
-                .map(Student::makeCourse)
-                .collect(Collectors.toList());
-        } catch (final SQLException ex) {
-            LOGGER.error("Query for enrolled courses failed.", ex);
-        }
-        return courses;
-    }
-
-    /**
-     * Fetches available courses user cab enroll to.
-     *
-     * @return List of available courses
-     */
-    private List<Course> getAvailableCourses() {
-        List<Course> courses = Collections.emptyList();
-        try (Connection con = this.dbase.dataSource().getConnection();
-            DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
-        ) {
-            final Result<Record> res = ctx.select()
-                .from(Courses.COURSES)
-                .where(
-                    Courses.COURSES.COURSE_ID.notIn(
-                        DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
-                        .from(StudentCourses.STUDENT_COURSES, Users.USERS)
-                        .where(StudentCourses.STUDENT_COURSES.STUD_ID
-                            .eq(Users.USERS.USER_ID)
-                            .and(Users.USERS.LOGIN.eq(this.getLogin()))
-                        )
-                    )
-                )
-                .fetch();
-            courses = res.stream()
-                .map(Student::makeCourse)
-                .collect(Collectors.toList());
-        } catch (final SQLException ex) {
-            LOGGER.error("Query for available courses failed.", ex);
-        }
-        return courses;
-    }
-
-    /**
-     * Makes Course.
-     * @param rec Record
-     * @return Course
-     */
-    private static Course makeCourse(final Record rec) {
-        return new Course(
-            rec.getValue(Courses.COURSES.COURSE_ID),
-            rec.getValue(Courses.COURSES.NAME),
-            rec.getValue(Courses.COURSES.DESCRIPTION)
-        );
     }
 }
