@@ -56,7 +56,12 @@ workflows:
   version: 2
   main_flow:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
       - deploy:
           requires:
             - build
