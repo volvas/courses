@@ -24,12 +24,19 @@
 
 package com.devproserv.courses.model;
 
+import java.io.Serializable;
+
 /**
  * User with first and last names.
  *
  * @since 0.5.0
  */
-public final class FullNameUser {
+public final class FullNameUser implements Serializable {
+    /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = -7510152630689460247L;
+
     /**
      * User.
      */

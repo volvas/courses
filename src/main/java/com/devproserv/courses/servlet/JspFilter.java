@@ -72,8 +72,10 @@ public final class JspFilter implements Filter {
         final ServletRequest request, final ServletResponse response, final FilterChain chain
     ) throws IOException {
         final HttpServletRequest hrequest = (HttpServletRequest) request;
-        final HttpServletResponse hresponse = (HttpServletResponse) response;
-        hresponse.sendRedirect(hrequest.getContextPath() + JspFilter.HOME_PAGE);
+        if (response instanceof HttpServletResponse) {
+            final HttpServletResponse hresponse = (HttpServletResponse) response;
+            hresponse.sendRedirect(hrequest.getContextPath() + JspFilter.HOME_PAGE);
+        }
     }
 
     @Override

@@ -24,12 +24,19 @@
 
 package com.devproserv.courses.model;
 
+import java.io.Serializable;
+
 /**
  * Represent an entity of User from authenticating point of view.
  *
  * @since 0.5.0
  */
-public final class User {
+public final class User implements Serializable {
+    /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = -1937660789178008660L;
+
     /**
      * ID.
      */

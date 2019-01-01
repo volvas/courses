@@ -43,7 +43,7 @@ public final class Student implements Responsible {
     /**
      * Course persistence instance.
      */
-    private final NestCourses courses;
+    private final transient NestCourses courses;
 
     /**
      * User.

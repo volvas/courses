@@ -71,7 +71,7 @@ public class Commands implements Serializable {
     /**
      * Commands.
      */
-    private final Map<String, Supplier<Command>> map = new HashMap<>();
+    private final transient Map<String, Supplier<Command>> map = new HashMap<>();
 
     /**
      * Builds commands. Provides lazy initialization.
