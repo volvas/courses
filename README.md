@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/volvas/courses.svg?style=svg)](https://circleci.com/gh/volvas/courses)
+[![codebeat badge](https://codebeat.co/badges/92f1b26b-aa7c-46cb-a2b5-ba9cbdf2a918)](https://codebeat.co/projects/github-com-volvas-courses-master)
 
 Courses for students
 ====================
