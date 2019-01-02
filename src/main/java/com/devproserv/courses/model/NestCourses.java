@@ -26,7 +26,6 @@ package com.devproserv.courses.model;
 
 import com.devproserv.courses.jooq.tables.Courses;
 import com.devproserv.courses.jooq.tables.StudentCourses;
-import com.devproserv.courses.jooq.tables.Users;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -34,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -66,67 +66,46 @@ final class NestCourses {
     }
 
     /**
-     * Fetches courses user with the given login has enrolled to.
+     * Fetches course IDs user with the given id has enrolled to.
      *
-     * @param login Login
-     * @return List of enrolled courses for the user
+     * @param id User ID
+     * @return List of courses
      */
-    List<Course> getEnrolledCourses(final String login) {
-        List<Course> courses = Collections.emptyList();
+    List<Integer> enrolledCourseIds(final int id) {
+        List<Integer> ids = Collections.emptyList();
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            final Result<Record> res = ctx.select()
-                .from(Courses.COURSES)
-                .where(
-                    Courses.COURSES.COURSE_ID.in(
-                        DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
-                            .from(StudentCourses.STUDENT_COURSES, Users.USERS)
-                            .where(StudentCourses.STUDENT_COURSES.STUD_ID
-                                .eq(Users.USERS.USER_ID)
-                                .and(Users.USERS.LOGIN.eq(login))
-                            )
-                    )
-                )
+            final Result<Record1<Integer>> res = ctx
+                .select(StudentCourses.STUDENT_COURSES.COURSE_ID)
+                .from(StudentCourses.STUDENT_COURSES)
+                .where(StudentCourses.STUDENT_COURSES.STUD_ID.eq(id))
                 .fetch();
-            courses = res.stream()
-                .map(NestCourses::makeCourse)
+            ids = res.stream()
+                .map(Record1::value1)
                 .collect(Collectors.toList());
         } catch (final SQLException ex) {
             LOGGER.error("Query for enrolled courses failed.", ex);
         }
-        return courses;
+        return ids;
     }
 
     /**
-     * Fetches available courses user with the given login can enroll to.
+     * Fetches all courses in the database.
      *
-     * @param login Login
-     * @return List of available courses
+     * @return List of courses
      */
-    List<Course> getAvailableCourses(final String login) {
+    List<Course> allCourses() {
         List<Course> courses = Collections.emptyList();
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
         ) {
-            final Result<Record> res = ctx.select()
-                .from(Courses.COURSES)
-                .where(
-                    Courses.COURSES.COURSE_ID.notIn(
-                        DSL.select(StudentCourses.STUDENT_COURSES.COURSE_ID)
-                            .from(StudentCourses.STUDENT_COURSES, Users.USERS)
-                            .where(StudentCourses.STUDENT_COURSES.STUD_ID
-                                .eq(Users.USERS.USER_ID)
-                                .and(Users.USERS.LOGIN.eq(login))
-                            )
-                    )
-                )
-                .fetch();
+            final Result<Record> res = ctx.select().from(Courses.COURSES).fetch();
             courses = res.stream()
                 .map(NestCourses::makeCourse)
                 .collect(Collectors.toList());
         } catch (final SQLException ex) {
-            LOGGER.error("Query for available courses failed.", ex);
+            LOGGER.error("Query for all courses failed.", ex);
         }
         return courses;
     }

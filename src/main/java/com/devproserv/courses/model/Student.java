@@ -30,6 +30,7 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents a student entity.
@@ -65,18 +66,24 @@ public final class Student implements Responsible {
      * @param faculty Faculty
      */
     public Student(final NestCourses courses, final FullNameUser user, final String faculty) {
-        this.courses   = courses;
+        this.courses = courses;
         this.user    = user;
         this.faculty = faculty;
     }
 
     @Override
     public Response response() {
+        final List<Course> all = this.courses.allCourses();
+        final List<Integer> enrolledids = this.courses.enrolledCourseIds(this.getId());
+        final List<Course> enrolled = all.stream()
+            .filter(course -> enrolledids.contains(course.getId()))
+            .collect(Collectors.toList());
+        final List<Course> available = all.stream()
+            .filter(course -> !enrolledids.contains(course.getId()))
+            .collect(Collectors.toList());
         final Map<String, Object> payload = new HashMap<>();
         payload.put("student", this);
-        final List<Course> enrolled = this.courses.getEnrolledCourses(this.getLogin());
         payload.put("subscrcourses", enrolled);
-        final List<Course> available = this.courses.getAvailableCourses(this.getLogin());
         payload.put("courses", available);
         return new Response(EnrollForm.STUDENT_PAGE, payload);
     }
