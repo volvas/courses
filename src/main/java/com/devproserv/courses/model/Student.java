@@ -25,6 +25,8 @@
 package com.devproserv.courses.model;
 
 import com.devproserv.courses.form.EnrollForm;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +40,12 @@ public final class Student implements Responsible {
     /**
      * Serial number.
      */
-    private static final long serialVersionUID = -6689616212027148656L;
+    private static final long serialVersionUID = 1561218027053448066L;
 
     /**
      * Course persistence instance.
      */
-    private final transient NestCourses courses;
+    private transient NestCourses courses;
 
     /**
      * User.
@@ -125,5 +127,19 @@ public final class Student implements Responsible {
      */
     public String getFaculty() {
         return this.faculty;
+    }
+
+    /**
+     * Overrides deserialization method to meet findbugs requirements.
+     *
+     * @param ois ObjectInputStream
+     * @throws IOException IO exception
+     * @throws ClassNotFoundException Class not found exception
+     */
+    private void readObject(
+        final ObjectInputStream ois
+    ) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        this.courses = new NestCourses(new Db());
     }
 }

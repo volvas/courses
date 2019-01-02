@@ -25,6 +25,8 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.model.Response;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class Commands implements Serializable {
     /**
      * Serial number.
      */
-    private static final long serialVersionUID = 246078364095573319L;
+    private static final long serialVersionUID = 7663609960402177509L;
 
     /**
      * Login command name.
@@ -71,7 +73,7 @@ public class Commands implements Serializable {
     /**
      * Commands.
      */
-    private final transient Map<String, Supplier<Command>> map = new HashMap<>();
+    private transient Map<String, Supplier<Command>> map = new HashMap<>();
 
     /**
      * Builds commands. Provides lazy initialization.
@@ -109,5 +111,20 @@ public class Commands implements Serializable {
         final String par = request.getParameter("command");
         final Optional<Supplier<Command>> cmds = Optional.ofNullable(this.map.get(par));
         return cmds.map(Supplier::get).orElse(new NotFound());
+    }
+
+    /**
+     * Overrides deserialization method to meet findbugs requirements.
+     *
+     * @param ois ObjectInputStream
+     * @throws IOException IO exception
+     * @throws ClassNotFoundException Class not found exception
+     */
+    private void readObject(
+        final ObjectInputStream ois
+    ) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        this.map = new HashMap<>();
+        this.build();
     }
 }
