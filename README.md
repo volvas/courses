@@ -24,9 +24,9 @@ _System of optional **courses**. There is a list of courses, each **course** is 
 7.  During logic implementation GoF templates like Factory Method, Command, Builder, Strategy, State, Observer etc are to be used
 8.  Implement functionality that is mentioned in the task using servlets and JSP
 9.  Use JSTL library and custom tags on the JSPs
-10.  During business logic development sessions and filters are to be used
-11.  Implement event logging i.e. information about arising exceptions and events in the system is to be handled with Log4j
-12.  The application should contain comments.
+10. During business logic development sessions and filters are to be used
+11. Implement event logging i.e. information about arising exceptions and events in the system is to be handled with Log4j
+12. The application should contain comments.
 
 ### Database schema
 ![Schema](./sql/Courses_DB_schema.png "Database schema")
