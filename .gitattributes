@@ -1,0 +1,2 @@
+# Git converts all eol in text files to LF
+* text=auto eol=lf
