@@ -1,5 +1,6 @@
 [![CircleCI](https://circleci.com/gh/volvas/courses.svg?style=svg)](https://circleci.com/gh/volvas/courses)
 [![codebeat badge](https://codebeat.co/badges/92f1b26b-aa7c-46cb-a2b5-ba9cbdf2a918)](https://codebeat.co/projects/github-com-volvas-courses-master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85d843e74a5a43d081273174dbf150e1)](https://www.codacy.com/app/volvas/courses?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=volvas/courses&amp;utm_campaign=Badge_Grade)
 
 ## Courses for students
 
