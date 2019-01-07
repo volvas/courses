@@ -24,10 +24,6 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.form.EnrollForm;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Represents the entity of the Lecturer.
  * Maps the table 'lecturers' in the database.
@@ -71,10 +67,7 @@ public final class Lecturer implements Responsible {
 
     @Override
     public Response response() {
-        final String message = "This account is not accessible!";
-        final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", message);
-        return new Response(EnrollForm.LOGIN_PAGE, payload);
+        return this.user.response();
     }
 
     /**

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.devproserv.courses</groupId>
     <artifactId>courses</artifactId>
-    <version>0.5.2</version>
+    <version>0.5.3</version>
     <packaging>war</packaging>
     <name>courses</name>
     <properties>
@@ -49,6 +49,9 @@
                     <license>file:${basedir}/LICENSE</license>
                     <excludes>
                         <exclude>checkstyle:/src/main/java/com/devproserv/courses/jooq/.*</exclude>
+                        <exclude>checkstyle:/src/main/webapp/css/.*</exclude>
+                        <exclude>checkstyle:/src/main/webapp/fonts/.*</exclude>
+                        <exclude>checkstyle:/src/main/webapp/js/.*</exclude>
                         <exclude>findbugs:~com.devproserv.courses.jooq.*</exclude>
                         <exclude>dependencies:org.apache.logging.log4j:log4j-core</exclude>
                         <exclude>dependencies:org.apache.logging.log4j:log4j-slf4j-impl</exclude>

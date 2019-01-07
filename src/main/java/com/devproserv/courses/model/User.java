@@ -24,14 +24,17 @@
 
 package com.devproserv.courses.model;
 
+import com.devproserv.courses.form.EnrollForm;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represent an entity of User from authenticating point of view.
  *
  * @since 0.5.0
  */
-public final class User implements Serializable {
+public final class User implements Responsible, Serializable {
     /**
      * Serial number.
      */
@@ -63,6 +66,14 @@ public final class User implements Serializable {
         this.id = id;
         this.login = login;
         this.password = password;
+    }
+
+    @Override
+    public Response response() {
+        final String message = "This account is not accessible!";
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", message);
+        return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
 
     /**

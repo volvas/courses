@@ -59,7 +59,7 @@ public final class FullNameUser implements Serializable {
      * @param fname First name
      * @param lname Last name
      */
-    FullNameUser(final User user, final String fname, final String lname) {
+    public FullNameUser(final User user, final String fname, final String lname) {
         this.user  = user;
         this.fname = fname;
         this.lname = lname;

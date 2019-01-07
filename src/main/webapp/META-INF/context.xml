@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/courses">
 
-  <Resource
-    name="jdbc/coursedb"
-    auth="Container"
-    
-    type="javax.sql.DataSource"
-    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-    driverClassName="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://devproserv.com:54406/coursedb"
-    connectionProperties="useUnicode=yes;characterEncoding=utf8;"
+    <Resource
+        name="jdbc/coursedb"
+        auth="Container"
 
-    username="javauser"
-    password="zSxcvb"
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://devproserv.com:54406/coursedb"
+        connectionProperties="useUnicode=yes;characterEncoding=utf8;"
 
-    initialSize="10"
-    maxActive="20"
-    maxIdle="10"
-    minIdle="5"
-    maxWait="10000"
+        username="javauser"
+        password="zSxcvb"
 
-    testOnBorrow="true"
-    testOnConnect="true"
-    testOnReturn="true"
-    testWhileIdle="true"
+        initialSize="10"
+        maxActive="20"
+        maxIdle="10"
+        minIdle="5"
+        maxWait="10000"
 
-    validationQuery="SELECT 1"
+        testOnBorrow="true"
+        testOnConnect="true"
+        testOnReturn="true"
+        testWhileIdle="true"
 
-    validationInterval="3600000"
-    minEvictableIdleTimeMillis="3600000"
-    timeBetweenEvictionRunsMillis="3600000"
+        validationQuery="SELECT 1"
 
-    removeAbandoned="true"
-    removeAbandonedTimeout="60"
-    logAbandoned="true"
-  />
+        validationInterval="3600000"
+        minEvictableIdleTimeMillis="3600000"
+        timeBetweenEvictionRunsMillis="3600000"
+
+        removeAbandoned="true"
+        removeAbandonedTimeout="60"
+        logAbandoned="true"
+    />
 
 </Context>

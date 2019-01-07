@@ -23,10 +23,12 @@
  */
 package com.devproserv.courses.command;
 
-import com.devproserv.courses.form.SignupParams;
-import com.devproserv.courses.form.SignupUser;
 import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.FullNameUser;
 import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.StudentToDb;
+import com.devproserv.courses.model.User;
 import com.devproserv.courses.validation.results.VldResult;
 import com.devproserv.courses.validation.results.VldResultAggr;
 import java.util.HashMap;
@@ -75,23 +77,26 @@ public final class SignUp implements Command {
 
     @Override
     public Response response(final HttpServletRequest request) {
-        final String login    = request.getParameter("login");
-        final String password = request.getParameter("password");
-        final String fname    = request.getParameter("firstname");
-        final String lname    = request.getParameter("lastname");
-        final String faculty  = request.getParameter("faculty");
+        final StudentToDb student = new StudentToDb(
+            this.dbase, new Student(
+                new FullNameUser(
+                    new User(-1, request.getParameter("login"), request.getParameter("password")),
+                    request.getParameter("firstname"), request.getParameter("lastname")
+                ), request.getParameter("faculty")
+            )
+        );
         final VldResult result = new VldResultAggr()
-            .checkUsername(login)
-            .checkPassword(password)
-            .checkFieldNotNullEmpty(fname, "First name")
-            .checkFieldNotNullEmpty(lname, "Last name")
-            .checkFieldNotNullEmpty(faculty, "Faculty")
+            .checkUsername(student.getLogin())
+            .checkPassword(student.getPassword())
+            .checkFieldNotNullEmpty(student.getFirstName(), "First name")
+            .checkFieldNotNullEmpty(student.getLastName(), "Last name")
+            .checkFieldNotNullEmpty(student.getFaculty(), "Faculty")
             .aggregate();
         final Response response;
         if (result.valid()) {
-            response = this.validPath(request);
+            response = student.response();
         } else {
-            response = invalidPath(result, login);
+            response = invalidPath(result, student.getLogin());
         }
         return response;
     }
@@ -108,16 +113,5 @@ public final class SignUp implements Command {
         final Map<String, Object> payload = new HashMap<>();
         payload.put("message", result.reason().orElse(""));
         return new Response(SignUp.SIGNUP_PAGE, payload);
-    }
-
-    /**
-     * Handles valid path.
-     *
-     * @param request HTTP Request
-     * @return Response
-     */
-    private Response validPath(final HttpServletRequest request) {
-        final SignupParams pars = new SignupParams(request).extract();
-        return new SignupUser(this.dbase, pars).response();
     }
 }

@@ -59,6 +59,16 @@ public final class Student implements Responsible {
     private final String faculty;
 
     /**
+     * Constructor.
+     *
+     * @param user Full named User
+     * @param faculty Faculty
+     */
+    public Student(final FullNameUser user, final String faculty) {
+        this(new NestCourses(new Db()), user, faculty);
+    }
+
+    /**
      * Primary constructor.
      *
      * @param courses Courses

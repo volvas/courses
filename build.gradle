@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'war'
+    id 'maven'
 }
 
 repositories {
@@ -19,13 +20,13 @@ dependencies {
     compile 'org.jooq:jooq:3.11.7'
     compile 'org.jooq:jooq-meta:3.11.7'
     compile 'org.jooq:jooq-codegen:3.11.7'
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.3.2'
+    testCompile 'org.jmvn qunit.jupiter:junit-jupiter-api:5.3.2'
     testCompile 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
     testCompile 'org.mockito:mockito-core:2.8.47'
 }
 
 group = 'com.devproserv.courses'
-version = '0.5.2'
+version = '0.5.3'
 description = 'courses'
 sourceCompatibility = '1.8'
 

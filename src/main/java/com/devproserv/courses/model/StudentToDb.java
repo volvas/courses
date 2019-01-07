@@ -22,15 +22,16 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.form;
+package com.devproserv.courses.model;
 
 import com.devproserv.courses.command.SignUp;
+import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.jooq.enums.UsersRole;
 import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
 import com.devproserv.courses.jooq.tables.records.UsersRecord;
-import com.devproserv.courses.model.Db;
-import com.devproserv.courses.model.Response;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -44,65 +45,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Performs sign up process.
+ * Represents a student entity that is saved in DB.
  *
- * @since 0.5.0
+ * @since 0.5.3
  */
-public final class SignupUser {
+public final class StudentToDb implements Responsible {
+    /**
+     * Serial number.
+     */
+    private static final long serialVersionUID = 7763160453599358140L;
+
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SignupUser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentToDb.class);
 
     /**
      * Database.
      */
-    private final Db dbase;
+    private transient Db dbase;
 
     /**
-     * Login.
+     * Student.
      */
-    private final String login;
-
-    /**
-     * Password.
-     */
-    private final String password;
-
-    /**
-     * First name.
-     */
-    private final String fname;
-
-    /**
-     * Last name.
-     */
-    private final String lname;
-
-    /**
-     * Faculty field.
-     */
-    private final String faculty;
+    private final Student student;
 
     /**
      * Primary constructor.
      *
      * @param dbase Database
-     * @param pars Sign up parameters
+     * @param student Student
      */
-    public SignupUser(final Db dbase, final SignupParams pars) {
-        this.dbase    = dbase;
-        this.login    = pars.getLogin();
-        this.password = pars.getPassword();
-        this.fname    = pars.getFName();
-        this.lname    = pars.getLName();
-        this.faculty  = pars.getFaculty();
+    public StudentToDb(final Db dbase, final Student student) {
+        this.dbase = dbase;
+        this.student = student;
     }
 
-    /**
-     * Provides response on creating new user.
-     * @return Response
-     */
+    @Override
     public Response response() {
         final String attribute = "message";
         final String path;
@@ -120,6 +99,53 @@ public final class SignupUser {
     }
 
     /**
+     * Getter.
+     * @return ID
+     */
+    public int getId() {
+        return this.student.getId(); }
+
+    /**
+     * Getter.
+     * @return Login
+     */
+    public String getLogin() {
+        return this.student.getLogin();
+    }
+
+    /**
+     * Getter.
+     * @return Password
+     */
+    public String getPassword() {
+        return this.student.getPassword();
+    }
+
+    /**
+     * Getter.
+     * @return First name
+     */
+    public String getFirstName() {
+        return this.student.getFirstName();
+    }
+
+    /**
+     * Getter.
+     * @return Last name
+     */
+    public String getLastName() {
+        return this.student.getLastName();
+    }
+
+    /**
+     * Getter.
+     * @return Faculty
+     */
+    public String getFaculty() {
+        return this.student.getFaculty();
+    }
+
+    /**
      * Checks if the specified login exists in the database.
      *
      * @return True if the user exists
@@ -131,7 +157,7 @@ public final class SignupUser {
         ) {
             final Result<Record> res = ctx.select()
                 .from(Users.USERS)
-                .where(Users.USERS.LOGIN.eq(this.login))
+                .where(Users.USERS.LOGIN.eq(this.student.getLogin()))
                 .fetch();
             exists = res.isNotEmpty();
         } catch (final SQLException ex) {
@@ -155,16 +181,31 @@ public final class SignupUser {
                 Users.USERS, Users.USERS.FIRSTNAME, Users.USERS.LASTNAME,
                 Users.USERS.LOGIN, Users.USERS.PASSWORD, Users.USERS.ROLE
             ).values(
-                this.fname, this.lname, this.login, this.password, UsersRole.STUD
+                this.student.getFirstName(), this.student.getLastName(), this.student.getLogin(),
+                this.student.getPassword(), UsersRole.STUD
             ).returning(Users.USERS.USER_ID).fetch();
             final int id = res.get(0).getValue(Users.USERS.USER_ID);
             final int inserted = ctx.insertInto(
                 Students.STUDENTS, Students.STUDENTS.STUD_ID, Students.STUDENTS.FACULTY
-            ).values(id, this.faculty).execute();
+            ).values(id, this.student.getFaculty()).execute();
             success = inserted != 0;
         } catch (final SQLException ex) {
             LOGGER.error("Inserting user to DB failed!", ex);
         }
         return success;
+    }
+
+    /**
+     * Overrides deserialization method to meet findbugs requirements.
+     *
+     * @param ois ObjectInputStream
+     * @throws IOException IO exception
+     * @throws ClassNotFoundException Class not found exception
+     */
+    private void readObject(
+        final ObjectInputStream ois
+    ) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        this.dbase = new Db();
     }
 }
