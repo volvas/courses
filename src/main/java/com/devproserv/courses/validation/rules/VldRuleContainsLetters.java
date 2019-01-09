@@ -25,8 +25,6 @@
 package com.devproserv.courses.validation.rules;
 
 import com.devproserv.courses.validation.results.VldResult;
-import com.devproserv.courses.validation.results.VldResultInvalid;
-import com.devproserv.courses.validation.results.VldResultValid;
 
 /**
  * Checks if string contains only letters and digits.
@@ -49,12 +47,6 @@ public final class VldRuleContainsLetters implements VldRule {
 
     @Override
     public VldResult apply(final String param) {
-        final VldResult result;
-        if (param.matches(".*\\W+.*")) {
-            result = new VldResultInvalid(this.message);
-        } else {
-            result = new VldResultValid();
-        }
-        return result;
+        return new VldRuleCommon(input -> input.matches(".*\\W+.*"), this.message).apply(param);
     }
 }

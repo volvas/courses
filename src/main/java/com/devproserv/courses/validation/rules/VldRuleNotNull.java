@@ -25,8 +25,7 @@
 package com.devproserv.courses.validation.rules;
 
 import com.devproserv.courses.validation.results.VldResult;
-import com.devproserv.courses.validation.results.VldResultInvalid;
-import com.devproserv.courses.validation.results.VldResultValid;
+import java.util.Objects;
 
 /**
  * Checks if value is null.
@@ -49,12 +48,6 @@ public final class VldRuleNotNull implements VldRule {
 
     @Override
     public VldResult apply(final String param) {
-        final VldResult result;
-        if (param == null) {
-            result = new VldResultInvalid(this.message);
-        } else {
-            result = new VldResultValid();
-        }
-        return result;
+        return new VldRuleCommon(Objects::isNull, this.message).apply(param);
     }
 }

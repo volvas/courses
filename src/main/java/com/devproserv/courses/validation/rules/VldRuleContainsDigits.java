@@ -25,8 +25,6 @@
 package com.devproserv.courses.validation.rules;
 
 import com.devproserv.courses.validation.results.VldResult;
-import com.devproserv.courses.validation.results.VldResultInvalid;
-import com.devproserv.courses.validation.results.VldResultValid;
 
 /**
  * Checks if string contains only digits.
@@ -49,12 +47,6 @@ public final class VldRuleContainsDigits implements VldRule {
 
     @Override
     public VldResult apply(final String param) {
-        final VldResult result;
-        if (param.matches(".*\\D+.*")) {
-            result = new VldResultInvalid(this.message);
-        } else {
-            result = new VldResultValid();
-        }
-        return result;
+        return new VldRuleCommon(input -> input.matches(".*\\D+.*"), this.message).apply(param);
     }
 }

@@ -25,8 +25,6 @@
 package com.devproserv.courses.validation.rules;
 
 import com.devproserv.courses.validation.results.VldResult;
-import com.devproserv.courses.validation.results.VldResultInvalid;
-import com.devproserv.courses.validation.results.VldResultValid;
 
 /**
  * Checks if string starts with letter.
@@ -49,12 +47,7 @@ public final class VldRuleStartLetter implements VldRule {
 
     @Override
     public VldResult apply(final String param) {
-        final VldResult result;
-        if (param.matches("^[^a-zA-Z]+.*")) {
-            result = new VldResultInvalid(this.message);
-        } else {
-            result = new VldResultValid();
-        }
-        return result;
+        return new VldRuleCommon(input -> input.matches("^[^a-zA-Z]+.*"), this.message)
+            .apply(param);
     }
 }

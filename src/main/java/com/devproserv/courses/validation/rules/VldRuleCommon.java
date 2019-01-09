@@ -25,13 +25,21 @@
 package com.devproserv.courses.validation.rules;
 
 import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultInvalid;
+import com.devproserv.courses.validation.results.VldResultValid;
+import java.util.function.Predicate;
 
 /**
- * Checks if string is empty.
+ * Common validating rule wrapping predicate and message.
  *
- * @since 0.5.0
+ * @since 0.5.3
  */
-public final class VldRuleNotEmpty implements VldRule {
+public final class VldRuleCommon implements VldRule {
+    /**
+     * Condition.
+     */
+    private final Predicate<String> condition;
+
     /**
      * Message.
      */
@@ -39,14 +47,23 @@ public final class VldRuleNotEmpty implements VldRule {
 
     /**
      * Primary constructor.
+     *
+     * @param condition Condition
      * @param message Message
      */
-    public VldRuleNotEmpty(final String message) {
+    public VldRuleCommon(final Predicate<String> condition, final String message) {
+        this.condition = condition;
         this.message = message;
     }
 
     @Override
     public VldResult apply(final String param) {
-        return new VldRuleCommon(String::isEmpty, this.message).apply(param);
+        final VldResult result;
+        if (this.condition.test(param)) {
+            result = new VldResultInvalid(this.message);
+        } else {
+            result = new VldResultValid();
+        }
+        return result;
     }
 }
