@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Courses for students">
-    <meta name="author" content="vovas11">
+    <meta name="author" content="volvas">
     <link rel="icon" href="favicon.ico">
 
     <title>Log in</title>
@@ -93,7 +93,7 @@
 
             <div class="mastfoot">
                 <div class="inner">
-                    <p>Source code on <a href="https://github.com/vovas11/courses">GitHub</a></p>
+                    <p>Source code on <a href="https://github.com/volvas/courses">GitHub</a></p>
                 </div>
             </div>
 
