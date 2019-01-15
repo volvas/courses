@@ -25,6 +25,8 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
+import com.devproserv.courses.model.Response;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,16 +36,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 /**
- * Contains unit-tests to check functionality of {@link Commands} class.
+ * Contains unit-tests to check functionality of {@link Enroll} class.
  *
- * @since 0.5.0
+ * @since 0.5.3
  */
-class CommandsTest {
-    /**
-     * Command.
-     */
-    private static final String COMMAND = "command";
-
+class EnrollTest {
     /**
      * HTTP request.
      */
@@ -51,9 +48,15 @@ class CommandsTest {
     private HttpServletRequest request;
 
     /**
-     * Commands.
+     * Enroll form.
      */
-    private Commands commands;
+    @Mock
+    private EnrollForm form;
+
+    /**
+     * Enroll.
+     */
+    private Enroll enroll;
 
     /**
      * Mock dependencies and create an instance to test.
@@ -61,35 +64,17 @@ class CommandsTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.commands = new Commands().build();
+        this.enroll = new Enroll(this.form);
     }
 
     /**
-     * Commands returns correct path at correct input values.
+     * Checks if the enroll command runs own method.
      */
     @Test
-    void responseOkWhenNormalCommand() {
-        Mockito.when(this.request.getParameter(CommandsTest.COMMAND)).thenReturn("login");
-        final String path = this.commands.path(this.request);
-        Assertions.assertEquals(EnrollForm.LOGIN_PAGE, path, "Should be login page.");
-    }
-
-    /**
-     * Commands can return "Not found" page at no input received.
-     */
-    @Test
-    void responseWithNotFoundPageWhenNullParameter() {
-        final String path = this.commands.path(this.request);
-        Assertions.assertEquals(NotFound.NOT_FOUND_PAGE, path, "Should be not found page");
-    }
-
-    /**
-     * Commands can return "Not found" page at wrong input.
-     */
-    @Test
-    void responseWithNotFoundPageWhenWrongParameter() {
-        Mockito.when(this.request.getParameter(CommandsTest.COMMAND)).thenReturn("invalid command");
-        final String path = this.commands.path(this.request);
-        Assertions.assertEquals(NotFound.NOT_FOUND_PAGE, path, "Should be not found page.");
+    void responseOkWhenNormalInput() {
+        final String path = "path";
+        Mockito.when(this.form.validate(this.request))
+            .thenReturn(new Response(path, Collections.emptyMap()));
+        Assertions.assertEquals(this.enroll.response(this.request).getPath(), path);
     }
 }
