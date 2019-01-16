@@ -26,11 +26,15 @@ package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.model.Response;
+import com.devproserv.courses.validation.results.VldResult;
+import com.devproserv.courses.validation.results.VldResultAggr;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 /**
@@ -51,20 +55,30 @@ class LoginTest {
     private Login login;
 
     /**
+     * Result of validation.
+     */
+    @Mock
+    private VldResult vldres;
+
+    /**
      * Prepare data.
      */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.login = new Login();
+        final VldResultAggr aggr = Mockito.mock(VldResultAggr.class, Answers.RETURNS_SELF);
+        Mockito.when(aggr.checkUsername(Mockito.anyString())).thenReturn(aggr);
+        Mockito.when(aggr.checkPassword(Mockito.anyString())).thenReturn(aggr);
+        Mockito.when(aggr.aggregate()).thenReturn(this.vldres);
+        this.login = new Login(aggr);
     }
 
     /**
-     * Checks correct path.
+     * Checks if login goes on invalid branch.
      */
     @Test
     void testPathOk() {
         final Response response = this.login.response(this.request);
-        Assertions.assertEquals(EnrollForm.LOGIN_PAGE, response.getPath(), "Should be null");
+        Assertions.assertEquals(EnrollForm.LOGIN_PAGE, response.getPath());
     }
 }

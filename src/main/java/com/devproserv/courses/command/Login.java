@@ -45,11 +45,32 @@ public final class Login implements Command {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Login.class);
 
+    /**
+     * Validation rule aggregator.
+     */
+    private final VldResultAggr aggregator;
+
+    /**
+     * Default constructor.
+     */
+    public Login() {
+        this(new VldResultAggr());
+    }
+
+    /**
+     * Primary constructor.
+     *
+     * @param aggregator Validation rule aggregator
+     */
+    public Login(final VldResultAggr aggregator) {
+        this.aggregator = aggregator;
+    }
+
     @Override
     public Response response(final HttpServletRequest request) {
         final String login     = request.getParameter("login");
         final String password  = request.getParameter("password");
-        final VldResult result = new VldResultAggr()
+        final VldResult result = this.aggregator
             .checkUsername(login)
             .checkPassword(password)
             .aggregate();
@@ -83,8 +104,7 @@ public final class Login implements Command {
      * @return Path
      */
     private static Response validPath(
-        final HttpServletRequest request, final String login,
-        final String password
+        final HttpServletRequest request, final String login, final String password
     ) {
         LOGGER.debug("Login '{}' and password are valid.", login);
         return new UserRoles(login, password).build().response(request);
