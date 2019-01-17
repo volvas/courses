@@ -25,75 +25,37 @@
 package com.devproserv.courses.model;
 
 import com.devproserv.courses.form.EnrollForm;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represent an entity of User from authenticating point of view.
+ * Auxiliary class wrapping message to response.
  *
- * @since 0.5.0
+ * @since 0.5.3
  */
-public final class User implements Responsible, Serializable {
+class ResponseMessage {
     /**
-     * Serial number.
+     * Message to user.
      */
-    private static final long serialVersionUID = -1937660789178008660L;
-
-    /**
-     * ID.
-     */
-    private final int id;
-
-    /**
-     * Login.
-     */
-    private final String login;
-
-    /**
-     * Password.
-     */
-    private final String password;
+    private final String msg;
 
     /**
      * Primary constructor.
      *
-     * @param id ID
-     * @param login Login
-     * @param password Password
+     * @param msg Message to user
      */
-    public User(final int id, final String login, final String password) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-    }
-
-    @Override
-    public Response response() {
-        return new ResponseMessage("This account is not accessible!").response();
+    ResponseMessage(final String msg) {
+        this.msg = msg;
     }
 
     /**
-     * Getter.
-     * @return ID
+     * Creates a response with the provided message.
+     *
+     * @return Response with message and empty payload
      */
-    public int getId() {
-        return this.id;
-    }
-
-    /**
-     * Getter.
-     * @return Login
-     */
-    public String getLogin() {
-        return this.login;
-    }
-
-    /**
-     * Getter.
-     * @return Password
-     */
-    public String getPassword() {
-        return this.password;
+    Response response() {
+        final Map<String, Object> payload = new HashMap<>();
+        payload.put("message", this.msg);
+        return new Response(EnrollForm.LOGIN_PAGE, payload);
     }
 }

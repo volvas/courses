@@ -24,10 +24,6 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.form.EnrollForm;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Empty user.
  *
@@ -41,9 +37,6 @@ public final class EmptyUser implements Responsible {
 
     @Override
     public Response response() {
-        final String message = "Wrong username or password! Try again!";
-        final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", message);
-        return new Response(EnrollForm.LOGIN_PAGE, payload);
+        return new ResponseMessage("Wrong username or password! Try again!").response();
     }
 }
