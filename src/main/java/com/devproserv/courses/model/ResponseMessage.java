@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * Auxiliary class wrapping message to response.
  *
- * @since 0.5.3
+ * @since 0.5.4
  */
 class ResponseMessage {
     /**
