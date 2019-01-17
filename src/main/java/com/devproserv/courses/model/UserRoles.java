@@ -143,7 +143,7 @@ public class UserRoles {
     /**
      * Returns an user instance on base of login and password.
      *
-     * @return UsResponsibleer instance
+     * @return Responsible instance
      */
     private Responsible makeUser() {
         Responsible user = new EmptyUser();
