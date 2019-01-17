@@ -32,6 +32,6 @@ package com.devproserv.courses.model;
 public final class NestLecturers implements Nest {
     @Override
     public Responsible makeUser() {
-        return null;
+        return new Lecturer(new User(-1, "no login", "no pass"), "no degree");
     }
 }
