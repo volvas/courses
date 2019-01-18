@@ -51,19 +51,26 @@ public final class Login implements Command {
     private final VldResultAggr aggregator;
 
     /**
+     * User manager.
+     */
+    private final UserRoles users;
+
+    /**
      * Default constructor.
      */
     public Login() {
-        this(new VldResultAggr());
+        this(new VldResultAggr(), new UserRoles());
     }
 
     /**
      * Primary constructor.
      *
      * @param aggregator Validation rule aggregator
+     * @param users User manager
      */
-    public Login(final VldResultAggr aggregator) {
+    public Login(final VldResultAggr aggregator, final UserRoles users) {
         this.aggregator = aggregator;
+        this.users = users;
     }
 
     @Override
@@ -76,7 +83,7 @@ public final class Login implements Command {
             .aggregate();
         final Response response;
         if (result.valid()) {
-            response = validPath(request, login, password);
+            response = this.validPath(request, login, password);
         } else {
             response = invalidPath(result, login);
         }
@@ -103,10 +110,10 @@ public final class Login implements Command {
      * @param password Password
      * @return Path
      */
-    private static Response validPath(
+    private Response validPath(
         final HttpServletRequest request, final String login, final String password
     ) {
         LOGGER.debug("Login '{}' and password are valid.", login);
-        return new UserRoles(login, password).build().response(request);
+        return this.users.build(login, password).response(request);
     }
 }

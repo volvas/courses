@@ -59,12 +59,12 @@ public class UserRoles {
     /**
      * Login.
      */
-    private final String login;
+    private String login;
 
     /**
      * Password.
      */
-    private final String pass;
+    private String pass;
 
     /**
      * Enum Roles.
@@ -93,34 +93,32 @@ public class UserRoles {
 
     /**
      * Constructor.
-     *
-     * @param login Login
-     * @param pass Password
      */
-    public UserRoles(final String login, final String pass) {
-        this(new Db(), login, pass);
+    public UserRoles() {
+        this(new Db());
     }
 
     /**
      * Primary constructor.
      *
      * @param dbase Database
-     * @param login Login
-     * @param pass Password
      */
-    UserRoles(final Db dbase, final String login, final String pass) {
+    UserRoles(final Db dbase) {
         this.dbase = dbase;
-        this.login = login;
-        this.pass  = pass;
         this.roles = new EnumMap<>(UserRole.class);
     }
 
     /**
      * Builder.
+     *
+     * @param username Login
+     * @param password Password
      * @return This instance
      */
-    public UserRoles build() {
-        this.roles.put(UserRole.STUD, () -> new NestStudents(this.dbase, this.login, this.pass));
+    public UserRoles build(final String username, final String password) {
+        this.login = username;
+        this.pass  = password;
+        this.roles.put(UserRole.STUD, () -> new NestStudents(this.dbase, username, password));
         this.roles.put(UserRole.LECT, NestLecturers::new);
         this.roles.put(UserRole.ADMIN, NestAdmins::new);
         return this;
