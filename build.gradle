@@ -26,7 +26,7 @@ dependencies {
 }
 
 group = 'com.devproserv.courses'
-version = '0.5.4'
+version = '0.5.5'
 description = 'courses'
 sourceCompatibility = '1.8'
 

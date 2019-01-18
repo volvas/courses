@@ -26,8 +26,10 @@ package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.UserRoles;
 import com.devproserv.courses.validation.results.VldResult;
 import com.devproserv.courses.validation.results.VldResultAggr;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,9 +52,9 @@ class LoginTest {
     private HttpServletRequest request;
 
     /**
-     * Login.
+     * Validation aggregator.
      */
-    private Login login;
+    private VldResultAggr aggr;
 
     /**
      * Result of validation.
@@ -61,24 +63,48 @@ class LoginTest {
     private VldResult vldres;
 
     /**
+     * User manager.
+     */
+    @Mock
+    private UserRoles users;
+
+    /**
      * Prepare data.
      */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        final VldResultAggr aggr = Mockito.mock(VldResultAggr.class, Answers.RETURNS_SELF);
-        Mockito.when(aggr.checkUsername(Mockito.anyString())).thenReturn(aggr);
-        Mockito.when(aggr.checkPassword(Mockito.anyString())).thenReturn(aggr);
-        Mockito.when(aggr.aggregate()).thenReturn(this.vldres);
-        this.login = new Login(aggr);
+        this.aggr = Mockito.mock(VldResultAggr.class, Answers.RETURNS_SELF);
+        Mockito.when(this.aggr.checkUsername(Mockito.anyString())).thenReturn(this.aggr);
+        Mockito.when(this.aggr.checkPassword(Mockito.anyString())).thenReturn(this.aggr);
+        Mockito.when(this.aggr.aggregate()).thenReturn(this.vldres);
     }
 
     /**
      * Checks if login goes on invalid branch.
      */
     @Test
-    void testPathOk() {
-        final Response response = this.login.response(this.request);
+    void responseWithInitPageWhenInvalidBranch() {
+        final Login login = new Login(this.aggr, this.users);
+        final Response response = login.response(this.request);
         Assertions.assertEquals(EnrollForm.LOGIN_PAGE, response.getPath());
+    }
+
+    /**
+     * Checks if login goes on valid branch.
+     */
+    @Test
+    void responseWithFurtherPageWhenValidBranch() {
+        final String path = "authenticated";
+        Mockito.when(this.vldres.valid()).thenReturn(true);
+        this.users = Mockito.mock(UserRoles.class, Answers.RETURNS_SELF);
+        Mockito.when(this.users.build(Mockito.anyString(), Mockito.anyString()))
+            .thenReturn(this.users);
+        Mockito.when(this.users.response(this.request)).thenReturn(
+            new Response(path, Collections.emptyMap())
+        );
+        final Login login = new Login(this.aggr, this.users);
+        final Response response = login.response(this.request);
+        Assertions.assertEquals(path, response.getPath());
     }
 }
