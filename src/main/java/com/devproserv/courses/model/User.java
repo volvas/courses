@@ -24,10 +24,7 @@
 
 package com.devproserv.courses.model;
 
-import com.devproserv.courses.form.EnrollForm;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Represent an entity of User from authenticating point of view.
