@@ -73,7 +73,7 @@ class LogoutTest {
      * Checks correct path.
      */
     @Test
-    void testExecuteCommandOk() {
+    void responseWithHomePageWhenMethodIsInvoked() {
         final Response response = this.logout.response(this.request);
         Assertions.assertEquals(
             JspFilter.HOME_PAGE, response.getPath(),

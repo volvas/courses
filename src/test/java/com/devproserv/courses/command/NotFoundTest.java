@@ -60,7 +60,7 @@ class NotFoundTest {
     }
 
     @Test
-    void testExecuteCommandOk() {
+    void responseWithNonFoundWhenMethodIsInvoked() {
         final Response response = this.nfound.response(this.request);
         Assertions.assertEquals(
             NotFound.NOT_FOUND_PAGE, response.getPath(),
