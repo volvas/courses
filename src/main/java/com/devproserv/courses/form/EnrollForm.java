@@ -25,7 +25,7 @@
 package com.devproserv.courses.form;
 
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.users.Student;
 import com.devproserv.courses.validation.VldNumber;
 import com.devproserv.courses.validation.results.VldResult;
 import java.util.Collections;

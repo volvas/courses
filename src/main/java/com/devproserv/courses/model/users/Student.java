@@ -22,9 +22,14 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
 
 import com.devproserv.courses.form.EnrollForm;
+import com.devproserv.courses.model.Course;
+import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.NestCourses;
+import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.Responsible;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;

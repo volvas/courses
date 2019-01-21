@@ -25,7 +25,7 @@ package com.devproserv.courses.command;
 
 import com.devproserv.courses.form.EnrollForm;
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.model.UserRoles;
+import com.devproserv.courses.model.users.UserRoles;
 import com.devproserv.courses.validation.results.VldResult;
 import com.devproserv.courses.validation.results.VldResultAggr;
 import java.util.HashMap;

@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  *
  * @since 0.5.1
  */
-final class NestCourses {
+public final class NestCourses {
     /**
      * Logger.
      */
@@ -61,7 +61,7 @@ final class NestCourses {
      *
      * @param dbase Database
      */
-    NestCourses(final Db dbase) {
+    public NestCourses(final Db dbase) {
         this.dbase = dbase;
     }
 
@@ -71,7 +71,7 @@ final class NestCourses {
      * @param id User ID
      * @return List of courses
      */
-    List<Integer> enrolledCourseIds(final int id) {
+    public List<Integer> enrolledCourseIds(final int id) {
         List<Integer> ids = Collections.emptyList();
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)
@@ -95,7 +95,7 @@ final class NestCourses {
      *
      * @return List of courses
      */
-    List<Course> allCourses() {
+    public List<Course> allCourses() {
         List<Course> courses = Collections.emptyList();
         try (Connection con = this.dbase.dataSource().getConnection();
             DSLContext ctx = DSL.using(con, SQLDialect.MYSQL)

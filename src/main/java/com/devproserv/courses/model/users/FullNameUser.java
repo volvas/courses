@@ -22,52 +22,47 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
 
 import java.io.Serializable;
 
 /**
- * Represent an entity of User from authenticating point of view.
+ * User with first and last names.
  *
  * @since 0.5.0
  */
-public final class User implements Responsible, Serializable {
+public final class FullNameUser implements Serializable {
     /**
      * Serial number.
      */
-    private static final long serialVersionUID = -1937660789178008660L;
+    private static final long serialVersionUID = -7510152630689460247L;
 
     /**
-     * ID.
+     * User.
      */
-    private final int id;
+    private final User user;
 
     /**
-     * Login.
+     * First name.
      */
-    private final String login;
+    private final String fname;
 
     /**
-     * Password.
+     * Last name.
      */
-    private final String password;
+    private final String lname;
 
     /**
      * Primary constructor.
      *
-     * @param id ID
-     * @param login Login
-     * @param password Password
+     * @param user User
+     * @param fname First name
+     * @param lname Last name
      */
-    public User(final int id, final String login, final String password) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-    }
-
-    @Override
-    public Response response() {
-        return new ResponseMessage("This account is not accessible!").response();
+    public FullNameUser(final User user, final String fname, final String lname) {
+        this.user  = user;
+        this.fname = fname;
+        this.lname = lname;
     }
 
     /**
@@ -75,7 +70,7 @@ public final class User implements Responsible, Serializable {
      * @return ID
      */
     public int getId() {
-        return this.id;
+        return this.user.getId();
     }
 
     /**
@@ -83,7 +78,7 @@ public final class User implements Responsible, Serializable {
      * @return Login
      */
     public String getLogin() {
-        return this.login;
+        return this.user.getLogin();
     }
 
     /**
@@ -91,6 +86,22 @@ public final class User implements Responsible, Serializable {
      * @return Password
      */
     public String getPassword() {
-        return this.password;
+        return this.user.getPassword();
+    }
+
+    /**
+     * Getter.
+     * @return First name
+     */
+    String getFirstName() {
+        return this.fname;
+    }
+
+    /**
+     * Getter.
+     * @return Last name
+     */
+    String getLastName() {
+        return this.lname;
     }
 }

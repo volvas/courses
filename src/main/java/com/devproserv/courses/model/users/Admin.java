@@ -22,20 +22,21 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
 
-import java.io.Serializable;
+import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.Responsible;
 
 /**
- * User with first and last names.
+ * Represents the entity of the Administrator.
  *
  * @since 0.5.0
  */
-public final class FullNameUser implements Serializable {
+public final class Admin implements Responsible {
     /**
      * Serial number.
      */
-    private static final long serialVersionUID = -7510152630689460247L;
+    private static final long serialVersionUID = -4230707114847860096L;
 
     /**
      * User.
@@ -43,26 +44,17 @@ public final class FullNameUser implements Serializable {
     private final User user;
 
     /**
-     * First name.
-     */
-    private final String fname;
-
-    /**
-     * Last name.
-     */
-    private final String lname;
-
-    /**
      * Primary constructor.
      *
-     * @param user User
-     * @param fname First name
-     * @param lname Last name
+     * @param user User instance
      */
-    public FullNameUser(final User user, final String fname, final String lname) {
-        this.user  = user;
-        this.fname = fname;
-        this.lname = lname;
+    public Admin(final User user) {
+        this.user = user;
+    }
+
+    @Override
+    public Response response() {
+        return this.user.response();
     }
 
     /**
@@ -71,37 +63,5 @@ public final class FullNameUser implements Serializable {
      */
     public int getId() {
         return this.user.getId();
-    }
-
-    /**
-     * Getter.
-     * @return Login
-     */
-    public String getLogin() {
-        return this.user.getLogin();
-    }
-
-    /**
-     * Getter.
-     * @return Password
-     */
-    public String getPassword() {
-        return this.user.getPassword();
-    }
-
-    /**
-     * Getter.
-     * @return First name
-     */
-    String getFirstName() {
-        return this.fname;
-    }
-
-    /**
-     * Getter.
-     * @return Last name
-     */
-    String getLastName() {
-        return this.lname;
     }
 }

@@ -22,36 +22,55 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
+
+import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.ResponseMessage;
+import com.devproserv.courses.model.Responsible;
+import java.io.Serializable;
 
 /**
- * Represents the entity of the Administrator.
+ * Represent an entity of User from authenticating point of view.
  *
  * @since 0.5.0
  */
-public final class Admin implements Responsible {
+public final class User implements Responsible, Serializable {
     /**
      * Serial number.
      */
-    private static final long serialVersionUID = -4230707114847860096L;
+    private static final long serialVersionUID = -1937660789178008660L;
 
     /**
-     * User.
+     * ID.
      */
-    private final User user;
+    private final int id;
+
+    /**
+     * Login.
+     */
+    private final String login;
+
+    /**
+     * Password.
+     */
+    private final String password;
 
     /**
      * Primary constructor.
      *
-     * @param user User instance
+     * @param id ID
+     * @param login Login
+     * @param password Password
      */
-    public Admin(final User user) {
-        this.user = user;
+    public User(final int id, final String login, final String password) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
     }
 
     @Override
     public Response response() {
-        return this.user.response();
+        return new ResponseMessage("This account is not accessible!").response();
     }
 
     /**
@@ -59,6 +78,22 @@ public final class Admin implements Responsible {
      * @return ID
      */
     public int getId() {
-        return this.user.getId();
+        return this.id;
+    }
+
+    /**
+     * Getter.
+     * @return Login
+     */
+    public String getLogin() {
+        return this.login;
+    }
+
+    /**
+     * Getter.
+     * @return Password
+     */
+    public String getPassword() {
+        return this.password;
     }
 }

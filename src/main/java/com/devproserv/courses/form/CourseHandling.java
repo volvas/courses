@@ -27,7 +27,7 @@ package com.devproserv.courses.form;
 import com.devproserv.courses.jooq.tables.StudentCourses;
 import com.devproserv.courses.model.Db;
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.model.Student;
+import com.devproserv.courses.model.users.Student;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.jooq.DSLContext;

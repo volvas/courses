@@ -22,10 +22,14 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
 
 import com.devproserv.courses.jooq.tables.Students;
 import com.devproserv.courses.jooq.tables.Users;
+import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.Nest;
+import com.devproserv.courses.model.NestCourses;
+import com.devproserv.courses.model.Responsible;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.jooq.DSLContext;
@@ -69,7 +73,7 @@ public final class NestStudents implements Nest {
      * @param login Login
      * @param password Password
      */
-    NestStudents(final Db dbase, final String login, final String password) {
+    public NestStudents(final Db dbase, final String login, final String password) {
         this.dbase = dbase;
         this.login = login;
         this.password = password;

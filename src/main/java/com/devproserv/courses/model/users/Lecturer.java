@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
+
+import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.Responsible;
 
 /**
  * Represents the entity of the Lecturer.

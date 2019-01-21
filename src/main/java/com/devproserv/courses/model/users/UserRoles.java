@@ -22,9 +22,13 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
 
 import com.devproserv.courses.jooq.tables.Users;
+import com.devproserv.courses.model.Db;
+import com.devproserv.courses.model.Nest;
+import com.devproserv.courses.model.Response;
+import com.devproserv.courses.model.Responsible;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.EnumMap;

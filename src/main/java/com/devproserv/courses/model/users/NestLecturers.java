@@ -22,40 +22,19 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
 
-import com.devproserv.courses.form.EnrollForm;
-import java.util.HashMap;
-import java.util.Map;
+import com.devproserv.courses.model.Nest;
+import com.devproserv.courses.model.Responsible;
 
 /**
- * Auxiliary class wrapping message to response.
+ * Deals with lecturers.
  *
- * @since 0.5.4
+ * @since 0.5.0
  */
-public class ResponseMessage {
-    /**
-     * Message to user.
-     */
-    private final String msg;
-
-    /**
-     * Primary constructor.
-     *
-     * @param msg Message to user
-     */
-    public ResponseMessage(final String msg) {
-        this.msg = msg;
-    }
-
-    /**
-     * Creates a response with the provided message.
-     *
-     * @return Response with message and empty payload
-     */
-    public Response response() {
-        final Map<String, Object> payload = new HashMap<>();
-        payload.put("message", this.msg);
-        return new Response(EnrollForm.LOGIN_PAGE, payload);
+public final class NestLecturers implements Nest {
+    @Override
+    public Responsible makeUser() {
+        return new Lecturer(new User(-1, "no login", "no pass"), "no degree");
     }
 }

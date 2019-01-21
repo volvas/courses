@@ -22,16 +22,19 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
+package com.devproserv.courses.model.users;
+
+import com.devproserv.courses.model.Nest;
+import com.devproserv.courses.model.Responsible;
 
 /**
- * Deals with lecturers.
+ * Deals with admins.
  *
  * @since 0.5.0
  */
-public final class NestLecturers implements Nest {
+public final class NestAdmins implements Nest {
     @Override
     public Responsible makeUser() {
-        return new Lecturer(new User(-1, "no login", "no pass"), "no degree");
+        return new Admin(new User(-1, "no login", "no pass"));
     }
 }

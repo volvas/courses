@@ -22,16 +22,9 @@
  * SOFTWARE.
  */
 
-package com.devproserv.courses.model;
-
 /**
- * Deals with admins.
+ * Contains user entities.
  *
- * @since 0.5.0
+ * @since 0.5.5
  */
-public final class NestAdmins implements Nest {
-    @Override
-    public Responsible makeUser() {
-        return new Admin(new User(-1, "no login", "no pass"));
-    }
-}
+package com.devproserv.courses.model.users;

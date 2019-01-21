@@ -24,11 +24,11 @@
 package com.devproserv.courses.command;
 
 import com.devproserv.courses.model.Db;
-import com.devproserv.courses.model.FullNameUser;
 import com.devproserv.courses.model.Response;
-import com.devproserv.courses.model.Student;
-import com.devproserv.courses.model.StudentToDb;
-import com.devproserv.courses.model.User;
+import com.devproserv.courses.model.users.FullNameUser;
+import com.devproserv.courses.model.users.Student;
+import com.devproserv.courses.model.users.StudentToDb;
+import com.devproserv.courses.model.users.User;
 import com.devproserv.courses.validation.results.VldResult;
 import com.devproserv.courses.validation.results.VldResultAggr;
 import java.util.HashMap;
