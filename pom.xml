@@ -67,6 +67,7 @@
                         <exclude>dependencies:org.jooq:jooq</exclude>
                         <exclude>dependencies:org.jooq:jooq-meta</exclude>
                         <exclude>dependencies:org.jooq:jooq-codegen</exclude>
+                        <exclude>dependencies:org.apache.tomcat:tomcat-dbcp</exclude>
                     </excludes>
                 </configuration>
                 <executions>
