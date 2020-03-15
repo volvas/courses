@@ -93,6 +93,11 @@
                                     <version>9.0.31.0</version>
                                     <destFileName>webapp-runner.jar</destFileName>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.tomcat</groupId>
+                                    <artifactId>tomcat-dbcp</artifactId>
+                                    <version>9.0.31</version>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
