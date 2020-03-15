@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar target/courses.war
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar target/courses.war --enable-naming
