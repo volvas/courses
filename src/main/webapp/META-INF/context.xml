@@ -8,11 +8,11 @@
         type="javax.sql.DataSource"
         factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
         driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://devproserv.com:54406/coursedb"
+        url="localhost:9900/coursedb"
         connectionProperties="useUnicode=yes;characterEncoding=utf8;"
 
-        username="javauser"
-        password="zSxcvb"
+        username=""
+        password=""
 
         initialSize="10"
         maxActive="20"
