@@ -4,16 +4,19 @@
 
 ## Courses for students
 
-Project represents the system of managing optional courses for students in a high school. On the web page a student selects one or more course and registers himself to the course. After attendance the lecturer who holds the course sets a mark to the student.  
-The project has been rolled out on server: [https://devproserv.com/courses](https://devproserv.com/courses)
-The project has been created for training purpose and is not to be used in real life.  
+Project represents the system of managing optional courses for students in a high school.
+On the web page a student selects one or more course and registers himself to the course.
+After attendance the lecturer who holds the course sets a mark to the student. 
   
 ### Description
 
 The system runs on web server Tomcat with web container handling requests to servlets, JSP etc. Data about entities in the project is stored in the database MySQL.  
 The project is developed using the following problem specification:  
 
-_System of optional **courses**. There is a list of courses, each **course** is assigned to a **lecturer**. **Student** subscribes to one or more courses. Registration data is stored. After course completion lecturer evaluates it with a mark and data stores in the **archive**._
+_System of optional **courses**.
+There is a list of courses, each **course** is assigned to a **lecturer**.
+**Student** subscribes to one or more courses. Registration data is stored.
+After course completion lecturer evaluates it with a mark and data stores in the **archive**._
 
 ### General requirements to the project
 1.  Build classes describing entities of the data domain
